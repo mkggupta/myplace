@@ -32,7 +32,8 @@ public enum SuccessCodesEnum {
 	NO_ABOUT_SUCCESS("SUCC_11312", "Page is under construction.", "no.about.success"),
 	NO_FEEDBACK_SUCCESS("SUCC_11313", "Currently there is no feedback.Write your own experience with this application.", "no.feedback.success"),
 	LOG_REG_ALREADY_EXIST("SUCC_11314", "This Email address is already registered with us.", "log.reg.success"),
-
+	LOG_DEVICE_REG_SUCCESS("SUCC_11315", "Device for push notification registered sucessfully.", "log.device.reg.success"),
+	LOG_DEVICE_REG_ALREADY_EXIST("SUCC_11316", "This Device is already registered for push notification with us.", "log.device.already.reg.success"),
 	;
 	String successCode;
 	String successMessage;

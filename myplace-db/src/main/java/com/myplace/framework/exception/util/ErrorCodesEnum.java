@@ -63,7 +63,8 @@ public enum ErrorCodesEnum {
 	USER_NOT_EXIST_EXCEPTION("ERR11109", "Invalid username/password", "com.myplace.user.not.found"),
 	
 	USER_PUSH_UPDATE_EXCEPTION("ERR11110", "Invalid userid", "com.myplace.user.push.update"),
-
+	
+	USER_DEVICE_PUSH_REG_EXCEPTION("ERR1111", "Exception in user push service", "com.myplace.user.device.push.reg"),
 
 	// media service
 	MEDIA_UPDATE_SERVICE_FAILED_EXCEPTION("ERR11301", "Exception in updating media business rules", "com.myplace.service.media.bo.failed"),

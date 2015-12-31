@@ -51,7 +51,7 @@ public class RegLogController {
 		 String jsonData = null;
 		 Gson gson = new Gson();
 		if(logger.isDebugEnabled()){
-			logger.debug("RegLogController.registerLogin"+httpServletRequest);
+			logger.debug("RegLogController.registerLogin= "+httpServletRequest);
 			Enumeration<Object> headerNames = httpServletRequest.getHeaderNames();
 			Map<String,String> requestParamMap = new HashMap<String, String>();
 			while (headerNames.hasMoreElements()) {

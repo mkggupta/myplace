@@ -11,5 +11,8 @@ public interface UserConstants {
 	String GET_USER_DETAIL_BY_ID = "get_user_info_by_id";
 	String GET_USER_NAME_BY_ID = "get_user_name_by_id";
 	String QUERY_UPDATE_USER_INFO = "update_user_info";
+	String GET_USER_EXIST_BY_ID = "get_user_exist_by_id";
+	String INSERT_USER_PUSH_INFO = "insert_user_push_info";
+	String QUERY_UPDATE_USER_PUSH_MESSAGE_STATUS = "update_user_push_message_status";
 	
 }

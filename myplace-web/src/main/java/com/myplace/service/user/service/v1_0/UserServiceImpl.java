@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.user.util.UserUtils;
+import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dao.modules.user.UserDAO;
@@ -16,6 +17,7 @@ import com.myplace.dto.UserAuth;
 import com.myplace.dto.UserInfo;
 import com.myplace.dto.UserThirdPartyAuth;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
+import com.myplace.service.user.exception.DeviceRegFailedException;
 import com.myplace.service.user.exception.UserServiceFailedException;
 import com.myplace.service.user.exception.UserServiceValidationFailedException;
 
@@ -138,6 +140,32 @@ public class UserServiceImpl implements UserService {
 			return  userInfoObj;
 		} catch (Exception e) {
 			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+		}
+	}
+	
+	public Long regPushDevice(UserPushInfo userPushInfo) throws DeviceRegFailedException, UserServiceFailedException{
+		Long userId = null;
+		 try {
+			if(userDAO.isUserExists(userPushInfo.getUserId())){
+				userPushInfo.setStatus(true);
+				userDAO.saveUserPushInfo(userPushInfo);
+				userId= userPushInfo.getUserId();
+			 }else{
+				 userId=-1l;
+			 }
+		} catch (DataAccessFailedException | DataUpdateFailedException e) {
+			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+		}
+		
+		return userId;
+	}
+	
+	public void updateUserPushStatus(long userId, String pushStatus) throws UserServiceFailedException{
+		try {
+			userDAO.updateUserPushStatus(userId, pushStatus);
+		} catch (DataUpdateFailedException e) {
+			logger.error("Exception in updateUserPushStatus"+e.getLocalizedMessage(),e);
+			throw new UserServiceFailedException(ErrorCodesEnum.USER_PUSH_UPDATE_EXCEPTION);
 		}
 	}
 

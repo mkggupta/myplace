@@ -31,6 +31,10 @@
 		<property name="feedBackService" ref="feedBackService" />
 	</bean>
 	
+	<bean id="pushController" class="com.myplace.rest.controller.push.PushController">
+		<property name="userService" ref="userService" />
+	</bean>
+	
 	<bean id="regLogController" class="com.myplace.rest.controller.user.RegLogController">
 		<property name="userService" ref="userService" />
 	</bean>
@@ -114,7 +118,7 @@
 	</bean>
 	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
-			<value>/WEB-INF/pages/</value>
+			<value>/pages/</value>
 		</property>
 		<property name="suffix">
 			<value>.jsp</value>

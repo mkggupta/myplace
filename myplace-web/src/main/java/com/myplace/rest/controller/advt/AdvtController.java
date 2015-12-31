@@ -41,7 +41,7 @@ public class AdvtController {
 		this.advtService = advtService;
 	}
 	
-	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	@RequestMapping(value = "/pvt/create", method = RequestMethod.POST)
 	public ModelAndView createAdvt(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
@@ -89,7 +89,7 @@ public class AdvtController {
 	}
 	
 	
-	@RequestMapping(value = "/getTemplate", method = RequestMethod.GET)
+	@RequestMapping(value = "/pub/getTemplate", method = RequestMethod.GET)
 	public ModelAndView getAdvtTemplate(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
@@ -130,7 +130,7 @@ public class AdvtController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value = "/getAdvtList", method = RequestMethod.GET)
+	@RequestMapping(value = "/pvt/getAdvtList", method = RequestMethod.GET)
 	public ModelAndView getAdvtList(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
@@ -171,7 +171,7 @@ public class AdvtController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value = "/changeStatus", method = RequestMethod.POST)
+	@RequestMapping(value = "/pvt/changeStatus", method = RequestMethod.POST)
 	public ModelAndView changeAdvtStatus(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();

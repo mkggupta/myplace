@@ -67,6 +67,10 @@ public interface MyPlaceConstant {
     String B_SPECIALITIES="b_specialities";
     String B_FILE_DATA = "fileInfo";
 	
+    //PUSH CONSTANT
+    
+    String PUSH_MESSAGE = "pushMessage";
+    String DEVICE_KEY = "deviceKey";
 	
 	
 }

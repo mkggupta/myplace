@@ -14,6 +14,7 @@ import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.constant.ClientParamConstant;
 import com.myplace.common.constant.UserParameters;
 import com.myplace.common.enumeration.DateTimeFormatEnum;
+import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dto.AdvertisementDTO;
 import com.myplace.dto.AdvertisementInfo;
 import com.myplace.dto.AdvtBusinessInfo;
@@ -413,5 +414,28 @@ public class RequestProcessorUtil {
 			}	
 		}	
 		return feedBackReplyInfo;
+	}
+	
+	public static void enrichUserPushInfo(HashMap<String, Object> requestMap,UserPushInfo userPushInfo,Map<String, Object> clientParamMap) {
+		if (null != requestMap) {
+			if (null != requestMap.get(UserParameters.USERID)) {
+				userPushInfo.setUserId(Long.parseLong(requestMap.get(UserParameters.USERID).toString()));
+			}
+		
+			if (null != requestMap.get(UserParameters.DEVICE_ID)) {
+				userPushInfo.setDeviceId(requestMap.get(UserParameters.DEVICE_ID).toString());
+			}
+			if (null != requestMap.get(UserParameters.PUSH_KEY)) {
+				userPushInfo.setPushKey(requestMap.get(UserParameters.PUSH_KEY).toString());
+			}
+			
+			if(null != clientParamMap.get(ClientParamConstant.PLATFORM)){
+				if("ANDROID".equalsIgnoreCase(clientParamMap.get(ClientParamConstant.PLATFORM).toString())){
+					userPushInfo.setPlatform((byte)1);
+				}else if("IPHONE".equalsIgnoreCase(clientParamMap.get(ClientParamConstant.PLATFORM).toString())){
+					userPushInfo.setPlatform((byte)2);
+				}
+			}	
+		}
 	}
 }

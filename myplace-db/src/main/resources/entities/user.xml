@@ -55,5 +55,17 @@
 		modified_date=now(),web_site=#webSite#,language=#language#,user_desc=#userDescription#
 		where id=#id#
 	</update>
+	<select id="get_user_exist_by_id" parameterClass="java.lang.Long" resultClass="java.lang.Long">
+	  	 SELECT 1 FROM user_auth where id=#userId# and status=1
+	 </select>
+	 
+	<insert id="insert_user_push_info" parameterClass="com.myplace.dao.entities.UserPushInfo">
+		INSERT INTO user_push_info (user_id, device_id, push_key, platform,status,create_date,modified_date) VALUES (#userId#,
+		#deviceId#, #pushKey#, #platform#,#status#,now(),now())
+	</insert>
+    
+	<update id="update_user_push_message_status" parameterClass="java.util.Map">
+		UPDATE user_push_info set status = #status#,modified_date=now() where user_id=#user_id# 
+	</update>
 	
  </sqlMap> 

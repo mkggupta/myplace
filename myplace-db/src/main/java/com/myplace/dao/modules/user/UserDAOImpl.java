@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.myplace.dao.constants.UserConstants;
+import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dao.modules.base.AbstractDBManager;
@@ -151,6 +152,45 @@ public class UserDAOImpl extends AbstractDBManager implements UserDAO {
 			sqlMapClient_.update(UserConstants.QUERY_UPDATE_USER_INFO, userInfo);
 		} catch (SQLException e) {
 			logger.error("Exception in storing user details in database for the user : " + userInfo + " error  : " + e.getMessage());
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
+	
+	public void saveUserPushInfo(UserPushInfo userPushInfo) throws DataUpdateFailedException{
+		try {
+			sqlMapClient_.insert(UserConstants.INSERT_USER_PUSH_INFO, userPushInfo);
+			 logger.debug("regPushDevice id: " + UserConstants.INSERT_USER_PUSH_INFO);
+		} catch (SQLException e) {
+			logger.error("Exception in storing user push info in database for the user : " + userPushInfo + " error  : " + e.getMessage());
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+		
+	}
+	
+	public boolean isUserExists(long userId) throws DataAccessFailedException{
+		boolean isUserExist=false;
+		try {
+			Long id = (Long)sqlMapClient_.queryForObject(UserConstants.GET_USER_EXIST_BY_ID, userId);
+			 logger.debug("regPushDevice id: " + id+"---"+userId);
+			if(id!=null &&  id>0 ){
+				isUserExist =true;
+			}
+		} catch (Exception e) {
+			logger.error("Exception in isUserExists : " + e.getMessage());
+			throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+		
+		return isUserExist;
+	}
+	
+	public void updateUserPushStatus(long userId, String pushStatus) throws DataUpdateFailedException{
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("user_id", userId);
+			parameterMap.put("status", pushStatus);
+			sqlMapClient_.update(UserConstants.QUERY_UPDATE_USER_PUSH_MESSAGE_STATUS,parameterMap);
+		} catch (SQLException e) {
+			logger.error("Exception in updating push status : "+e.getLocalizedMessage(),e);
 			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
 		}
 	}

@@ -36,6 +36,7 @@ public interface UserParameters {
 	String USERID="userId";
 	String FRIEND_ID="friendId";
 	String PUSH_KEY="pushk";
+	String DEVICE_ID="deviceId";
 	String PUSH_STATUS="pstatus";
 	String UID="userId";
 	String ADVTCODE="advtCode";

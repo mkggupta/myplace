@@ -24,12 +24,6 @@ import com.myplace.service.user.exception.UserServiceFailedException;
 import com.myplace.service.user.exception.UserServiceValidationFailedException;
 import com.myplace.service.user.service.v1_0.UserService;
 
-
-
-
-
-
-
 @Controller
 @RequestMapping("/api/usr")
 public class UserController {
