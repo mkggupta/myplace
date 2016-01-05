@@ -48,7 +48,34 @@ public class BusinessDAOImpl extends AbstractDBManager implements BusinessDAO {
 		}
 		
 	}
+	
+	public BusinessFileInfo getBusinessFileInfo (Long businessId) throws DataAccessFailedException{
+		
+		try {
+			
+			return (BusinessFileInfo) sqlMapClient_.queryForObject(BusinessConstant.GET_BUSINESS_FILE_INFO,businessId);
+		
+			}catch(SQLException e){
+				logger.error("Exception in getBusinessFileInfo : " + e.getMessage());
+				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}
+		
+	}
 
+	@SuppressWarnings("unchecked")
+	public List<BusinessFileInfo> getBusinessFileInfoList (List<Long> businessIdList) throws DataAccessFailedException{
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("businessIdList", businessIdList);
+			parameterMap.put("status", "ACTIVE");
+			return (List<BusinessFileInfo>) sqlMapClient_.queryForList(BusinessConstant.GET_BUSINESS_FILE_INFO_LIST,parameterMap);
+		
+			}catch(SQLException e){
+				logger.error("Exception in getBusinessFileInfoList : " + e.getMessage());
+				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}
+		
+	}
 
 	@Override
 	public BusinessInfo getMyBusinessDetail(Long userId, Long businessId)throws DataAccessFailedException {

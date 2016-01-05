@@ -12,6 +12,8 @@ import com.myplace.dto.BusinessInfo;
 public interface BusinessDAO {
 	public Long saveBusinessInfo(BusinessInfo businessInfo) throws DataUpdateFailedException;
 	public void saveBusinessFileInfo(BusinessFileInfo businessFileInfo) throws DataUpdateFailedException;
+	public BusinessFileInfo getBusinessFileInfo (Long businessId) throws DataAccessFailedException;
+	public List<BusinessFileInfo> getBusinessFileInfoList (List<Long> businessIdList) throws DataAccessFailedException;
 	public List<BusinessInfo> getMyBusinessList (Long userId) throws DataAccessFailedException;
 	public BusinessInfo getMyBusinessDetail (Long userId,Long businessId) throws DataAccessFailedException;
 	public BusinessInfo getBusinessDetail (Long businessId) throws DataAccessFailedException;

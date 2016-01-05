@@ -50,7 +50,7 @@ public class BusinessController {
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
 		if(logger.isDebugEnabled()){
-			logger.debug("BusinessController.create"+httpServletRequest);
+			logger.debug("BusinessController.create="+httpServletRequest);
 			Enumeration<Object> headerNames = httpServletRequest.getHeaderNames();
 			Map<String,String> requestParamMap = new HashMap<String, String>();
 			while (headerNames.hasMoreElements()) {

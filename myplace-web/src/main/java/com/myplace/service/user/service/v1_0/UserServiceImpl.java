@@ -153,7 +153,9 @@ public class UserServiceImpl implements UserService {
 			 }else{
 				 userId=-1l;
 			 }
-		} catch (DataAccessFailedException | DataUpdateFailedException e) {
+		} catch (DataAccessFailedException e) {
+			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+		} catch (DataUpdateFailedException e) {
 			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
 		}
 		

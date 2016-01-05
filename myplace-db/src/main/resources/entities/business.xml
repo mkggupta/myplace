@@ -65,6 +65,20 @@
 	 where business_id=#bussId#
    </update>
  
-
-
+	<select id="get_business_file_info" parameterClass="java.lang.Long" resultClass="com.myplace.dto.BusinessFileInfo" >
+  	 select business_id as bussId,file_id as fileId,file_name as origFName,media_type as mediaType,ext as fileExt,size as fileSize,file_location as filePath
+  	 from business_file_info where business_id=#businessId#
+  </select>
+  
+  <select id="get_business_file_info_list"  parameterClass ="java.util.Map" resultClass="com.myplace.dto.BusinessFileInfo" >
+  	 select business_id as bussId,file_id as fileId,file_name as origFName,media_type as mediaType,ext as fileExt,size as fileSize,file_location as filePath
+  	 from business_file_info where status=#status#
+  	 <dynamic prepend="and business_id in ">
+		    <isNotEmpty property="businessIdList">
+	       		<iterate prepend="and " property="businessIdList" open="(" close=")" conjunction=",">
+			  		#businessIdList[]# 
+				</iterate>
+		    </isNotEmpty>
+	  	</dynamic>
+  </select>
 </sqlMap> 

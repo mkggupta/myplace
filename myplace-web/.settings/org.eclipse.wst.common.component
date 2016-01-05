@@ -3,7 +3,7 @@
   <wb-module deploy-name="myplace-web">
     <property name="context-root" value="myplace-web"/>
     <wb-resource deploy-path="/" source-path="src/main/webapp"/>
-    <property name="java-output-path" value="/bin"/>
+    <property name="java-output-path" value="/target/classes"/>
     <dependent-module archiveName="myplace-db.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/myplace-db/myplace-db">
       <dependency-type>uses</dependency-type>
     </dependent-module>
@@ -152,6 +152,12 @@
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module archiveName="xmlParserAPIs-2.0.2.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/xml-apis/xmlParserAPIs/2.0.2/xmlParserAPIs-2.0.2.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+    <dependent-module archiveName="javapns-jdk1.5-v1.6.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/javapns/javapns/jdk1.5-v1.6/javapns-jdk1.5-v1.6.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+    <dependent-module archiveName="bcprov-jdk15-145.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/bcprov/bcprov/jdk15-145/bcprov-jdk15-145.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>

@@ -102,8 +102,9 @@ public class StorageUtil {
 			 pathToStore.append(relativePath);
 	         pathToStore.append("/");
 	         logger.info("Will store file @ " + pathToStore.toString());
+	         logger.info("Will fileToStore@ " + fileToStore);
 	         String file_path = storeFile(data, fileToStore, pathToStore.toString());
-	         logger.info("file_path @ " +file_path);
+	        
 	         File f = new File( pathToStore.toString() + fileToStore);
 	         if (!f.exists()) {
 	             throw new RuntimeException("File was not persisted to Storage System");
@@ -227,5 +228,13 @@ public class StorageUtil {
 			    double fraction = range * generator.nextDouble();
 			    return Long.valueOf(Math.round(fraction + lowerLimit));
 
+		 }
+		 
+		 public static String getImageUrl(BusinessFileInfo  businessFileInfo) {
+			 String imageUrl=null;
+			 if(null!= businessFileInfo)
+				 imageUrl=businessFileInfo.getFilePath()+"/"+businessFileInfo.getFileId()+"."+businessFileInfo.getFileExt();
+			 return imageUrl;
+			 
 		 }
 }

@@ -1,11 +1,13 @@
 package com.myplace.service.business.service.v1_0;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.myplace.common.business.util.BusinessUtil;
+import com.myplace.common.util.StorageUtil;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dao.modules.business.BusinessDAO;
@@ -29,7 +31,6 @@ public class BusinessServiceImpl implements BusinessService {
 		logger.debug("BusinessServiceImpl----"+businessInfo.getBussName());
 		Long businessId = null;
 		try {
-			
 			businessId = businessDAO.saveBusinessInfo(businessInfo);
 			logger.debug("businessId----"+businessId);
 			if(null==businessId || businessId ==0){
@@ -53,8 +54,31 @@ public class BusinessServiceImpl implements BusinessService {
 	
 	public List<BusinessInfo> getMyBusinessList (Long userId) throws BusinessServiceException{
 		
-		try {
-			return businessDAO.getMyBusinessList(userId);
+	try {
+		List<BusinessInfo> businessInfoList=businessDAO.getMyBusinessList(userId);
+		List<Long> businessIdList = new ArrayList<Long>();
+		for(BusinessInfo businessInfo : businessInfoList){
+			businessIdList.add(businessInfo.getBussId());
+		}
+		if(null!=businessIdList && businessIdList.size()>0){
+			logger.debug("businessIdList---"+businessIdList);
+			List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfoList(businessIdList);
+			logger.debug("BusinessFileInfoList---"+BusinessFileInfoList);
+			for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
+				logger.debug("id---"+businessFileInfo.getBussId());
+				for(BusinessInfo businessInfo : businessInfoList){
+					logger.debug(businessInfo.getBussId()+" --- Busine---"+businessFileInfo.getBussId());
+					if(businessInfo.getBussId()==businessFileInfo.getBussId()){
+						businessInfo.setBussImageUrl(StorageUtil.getImageUrl(businessFileInfo));
+						break;
+					}
+				}
+				
+			}
+		}
+		
+		
+			return businessInfoList;
 		} catch (DataAccessFailedException e) {
 			logger.error("getMyBusinessList---"+e.getLocalizedMessage());
 			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION);
@@ -63,8 +87,10 @@ public class BusinessServiceImpl implements BusinessService {
 	
 	public BusinessInfo getMyBusinessDetail (Long userId,Long businessId) throws BusinessServiceException{
 
-		try {
-			return businessDAO.getMyBusinessDetail(userId,businessId);
+	try {
+			BusinessInfo  businessInfo = businessDAO.getMyBusinessDetail(userId,businessId);
+			businessInfo.setBussImageUrl(StorageUtil.getImageUrl(businessDAO.getBusinessFileInfo(businessId)));
+			return businessInfo;
 		} catch (DataAccessFailedException e) {
 			logger.error("getMyBusinessDetail---"+e.getLocalizedMessage());
 			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION);
@@ -73,12 +99,16 @@ public class BusinessServiceImpl implements BusinessService {
 	
 	public BusinessInfo getBusinessDetail (Long businessId) throws BusinessServiceException{
 
-		try {
+	try {
 			BusinessInfo  businessInfo = businessDAO.getBusinessDetail(businessId);
 			businessDAO.updateBusinessView(businessId);
-			logger.debug("changeBussStatus---businessId="+businessId);
+			logger.debug("getBusinessDetail---businessId="+businessId);
+			businessInfo.setBussImageUrl(StorageUtil.getImageUrl(businessDAO.getBusinessFileInfo(businessId)));
 			return businessInfo;
-		} catch (DataAccessFailedException | DataUpdateFailedException e) {
+		} catch (DataAccessFailedException ex) {
+			logger.error("getBusinessDetail---"+ex.getLocalizedMessage());
+			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION);
+		}catch(DataUpdateFailedException e ){
 			logger.error("getBusinessDetail---"+e.getLocalizedMessage());
 			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION);
 		}

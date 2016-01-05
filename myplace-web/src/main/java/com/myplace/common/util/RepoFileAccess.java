@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 public class RepoFileAccess implements FileAccess {
 	private static Logger logger = LoggerFactory.getLogger(RepoFileAccess.class) ;
 	//private PathGenerator pathGenerator = null ;
+	MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
 
 	public byte[] getBytes(String path) {
 		//String newPath = pathGenerator.getPath(path) ;
@@ -35,12 +36,13 @@ public class RepoFileAccess implements FileAccess {
 	}
 	public String storeBytes(String path, byte[] content) throws IOException {
 		logger.info("path to save="+path);
+		
 		String fullPath = FilenameUtils.getFullPathNoEndSeparator(path) ; 
-		logger.info("full path to save="+fullPath);
 		File file = new File(fullPath);
 		file.mkdirs();
 		storeBytes(new File(path), content) ;
-		
+		fullPath=myplaceProperties.getProperty(MyPlacePropertyKeys.SERVER_URL)+fullPath.substring(fullPath.indexOf("myplace"), fullPath.length()).replace("\\", "/");
+		 logger.info("file_path fullPath@ " +fullPath);
 		return fullPath;
 	}
 	public void storeBytes(File f, byte[] content) throws IOException {

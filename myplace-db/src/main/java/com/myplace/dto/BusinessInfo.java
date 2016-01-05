@@ -29,7 +29,14 @@ public class BusinessInfo {
 	private String catName;
 	private int feedType;
 	List<BusinessFileInfo> businessFileInfo;
+	private String bussImageUrl;
 	
+	public String getBussImageUrl() {
+		return bussImageUrl;
+	}
+	public void setBussImageUrl(String bussImageUrl) {
+		this.bussImageUrl = bussImageUrl;
+	}
 	public int getFeedType() {
 		return feedType;
 	}
