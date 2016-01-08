@@ -12,5 +12,7 @@ public interface CategoryDAO {
 	
 	public List<CategoryDTO> getCategoryList(String countryCode) throws DataAccessFailedException;
 	public List<SubCategoryDTO> getSubCategoryList(Integer catId)throws DataAccessFailedException;
+	public String getCategoryNameByCatId(Long catId)throws DataAccessFailedException;
+	public String getSubCategoryName(Long catId,Long subCatId)throws DataAccessFailedException;
 	
 }

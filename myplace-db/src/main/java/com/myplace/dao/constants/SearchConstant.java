@@ -10,6 +10,7 @@ public interface SearchConstant {
 	String GET_BUSINESS_LIST_BY_TEXT_NEAR_ME = "get_business_list_by_text_lat_long";
 	String GET_BUSINESS_LIST_BY_NEAR_ME = "get_business_list_by_lat_long";
 	String GET_BUSINESS_LIST_BY_SUBCATEGORY_ID_NEAR_ME = "get_business_list_by_subCatId_lat_long";
+	String GET_USER_LIST_BY_NEAR_ME="get_user_list_by_lat_long";
 	
 	
 }

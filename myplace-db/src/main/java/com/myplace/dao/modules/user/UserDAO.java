@@ -1,5 +1,7 @@
 package com.myplace.dao.modules.user;
 
+import java.util.List;
+
 import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.exception.DataUpdateFailedException;
@@ -26,5 +28,6 @@ public interface UserDAO {
 	public void saveUserPushInfo(UserPushInfo userPushInfo) throws DataUpdateFailedException;
 	public boolean isUserExists(long userId) throws DataAccessFailedException;
 	public void updateUserPushStatus(long userId, String pushStatus) throws DataUpdateFailedException;
+	public List<UserPushInfo> getUserPushInfoList(List<Long> userIdList) throws DataAccessFailedException;
 
 }

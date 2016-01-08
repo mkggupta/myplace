@@ -45,6 +45,7 @@ public class BusinessController {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/pvt/create", method = RequestMethod.POST)
 	public ModelAndView createBusiness(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		ModelAndView modelAndView = new ModelAndView();

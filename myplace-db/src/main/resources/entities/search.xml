@@ -99,5 +99,12 @@
      and (#longitude#+2/abs(cos(radians(#latitude#))*69)) and business_latitude between (#latitude#-(2/69)) and (#latitude#+(2/69)) 
      ORDER BY distance limit #startLimit#,#endLimit#
    </select>
+   
+   <select id="get_user_list_by_lat_long" parameterClass="java.util.Map" resultClass="com.myplace.dto.UserSearchDTO" >
+  	 SELECT id,3956 * 2 *ASIN(SQRT( POWER(SIN((#latitude# - abs(latitude))*pi()/180/2),2)+COS(#latitude#*pi()/180 )*COS(abs(latitude)*pi()/180)
+     *POWER(SIN((#longitude#-longitude)*pi()/180/2),2))) as distance FROM user_auth where status=1
+     and longitude between (#longitude#-2/abs(cos(radians(#latitude#))*69)) 
+     and (#longitude#+2/abs(cos(radians(#latitude#))*69)) and latitude between (#latitude#-(2/69)) and (#latitude#+(2/69)) having distance &lt;=#distance#
+   </select>
 
 </sqlMap> 

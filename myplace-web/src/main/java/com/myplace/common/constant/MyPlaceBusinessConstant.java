@@ -46,5 +46,7 @@ public interface MyPlaceBusinessConstant {
 	String NEAR_ME_SEARCH_TYPE="3";//long lad bases
 	String TEXT_SEARCH_TYPE="4";//by name of business
 	Integer DEFAULT_DISTANCE =2;//in km
+	Integer DEFAULT_PUSH_DISTANCE =4;//in km
+	
 	
 }

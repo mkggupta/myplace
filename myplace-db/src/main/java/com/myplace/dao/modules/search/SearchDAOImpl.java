@@ -13,6 +13,7 @@ import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.modules.base.AbstractDBManager;
 import com.myplace.dto.BusinessSearchDTO;
 import com.myplace.dto.BusinessSearchVO;
+import com.myplace.dto.UserSearchDTO;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 
 
@@ -159,6 +160,21 @@ public class SearchDAOImpl extends AbstractDBManager implements SearchDAO {
 				logger.error("Exception in getBusinessList : " + e.getMessage());
 				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
 			}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserSearchDTO> getUserListNearMe (Float latitude,Float longitude,int distance) throws DataAccessFailedException{
+		try {
+			 Map<String, Object> params = new HashMap<String, Object>();
+			params.put("latitude", latitude);
+			params.put("longitude",longitude);
+			params.put("distance", distance);
+			 return (List<UserSearchDTO>)sqlMapClient_.queryForList(SearchConstant.GET_USER_LIST_BY_NEAR_ME,params);
+			}catch(SQLException e){
+				logger.error("Exception in getUserListNearMe : " + e.getMessage());
+				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}
+		
 	}
 	
 	

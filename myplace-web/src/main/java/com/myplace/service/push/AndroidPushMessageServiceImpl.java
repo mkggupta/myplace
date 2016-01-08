@@ -2,11 +2,8 @@ package com.myplace.service.push;
 
 
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -19,13 +16,10 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLHandshakeException;
 import javax.net.ssl.SSLSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.util.io.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-//import com.voizd.modules.agent.util.resource.AgentResourceUtils;
-//import com.voizd.modules.push.message.util.PushNotificationConstants;
-import org.apache.commons.lang.StringUtils;
 
 import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.util.MyPlaceProperties;
@@ -59,7 +53,8 @@ public class AndroidPushMessageServiceImpl implements PushMessageService {
 					.get(MyPlaceConstant.DEVICE_KEY);
 			String pushMessage = (String) params
 					.get(MyPlaceConstant.PUSH_MESSAGE);
-			logger.debug("pushMessage called for Android ::"+pushMessage+"deviceKey ::"+deviceKey);
+			
+			logger.debug("pushMessage called for Android ::"+pushMessage+" for deviceKey ::"+deviceKey);
 			
 			if(StringUtils.isNotBlank(deviceKey)&& StringUtils.isNotBlank(pushMessage)){
 				boolean pushed = pushMessage(deviceKey, pushMessage);
@@ -75,7 +70,7 @@ public class AndroidPushMessageServiceImpl implements PushMessageService {
 		return false;
 	}
 
-	protected boolean pushMessage(String pin, String message) {
+	protected boolean pushMessage(String deviceKey, String message) {
 		logger.info("pushMessage called for Android.");
 		
 		boolean pushed = false;
@@ -89,7 +84,7 @@ public class AndroidPushMessageServiceImpl implements PushMessageService {
 			DataOutputStream wr = null;
 			try {
 				String content = "registration_id="
-						+ URLEncoder.encode(pin, "UTF-8") + "&collapse_key="
+						+ URLEncoder.encode(deviceKey, "UTF-8") + "&collapse_key="
 						+ URLEncoder.encode("0", "UTF-8") + "&data.message="
 						+ URLEncoder.encode(message, "UTF-8");
 				url = new URL(pushurl);
@@ -133,7 +128,7 @@ public class AndroidPushMessageServiceImpl implements PushMessageService {
 						if (matcher.find()) {
 							response = matcher.group(1);
 							matcher.end();
-							if (errorStates.contains(response.trim())) {
+							if (null!=errorStates && errorStates.contains(response.trim())) {
 								logger.error("push failed due to " + response);
 
 							}

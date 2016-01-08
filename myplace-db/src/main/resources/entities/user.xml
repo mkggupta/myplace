@@ -68,4 +68,16 @@
 		UPDATE user_push_info set status = #status#,modified_date=now() where user_id=#user_id# 
 	</update>
 	
+	<select id="get_user_push_ino_list_by_userid"  parameterClass ="java.util.Map" resultClass="com.myplace.dao.entities.UserPushInfo" >
+  	 select user_id as userId, device_id as deviceId, push_key as pushKey, platform as platform
+  	 from user_push_info where status=#status#
+  	 <dynamic prepend="and user_id in ">
+		    <isNotEmpty property="userIdList">
+	       		<iterate prepend="and " property="userIdList" open="(" close=")" conjunction=",">
+			  		#userIdList[]# 
+				</iterate>
+		    </isNotEmpty>
+	  	</dynamic>
+ 	 </select>
+	
  </sqlMap> 

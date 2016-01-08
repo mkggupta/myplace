@@ -1,31 +1,63 @@
 package com.myplace.service.business.service.v1_0;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.myplace.common.business.util.BusinessUtil;
+import com.myplace.common.constant.MyPlaceBusinessConstant;
+import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.util.StorageUtil;
+import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dao.modules.business.BusinessDAO;
+import com.myplace.dao.modules.category.CategoryDAO;
+import com.myplace.dao.modules.search.SearchDAO;
+import com.myplace.dao.modules.user.UserDAO;
 import com.myplace.dto.BusinessFileInfo;
 import com.myplace.dto.BusinessInfo;
+import com.myplace.dto.UserSearchDTO;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.myplace.service.business.exception.BusinessServiceException;
+import com.myplace.service.push.PushMessageService;
 
 
 
 public class BusinessServiceImpl implements BusinessService {
 	private static Logger logger = LoggerFactory.getLogger(BusinessServiceImpl.class);
 	private BusinessDAO businessDAO ;
-	
+	private SearchDAO searchDAO ;
+	private UserDAO  userDAO;
+	private PushMessageService pushMessageService;
+	private CategoryDAO categoryDAO ;
+
 	public void setBusinessDAO(BusinessDAO businessDAO) {
 		this.businessDAO = businessDAO;
 	}
-
+	
+	public void setSearchDAO(SearchDAO searchDAO) {
+		this.searchDAO = searchDAO;
+	}
+	
+	public void setUserDAO(UserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+	
+	@Autowired
+	public void setPushMessageService(PushMessageService pushMessageService) {
+		this.pushMessageService = pushMessageService;
+	}
+	@Autowired
+	public void setCategoryDAO(CategoryDAO categoryDAO) {
+		this.categoryDAO = categoryDAO;
+	}
+	
 	public Long createBusiness(BusinessInfo businessInfo) throws BusinessServiceException{
 		
 		logger.debug("BusinessServiceImpl----"+businessInfo.getBussName());
@@ -45,6 +77,40 @@ public class BusinessServiceImpl implements BusinessService {
 					businessDAO.saveBusinessFileInfo(businessFileInfo);
 				}
 			}
+			//This code start for Push Notification 
+			if(null!=businessId && businessId>0){
+				try {
+					List<UserSearchDTO> userSearchDTOList = searchDAO.getUserListNearMe(businessInfo.getBussLat(),businessInfo.getBussLong(),MyPlaceBusinessConstant.DEFAULT_PUSH_DISTANCE);
+					logger.debug("userSearchDTOList----"+userSearchDTOList);
+					if(null!=userSearchDTOList && userSearchDTOList.size()>0)
+					{	List<Long> userIdList = new ArrayList<Long>();
+						for(UserSearchDTO userSearchDTO:userSearchDTOList){
+							userIdList.add(userSearchDTO.getId());
+						}
+						logger.debug("userIdList----"+userIdList);
+						if(null!=userIdList && userIdList.size()>0){
+							List<UserPushInfo>  userPushInfoList = userDAO.getUserPushInfoList(userIdList);
+							logger.debug("userPushInfoList----"+userPushInfoList);
+							if(null!=userPushInfoList && userPushInfoList.size()>0){
+								String serviceName= categoryDAO.getCategoryNameByCatId(businessInfo.getCatId());
+								boolean pushStatus=false;
+								for(UserPushInfo userPushInfo:userPushInfoList){
+									Map<String, Object> params= new HashMap<String, Object>();
+									params.put(MyPlaceConstant.DEVICE_KEY,userPushInfo.getPushKey());
+									params.put(MyPlaceConstant.PUSH_MESSAGE,"Good News ! Now "+businessInfo.getBussName()+" specialized in "+serviceName+" is near you.");
+									pushStatus=pushMessageService.pushNotification(params);
+									logger.debug("pushStatus----"+pushStatus +" for userid="+userPushInfo.getUserId());
+								}
+							}
+						}
+					}
+				} catch (DataAccessFailedException e) {
+					//we will not re-throw exception as business creation should not stop because of push
+					logger.error("could not send push notification---"+e.getLocalizedMessage());
+				}
+				
+			}
+			//Code end for Push Notification 
 		} catch (DataUpdateFailedException e) {
 			logger.error("createBusiness---"+e.getLocalizedMessage());
 			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION);
@@ -143,4 +209,12 @@ public class BusinessServiceImpl implements BusinessService {
 		}
 		return businessInfoObj;
 	}
+
+	
+
+	
+
+	
+
+	
 }

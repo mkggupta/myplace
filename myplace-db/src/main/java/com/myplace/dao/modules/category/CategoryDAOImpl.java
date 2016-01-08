@@ -1,7 +1,9 @@
 package com.myplace.dao.modules.category;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +44,26 @@ public class CategoryDAOImpl extends AbstractDBManager implements CategoryDAO {
 		logger.error("Exception in getMyAdvtList : " + e.getMessage());
 		throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
 	}
+	}
+	public String getCategoryNameByCatId(Long catId)throws DataAccessFailedException{
+		try {
+			return (String) sqlMapClient_.queryForObject(CategoryConstant.GET_CATEGORY_NAME,catId);
+		} catch (SQLException e) {
+			logger.error("Exception in getCategoryNameByCatId : " + e.getMessage());
+			throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
+	public String getSubCategoryName(Long catId,Long subCatId)throws DataAccessFailedException{
+		
+		try {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("catId", catId);
+			params.put("subCatId", subCatId);
+			return (String) sqlMapClient_.queryForObject(CategoryConstant.GET_SUB_CATEGORY_NAME,catId);
+		} catch (SQLException e) {
+			logger.error("Exception in getSubCategoryName : " + e.getMessage());
+			throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
 	}
 
 	

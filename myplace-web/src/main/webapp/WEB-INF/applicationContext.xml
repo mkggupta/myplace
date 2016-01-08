@@ -20,6 +20,8 @@
 	</bean>
 	<bean id="businessService" class="com.myplace.service.business.service.v1_0.BusinessServiceImpl">
 		<property name="businessDAO" ref="appBusinessDAOImpl" />
+		<property name="searchDAO" ref="appSearchDAOImpl" />
+		<property name="userDAO" ref="appUserDAOImpl" />
 	</bean>
 	
 	<bean id="catService" class="com.myplace.service.cat.service.v1_0.CatServiceImpl">
@@ -38,5 +40,7 @@
 		<property name="userDAO" ref="appUserDAOImpl" />
 	</bean>
 	
+	<bean id="pushMessageService" class="com.myplace.service.push.AndroidPushMessageServiceImpl">
+	</bean>
 
 </beans>

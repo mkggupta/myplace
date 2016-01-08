@@ -435,7 +435,10 @@ public class RequestProcessorUtil {
 				}else if("IPHONE".equalsIgnoreCase(clientParamMap.get(ClientParamConstant.PLATFORM).toString())){
 					userPushInfo.setPlatform((byte)2);
 				}
-			}	
+			}else{
+				//by default set platform as android
+				userPushInfo.setPlatform((byte)1);
+			}
 		}
 	}
 }

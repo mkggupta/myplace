@@ -7,6 +7,7 @@ import java.util.List;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dto.BusinessSearchDTO;
 import com.myplace.dto.BusinessSearchVO;
+import com.myplace.dto.UserSearchDTO;
 
 public interface SearchDAO {
 	
@@ -19,4 +20,5 @@ public interface SearchDAO {
 	public List<BusinessSearchDTO> getBusinessListCatIdNearMe(BusinessSearchVO businessSearchVO,int startLimit,int endLimit) throws DataAccessFailedException;
 	public List<BusinessSearchDTO> getBusinessListBySubCatId(BusinessSearchVO businessSearchVO,String subCatId,int startLimit,int endLimit) throws DataAccessFailedException;
 	public List<BusinessSearchDTO> getBusinessListByText(BusinessSearchVO businessSearchVO,String text,int startLimit,int endLimit) throws DataAccessFailedException;
+	public List<UserSearchDTO> getUserListNearMe (Float latitude,Float longitude,int distance) throws DataAccessFailedException;
 }

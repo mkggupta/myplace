@@ -2,16 +2,19 @@ package com.myplace.dao.modules.user;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.myplace.dao.constants.BusinessConstant;
 import com.myplace.dao.constants.UserConstants;
 import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dao.modules.base.AbstractDBManager;
+import com.myplace.dto.BusinessFileInfo;
 import com.myplace.dto.UserAuth;
 import com.myplace.dto.UserInfo;
 import com.myplace.dto.UserThirdPartyAuth;
@@ -193,6 +196,19 @@ public class UserDAOImpl extends AbstractDBManager implements UserDAO {
 			logger.error("Exception in updating push status : "+e.getLocalizedMessage(),e);
 			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserPushInfo> getUserPushInfoList(List<Long> userIdList) throws DataAccessFailedException{
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("userIdList", userIdList);
+			parameterMap.put("status",UserConstants.USER_PUSH_ACTIVE_STATUS);
+			return (List<UserPushInfo>) sqlMapClient_.queryForList(UserConstants.GET_USER_PUSH_INFO_LIST,parameterMap);
+			}catch(SQLException e){
+				logger.error("Exception in getUserPushInfoList : " + e.getMessage());
+				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}
 	}
 
 }
