@@ -58,5 +58,28 @@ public class FeedbackDAOImpl extends AbstractDBManager implements FeedbackDAO {
 				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
 			}
 	}
+	
+   public void changeFeedBackStatus(FeedBackInfo feedBackInfo) throws DataUpdateFailedException{
+		
+		try {
+			logger.debug("feedBackInfo=="+feedBackInfo);
+			 sqlMapClient_.update(FeedbackConstant.CHANGE_FEEDBACK_INFO_STATUS,feedBackInfo);
+		
+			}catch(SQLException e){
+				logger.error("Exception in changeFeedBackStatus : " + e.getMessage());
+				throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}
+			
+	}
+	public void changeFeedBackReplyInfoStatus(FeedBackReplyInfo feedBackReplyInfo) throws DataUpdateFailedException{
+
+		try {
+			logger.debug("feedBackReplyInfo=="+feedBackReplyInfo);
+			 sqlMapClient_.update(FeedbackConstant.CHANGE_FEEDBACK_REPLY_INFO_STATUS,feedBackReplyInfo);
+			}catch(SQLException e){
+				logger.error("Exception in changeFeedBackReplyInfoStatus : " + e.getMessage());
+				throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}
+	}
 
 }

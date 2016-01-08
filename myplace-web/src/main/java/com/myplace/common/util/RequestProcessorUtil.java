@@ -395,6 +395,9 @@ public class RequestProcessorUtil {
 			
 			if(null!=requestMap.get(FeedBackWebConstant.FEED_BACK_ID)){
 				feedBackInfo.setFeedBackId(Long.parseLong(requestMap.get(FeedBackWebConstant.FEED_BACK_ID).toString()));
+			}
+			if(null!=requestMap.get(FeedBackWebConstant.STATUS)){
+				feedBackInfo.setStatus(Byte.parseByte(requestMap.get(FeedBackWebConstant.STATUS).toString()));
 			}	
 		}	
 		return feedBackInfo;
@@ -411,6 +414,12 @@ public class RequestProcessorUtil {
 			}
 			if(null!=requestMap.get(FeedBackWebConstant.FEED_BACK_ID)){
 				feedBackReplyInfo.setFeedBackId(Long.parseLong(requestMap.get(FeedBackWebConstant.FEED_BACK_ID).toString()));
+			}	
+			if(null!=requestMap.get(FeedBackWebConstant.FEED_BACK_REPLY_ID)){
+				feedBackReplyInfo.setReplyId(Long.parseLong(requestMap.get(FeedBackWebConstant.FEED_BACK_REPLY_ID).toString()));
+			}	
+			if(null!=requestMap.get(FeedBackWebConstant.STATUS)){
+				feedBackReplyInfo.setStatus(Byte.parseByte(requestMap.get(FeedBackWebConstant.STATUS).toString()));
 			}	
 		}	
 		return feedBackReplyInfo;

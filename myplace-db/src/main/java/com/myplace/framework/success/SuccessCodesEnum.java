@@ -34,6 +34,10 @@ public enum SuccessCodesEnum {
 	LOG_REG_ALREADY_EXIST("SUCC_11314", "This Email address is already registered with us.", "log.reg.success"),
 	LOG_DEVICE_REG_SUCCESS("SUCC_11315", "Device for push notification registered sucessfully.", "log.device.reg.success"),
 	LOG_DEVICE_REG_ALREADY_EXIST("SUCC_11316", "This Device is already registered for push notification with us.", "log.device.already.reg.success"),
+	DELETE_FEEDBACK_SUCCESS("SUCC_11317", "Feedback deleted successfully.", "delete.feedback.success"),
+	DELETE_REPLY_FEEDBACK_SUCCESS("SUCC_11318", "Reply feedback deleted successfully", "reply.feedback.feedback.success"),
+	CHANGE_FEEDBACK_SUCCESS("SUCC_11319", "Feedback status has been changed successfully.", "change.feedback.status.success"),
+	CHANGE_FEEDBACK_REPLY_SUCCESS("SUCC_11320", "Status has been changed successfully.", "change.reply.feedback.status.success"),
 	;
 	String successCode;
 	String successMessage;

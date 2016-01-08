@@ -11,9 +11,11 @@ public interface FeedBackService {
 	
 	public List<FeedBackInfo> getFeedBackList(int pageLimit,int endLimit) throws FeedBackServiceException;
 	
-	public void savFeedBackInfo(FeedBackInfo feedBackInfo)throws FeedBackServiceException;
+	public void saveFeedBackInfo(FeedBackInfo feedBackInfo)throws FeedBackServiceException;
 	
-	public void savFeedBackReplyInfo(FeedBackReplyInfo feedBackReplyInfo)throws FeedBackServiceException;
+	public void saveFeedBackReplyInfo(FeedBackReplyInfo feedBackReplyInfo)throws FeedBackServiceException;
 
+	public void changeFeedBackStatus(FeedBackInfo feedBackInfo)throws FeedBackServiceException;
 	
+	public void changeFeedBackReplyInfoStatus(FeedBackReplyInfo feedBackReplyInfo)throws FeedBackServiceException;
 }

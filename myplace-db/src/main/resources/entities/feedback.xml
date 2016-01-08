@@ -22,5 +22,11 @@
 		SELECT user_id as userId,feedback_id as feedBackId,email,feedback_text as feedBackText,status FROM feedback_info order by feedback_id desc limit #startLimit#,#endLimit#
   </select>
 	
+	<update id="change_feedback_info_status"  parameterClass="com.myplace.dto.FeedBackInfo">
+		update feedback_info set status=#status# where user_id=#userId# and feedback_id=#feedBackId#
+	</update>
 
+	<update id="change_feedback_reply_info_status"  parameterClass="com.myplace.dto.FeedBackReplyInfo">
+		update feedback_reply_info set status=#status# where replying_user_id=#replyingUserId# and reply_id=#replyId#
+	</update>
 </sqlMap> 

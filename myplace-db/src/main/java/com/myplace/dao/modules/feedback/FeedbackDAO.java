@@ -11,4 +11,6 @@ public interface FeedbackDAO {
 	public void saveFeedbackInfo(FeedBackInfo feedBackInfo) throws DataUpdateFailedException;
 	public void saveFeedbackReplyInfo(FeedBackReplyInfo feedBackReplyInfo) throws DataUpdateFailedException;
 	public List<FeedBackInfo> getFeedbackInfoList (int startLimit, int endLimit) throws DataAccessFailedException;
+	public void changeFeedBackStatus(FeedBackInfo feedBackInfo) throws DataUpdateFailedException;
+	public void changeFeedBackReplyInfoStatus(FeedBackReplyInfo feedBackReplyInfo) throws DataUpdateFailedException;
 }

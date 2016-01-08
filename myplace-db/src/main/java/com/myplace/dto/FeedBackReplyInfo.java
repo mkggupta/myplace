@@ -5,6 +5,7 @@ public class FeedBackReplyInfo {
 	private Long feedBackId;
 	private String replyText;
 	private Long replyingUserId;
+	private Byte status;
 	
 	public Long getReplyId() {
 		return replyId;
@@ -29,6 +30,12 @@ public class FeedBackReplyInfo {
 	}
 	public void setReplyingUserId(Long replyingUserId) {
 		this.replyingUserId = replyingUserId;
+	}
+	public Byte getStatus() {
+		return status;
+	}
+	public void setStatus(Byte status) {
+		this.status = status;
 	}
 	
 	

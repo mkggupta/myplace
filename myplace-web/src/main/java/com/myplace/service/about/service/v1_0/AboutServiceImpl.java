@@ -23,6 +23,7 @@ public class AboutServiceImpl implements AboutService {
 		try {
 		  return aboutDAO.getAboutUs();
 		} catch (DataAccessFailedException e) {
+			logger.error("getAboutUs --"+e.getLocalizedMessage());
 			throw new AboutServiceException(ErrorCodesEnum.ABOUT_SERVICE_FAILED_EXCEPTION);
 		}
 	}
