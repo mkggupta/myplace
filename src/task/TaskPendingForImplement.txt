@@ -1,0 +1,23 @@
+For Phase-1 lets see what we can do
+
+1) IP To location
+2) Image from server for category and sub category
+3) Image for business need to save as server
+4) Image for business need to serve in API
+5) User Image Upload
+6) User Image serve in API
+7) User varification via email
+8) Forget Password api
+9) Change Password Api
+10) Advt APi
+11) User Interest capturing
+12) Share APi with Web UI
+13) Data pulling from just dial
+14) Feedback Api
+
+After Launch
+1) Fb page
+2) Twitter handle
+3) G+ page
+4) Email Promotion Page
+
