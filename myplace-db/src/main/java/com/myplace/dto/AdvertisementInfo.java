@@ -1,6 +1,5 @@
 package com.myplace.dto;
 
-import java.util.Date;
 
 
 

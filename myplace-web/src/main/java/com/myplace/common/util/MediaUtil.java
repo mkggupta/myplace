@@ -5,7 +5,6 @@ import java.util.Iterator;
 import net.sf.jmimemagic.Magic;
 import net.sf.jmimemagic.MagicMatch;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -13,7 +15,9 @@ import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.myplace.common.constant.MyPlaceConstant;
+import com.myplace.dto.DefaultFileInfo;
 import com.myplace.dto.FileInfo;
 public class ControllerUtils {
 	private static Logger logger = LoggerFactory.getLogger(ControllerUtils.class);
@@ -76,6 +80,61 @@ public class ControllerUtils {
 					/*} else {
 						logger.error(" field " + fieldName + " with  name " + item.getName() + " detected.");
 					}*/
+					stream.close();
+				}
+			} catch (Exception e) {
+				/*
+				 * logger.error(e.getClass().getName() + " exception occurred while parsing data for submission. Reason: " + e.getLocalizedMessage(), e);
+				 */
+			}
+
+		} else {
+			requestMap = getRequestMap(httpServletRequest);
+		}
+		httpServletRequest.setAttribute(MyPlaceConstant.MYPLACE_REQ_PARAMS_MAP, requestMap);
+		logger.debug("getRequestMap=" + requestMap);
+		
+		return requestMap;
+	}
+	
+	
+	public static HashMap<String, Object> getImageRequestMapFromMultipart(HttpServletRequest httpServletRequest) {
+		HashMap<String, Object> requestMap = new HashMap<String, Object>();
+		boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
+		if (isMultipart) {
+
+			ServletFileUpload upload = new ServletFileUpload();
+
+			try {
+				FileItemIterator iter = upload.getItemIterator(httpServletRequest);
+				while (iter.hasNext()) {
+					FileItemStream item = iter.next();
+					String fieldName = item.getFieldName();
+					logger.debug("fieldName: {}", fieldName);
+					InputStream stream = item.openStream();
+					String fieldValue = null;
+					//if (item.isFormField()) {
+					
+						if (DATA.equalsIgnoreCase(fieldName)) {
+							ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+							Streams.copy(stream, byteArrayOutputStream, true);
+							byte mediaData[] = byteArrayOutputStream.toByteArray();
+							logger.debug("mediaData: {}", item.getName());
+							if(null!= mediaData && mediaData.length>0){
+								logger.debug("mediaData length:", mediaData.length);
+								DefaultFileInfo defaultFileInfo = StorageUtil.saveDefaultMediaFromBytes(mediaData, item.getName());
+								requestMap.put(MyPlaceConstant.DEFAULT_FILE_DATA, defaultFileInfo);
+							}else{
+								logger.debug("else mediaData: {}", item.getName());
+							}
+						}else {
+							fieldValue = Streams.asString(stream);
+							logger.debug("fieldValue: {}", fieldValue);
+							if (StringUtils.isNotBlank(fieldValue)) {
+							requestMap.put(fieldName, fieldValue.trim());
+						}
+						}
+					
 					stream.close();
 				}
 			} catch (Exception e) {

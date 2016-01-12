@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.myplace.dto.BusinessFileInfo;
+import com.myplace.dto.DefaultFileInfo;
 import com.myplace.dto.FileInfo;
 
 
@@ -39,6 +40,26 @@ public class StorageUtil {
 			return mediaPath;
 		}
 	 
+	 public static String getDefaultMediaPath(String mediaPath) {
+			if (isLinux) { 
+				 MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+				 String sanRootPath = myplaceProperties.getProperty(MyPlacePropertyKeys.DEFAULT_SAN_ROOT);
+				try {
+					mediaPath = mediaPath.replaceAll("\\\\", "/");
+					mediaPath = mediaPath.replaceAll("//", "/");
+		
+					if (mediaPath.contains("/"+sanRootPath)) {
+						mediaPath = mediaPath.replace("/"+sanRootPath, "");
+					} else if (mediaPath.contains("//"+sanRootPath)) {
+						mediaPath = mediaPath.replace("//"+sanRootPath, "");
+					}
+				} catch (Exception e) {
+					logger.error("getDefaultMediaPath() ,Error while converting path to linux suitable!!");
+				}
+			}
+			return mediaPath;
+		}
+	 
 	 protected static String getLinuxSuitableMediaPath(String mediaPath,String rootPath) {
 			try {
 				mediaPath = mediaPath.replaceAll("\\\\", "/");
@@ -59,6 +80,27 @@ public class StorageUtil {
 				if (isLinux) {
 					 MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
 					 String sanRootPath = myplaceProperties.getProperty(MyPlacePropertyKeys.SAN_ROOT);
+					pathToStore = getLinuxSuitableMediaPath(pathToStore,sanRootPath);
+				}
+				if (fileContent == null || fileContent.length == 0)
+					throw new IllegalArgumentException("The byte array to store was found null @ StorageUtil:storeFile");
+				if (fileName == null || fileName.length() == 0)
+					throw new IllegalArgumentException("The fileName was found null @ StorageUtil:storeFile");
+				if (pathToStore == null || pathToStore.length() == 0)
+					throw new IllegalArgumentException("The path to store was found null @ StorageUtil:storeFile");
+				logger.info("pathToStore @ " + pathToStore);
+				return fileAccess.storeBytes(pathToStore, fileName, fileContent) ;
+		 } catch (IOException e) {
+				logger.error("Error while storing file", e ) ; 
+				throw new RuntimeException(e);
+			}
+	 }
+	 
+	 public static String storeDefaultFile(byte[] fileContent, String fileName, String pathToStore) {
+		 try {
+				if (isLinux) {
+					 MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+					 String sanRootPath = myplaceProperties.getProperty(MyPlacePropertyKeys.DEFAULT_SAN_ROOT);
 					pathToStore = getLinuxSuitableMediaPath(pathToStore,sanRootPath);
 				}
 				if (fileContent == null || fileContent.length == 0)
@@ -119,6 +161,58 @@ public class StorageUtil {
 	         fileInfo.setFile_path(file_path);
 			return fileInfo;
 		}
+	 
+	 
+ public static DefaultFileInfo saveDefaultMediaFromBytes(byte[] data, String fileName ) throws Exception{
+		 
+		 if (data == null || data.length == 0) {
+             logger.error("The data to store was found null");
+             throw new IllegalArgumentException("The data to store was found null");
+         }
+		 	DefaultFileInfo fileInfo = new DefaultFileInfo();
+			StringBuilder pathToStore = new StringBuilder("");
+			 MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+			 logger.info(myplaceProperties.getProperty(MyPlacePropertyKeys.DEFAULT_REPO_PATH));
+			 //String repositoryPath ="D:\\banner\\";
+			String repositoryPath =myplaceProperties.getProperty(MyPlacePropertyKeys.DEFAULT_REPO_PATH);
+			logger.info("fileName @ " +fileName);
+			String fileExt = MediaUtil.getDefaultExtension(data);
+			/*String fileExt = getFileExt(fileName);
+			if(StringUtils.isBlank(fileExt)){
+				fileExt ="jpg";
+			}*/
+			if (fileExt.equalsIgnoreCase("raw")) {
+                throw new Exception("An unknown file type was found for Media:");
+            }
+			if(StringUtils.isBlank(fileExt)){
+				fileExt ="jpg";
+			}
+			String fileToStore = createFileName(fileExt);
+			String relativePath =computeDirToWrite("");
+			 pathToStore.append(getSuitableMediaPath(repositoryPath));
+			 pathToStore.append(relativePath);
+	         pathToStore.append("/");
+	         logger.info("Will store file @ " + pathToStore.toString());
+	         logger.info("Will fileToStore@ " + fileToStore);
+	         String file_path = storeDefaultFile(data, fileToStore, pathToStore.toString());
+	        
+	         File f = new File( pathToStore.toString() + fileToStore);
+	         if (!f.exists()) {
+	             throw new RuntimeException("File was not persisted to Storage System");
+	         }
+	      
+	         fileInfo.setFileExt(fileExt);
+	         if(StringUtils.isNotBlank(fileName)){
+	            fileInfo.setOrigFName(fileName);
+	         }else{
+	        	 fileInfo.setOrigFName(fileToStore); 
+	         }
+	         fileInfo.setFileId(fileToStore.substring(0,fileToStore.indexOf(".")));
+	         fileInfo.setFileSize(data.length);
+	         fileInfo.setMediaType("image");
+	         fileInfo.setFilePath(file_path);
+			return fileInfo;
+		}
 		
 	 
 	 public static BusinessFileInfo saveBusinessMediaFromBytes(byte[] data, String fileName ) throws Exception{
@@ -142,6 +236,10 @@ public class StorageUtil {
 			if (fileExt.equalsIgnoreCase("raw")) {
                 throw new Exception("An unknown file type was found for Media:");
             }
+			
+			if(StringUtils.isBlank(fileExt)){
+				fileExt ="jpg";
+			}
 			String fileToStore = createFileName(fileExt);
 			String relativePath =computeDirToWrite("");
 			 pathToStore.append(getSuitableMediaPath(repositoryPath));

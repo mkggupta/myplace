@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
 import com.myplace.common.constant.ClientParamConstant;
 
 
@@ -112,6 +113,18 @@ public class ClientHeaderUtil {
 			logger.debug("ClientParamConstant-paramMap="+paramMap);
 			return paramMap;
 			
+	}
+	
+	public static ClientInfo extractClientHeaderParam(HttpServletRequest request){
+		String clientParam = request.getHeader(ClientParamConstant.CLIENTPARAM);
+		logger.debug("param--"+clientParam);
+		ClientInfo clientInfo = null;
+		if(StringUtils.isNotBlank(clientParam)){
+		  Gson gson = new Gson();  
+		  clientInfo= gson.fromJson(clientParam, ClientInfo.class);
+		}
+		logger.debug("clientInfo--"+clientInfo);
+		 return clientInfo;	
 	}
 	
 

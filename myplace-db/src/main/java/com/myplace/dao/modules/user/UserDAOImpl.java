@@ -8,18 +8,17 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.myplace.dao.constants.BusinessConstant;
+import com.ibatis.common.jdbc.exception.NestedSQLException;
 import com.myplace.dao.constants.UserConstants;
 import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dao.modules.base.AbstractDBManager;
-import com.myplace.dto.BusinessFileInfo;
 import com.myplace.dto.UserAuth;
+import com.myplace.dto.UserFileInfo;
 import com.myplace.dto.UserInfo;
 import com.myplace.dto.UserThirdPartyAuth;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
-import com.ibatis.common.jdbc.exception.NestedSQLException;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
 
@@ -159,13 +158,18 @@ public class UserDAOImpl extends AbstractDBManager implements UserDAO {
 		}
 	}
 	
-	public void saveUserPushInfo(UserPushInfo userPushInfo) throws DataUpdateFailedException{
+	public void saveUpdateUserPushInfo(UserPushInfo userPushInfo) throws DataUpdateFailedException{
 		try {
 			sqlMapClient_.insert(UserConstants.INSERT_USER_PUSH_INFO, userPushInfo);
 			 logger.debug("regPushDevice id: " + UserConstants.INSERT_USER_PUSH_INFO);
 		} catch (SQLException e) {
-			logger.error("Exception in storing user push info in database for the user : " + userPushInfo + " error  : " + e.getMessage());
-			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			try {
+				sqlMapClient_.update(UserConstants.UPDATE_USER_PUSH_INFO, userPushInfo);
+			} catch (SQLException e1) {
+				logger.error("Exception in storing user push info in database for the userpush : " + userPushInfo+" userid="+userPushInfo.getUserId() + " error  : " + e.getMessage());
+				throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}
+			
 		}
 		
 	}
@@ -209,6 +213,34 @@ public class UserDAOImpl extends AbstractDBManager implements UserDAO {
 				logger.error("Exception in getUserPushInfoList : " + e.getMessage());
 				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
 			}
+	}
+	
+	public void saveUserFileInfo(UserFileInfo userFileInfo) throws DataUpdateFailedException{
+		try {
+			logger.debug("saveUserFileInfo=="+userFileInfo);
+			 sqlMapClient_.insert(UserConstants.INSERT_USER_FILE_INFO,userFileInfo);
+		
+			}catch(SQLException e){
+				logger.error("Exception in saveUserFileInfo : " + e.getMessage());
+				throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}	
+	}
+	
+	public UserFileInfo getUserFileInfoByUserId(long userId) throws DataAccessFailedException{
+		try {
+			 return (UserFileInfo)sqlMapClient_.queryForObject(UserConstants.GET_USER_FILE_INFO,userId);
+			}catch(SQLException e){
+				logger.error("Exception in saveUserFileInfo : " + e.getMessage());
+				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}	
+	}
+	public void deleteUserFileInfo(long userId) throws DataUpdateFailedException{
+		try {
+			sqlMapClient_.delete(UserConstants.DELETE_USER_FILE_INFO, userId);
+		} catch (SQLException e) {
+			logger.error("Exception in deleteUserFileInfo error  : " + e.getMessage());
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
 	}
 
 }

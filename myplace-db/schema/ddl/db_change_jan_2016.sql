@@ -15,3 +15,16 @@ CREATE TABLE `user_push_info` (
 
 
 ALTER TABLE `myplace_db`.`business_file_info` MODIFY COLUMN `file_location` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;
+
+
+CREATE TABLE `profile_file_info` (
+  `user_id` bigint(10) unsigned NOT NULL,
+  `file_id` varchar(128) NOT NULL,
+  `status` enum('ACTIVE','INACTIVE','DELETED') NOT NULL DEFAULT 'ACTIVE',
+  `media_type` varchar(10) NOT NULL,
+  `ext` varchar(10) DEFAULT NULL,
+  `size` int(10) unsigned DEFAULT '0',
+  `file_location` varchar(255) NOT NULL,
+  `file_name` varchar(145) NOT NULL,
+  KEY `Index_bId` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

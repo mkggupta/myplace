@@ -127,23 +127,23 @@ public class BusinessServiceImpl implements BusinessService {
 			businessIdList.add(businessInfo.getBussId());
 		}
 		if(null!=businessIdList && businessIdList.size()>0){
-			logger.debug("businessIdList---"+businessIdList);
 			List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfoList(businessIdList);
-			logger.debug("BusinessFileInfoList---"+BusinessFileInfoList);
-			for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
-				logger.debug("id---"+businessFileInfo.getBussId());
-				for(BusinessInfo businessInfo : businessInfoList){
-					logger.debug(businessInfo.getBussId()+" --- Busine---"+businessFileInfo.getBussId());
-					if(businessInfo.getBussId()==businessFileInfo.getBussId()){
-						businessInfo.setBussImageUrl(StorageUtil.getImageUrl(businessFileInfo));
-						break;
-					}
+			List<String> bussImgUrlsList = new ArrayList<String>();
+			
+			for(BusinessInfo businessInfo : businessInfoList){
+				bussImgUrlsList = new ArrayList<String>();
+				for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
+						if(businessInfo.getBussId()==businessFileInfo.getBussId()){
+							bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+						}
+				}
+				
+				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
+					businessInfo.setBussImgUrls(bussImgUrlsList);
 				}
 				
 			}
 		}
-		
-		
 			return businessInfoList;
 		} catch (DataAccessFailedException e) {
 			logger.error("getMyBusinessList---"+e.getLocalizedMessage());
@@ -153,9 +153,16 @@ public class BusinessServiceImpl implements BusinessService {
 	
 	public BusinessInfo getMyBusinessDetail (Long userId,Long businessId) throws BusinessServiceException{
 
-	try {
-			BusinessInfo  businessInfo = businessDAO.getMyBusinessDetail(userId,businessId);
-			businessInfo.setBussImageUrl(StorageUtil.getImageUrl(businessDAO.getBusinessFileInfo(businessId)));
+		try {
+				BusinessInfo  businessInfo = businessDAO.getMyBusinessDetail(userId,businessId);
+				List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfo(businessId);
+				List<String> bussImgUrlsList = new ArrayList<String>();
+				for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
+						bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+				}
+				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
+						businessInfo.setBussImgUrls(bussImgUrlsList);
+				}
 			return businessInfo;
 		} catch (DataAccessFailedException e) {
 			logger.error("getMyBusinessDetail---"+e.getLocalizedMessage());
@@ -169,7 +176,14 @@ public class BusinessServiceImpl implements BusinessService {
 			BusinessInfo  businessInfo = businessDAO.getBusinessDetail(businessId);
 			businessDAO.updateBusinessView(businessId);
 			logger.debug("getBusinessDetail---businessId="+businessId);
-			businessInfo.setBussImageUrl(StorageUtil.getImageUrl(businessDAO.getBusinessFileInfo(businessId)));
+			List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfo(businessId);
+			List<String> bussImgUrlsList = new ArrayList<String>();
+			for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
+					bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+			}
+			if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
+					businessInfo.setBussImgUrls(bussImgUrlsList);
+			}
 			return businessInfo;
 		} catch (DataAccessFailedException ex) {
 			logger.error("getBusinessDetail---"+ex.getLocalizedMessage());
@@ -194,16 +208,34 @@ public class BusinessServiceImpl implements BusinessService {
 	public BusinessInfo updateBusinessInfo (BusinessInfo businessInfo) throws BusinessServiceException{
 		
 		BusinessInfo businessInfoObj = null ;
-		
 		try {
 			businessInfoObj = businessDAO.getBusinessDetail(businessInfo.getBussId());
 			BusinessUtil.updateBusinessInfo(businessInfoObj, businessInfo);
 		} catch (DataAccessFailedException e) {
 			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_NOT_FOUND_EXCEPTION);
 		}
+		//business file update
 		try {
-			businessDAO.updateBusinessDetail(businessInfoObj);
-		} catch (DataUpdateFailedException e) {
+			 List<BusinessFileInfo> fileInfoList = businessInfoObj.getBusinessFileInfo();
+				logger.debug("updateBusinessInfofileInfo----"+fileInfoList);
+				if(null!=fileInfoList && fileInfoList.size()>0){
+					businessDAO.deleteBusinessFileInfo(businessInfo.getBussId());
+					for(BusinessFileInfo businessFileInfo :fileInfoList){
+						businessFileInfo.setBussId(businessInfoObj.getBussId());
+						businessDAO.saveBusinessFileInfo(businessFileInfo);
+					}	
+				}
+				
+				List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfo(businessInfo.getBussId());
+				List<String> bussImgUrlsList = new ArrayList<String>();
+				for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
+						bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+				}
+				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
+					businessInfoObj.setBussImgUrls(bussImgUrlsList);
+					businessInfoObj.setBusinessFileInfo(null);
+				}
+		} catch (DataAccessFailedException |DataUpdateFailedException e) {
 			logger.error("Exception in updating user details in database for the businessInfoObj : " + businessInfoObj + " error  : " + e.getMessage());
 			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION);
 		}
@@ -211,10 +243,5 @@ public class BusinessServiceImpl implements BusinessService {
 	}
 
 	
-
-	
-
-	
-
 	
 }

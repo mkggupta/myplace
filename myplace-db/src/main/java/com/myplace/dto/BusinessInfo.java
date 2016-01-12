@@ -29,13 +29,14 @@ public class BusinessInfo {
 	private String catName;
 	private int feedType;
 	List<BusinessFileInfo> businessFileInfo;
-	private String bussImageUrl;
+	private List<String> bussImgUrls;
+
 	
-	public String getBussImageUrl() {
-		return bussImageUrl;
+	public List<String> getBussImgUrls() {
+		return bussImgUrls;
 	}
-	public void setBussImageUrl(String bussImageUrl) {
-		this.bussImageUrl = bussImageUrl;
+	public void setBussImgUrls(List<String> bussImgUrls) {
+		this.bussImgUrls = bussImgUrls;
 	}
 	public int getFeedType() {
 		return feedType;

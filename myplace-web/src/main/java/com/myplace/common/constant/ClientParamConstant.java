@@ -36,5 +36,6 @@ public interface ClientParamConstant {
 	 String CLIENT_IP = "vzuip";
 	 String PUSH_KEY = "pushk";
 	 String CONTENT_ID = "cntId";
+	 String CLIENTPARAM = "CLIENT_PARAM";
 	 
 }

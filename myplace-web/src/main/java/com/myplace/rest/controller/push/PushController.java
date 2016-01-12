@@ -17,15 +17,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.myplace.common.constant.UserParameters;
 import com.myplace.common.util.ClientHeaderUtil;
+import com.myplace.common.util.ClientInfo;
 import com.myplace.common.util.ControllerUtils;
 import com.myplace.common.util.RequestProcessorUtil;
 import com.myplace.dao.entities.UserPushInfo;
-
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.myplace.framework.success.SuccessCodesEnum;
 import com.myplace.rest.constant.MyPlaceWebConstant;
 import com.myplace.service.user.exception.DeviceRegFailedException;
-
 import com.myplace.service.user.service.v1_0.UserService;
 
 
@@ -49,6 +48,7 @@ private UserService userService;
 		 Gson gson = new Gson();
 		if(logger.isDebugEnabled()){
 			logger.debug("PushController.registerDevice="+httpServletRequest);
+			@SuppressWarnings("unchecked")
 			Enumeration<Object> headerNames = httpServletRequest.getHeaderNames();
 			Map<String,String> requestParamMap = new HashMap<String, String>();
 			while (headerNames.hasMoreElements()) {
@@ -62,8 +62,10 @@ private UserService userService;
 		try {
 			if(null!=requestMap && requestMap.size()>0){	
 				UserPushInfo userPushInfo = new UserPushInfo();
-				Map<String, Object> clientParamMap = ClientHeaderUtil.extractClientParam(httpServletRequest);
-				 RequestProcessorUtil.enrichUserPushInfo(requestMap,userPushInfo,clientParamMap);
+				//Map<String, Object> clientParamMap = ClientHeaderUtil.extractClientParam(httpServletRequest);
+				ClientInfo clientInfo= ClientHeaderUtil.extractClientHeaderParam(httpServletRequest);
+				//RequestProcessorUtil.enrichUserPushInfo(requestMap,userPushInfo,clientParamMap);
+				 RequestProcessorUtil.enrichUserPushInfo(requestMap,userPushInfo,clientInfo);
 				 userId = userService.regPushDevice(userPushInfo);
 				 if(null!= userId && userId>0){
 					 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.LOG_DEVICE_REG_SUCCESS.getSuccessMessage());

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.myplace.common.util.ClientHeaderUtil;
+import com.myplace.common.util.ClientInfo;
 import com.myplace.common.util.ControllerUtils;
 import com.myplace.common.util.RequestProcessorUtil;
 import com.myplace.dto.RegistrationInfo;
@@ -52,6 +53,7 @@ public class RegLogController {
 		 Gson gson = new Gson();
 		if(logger.isDebugEnabled()){
 			logger.debug("RegLogController.registerLogin= "+httpServletRequest);
+			@SuppressWarnings("unchecked")
 			Enumeration<Object> headerNames = httpServletRequest.getHeaderNames();
 			Map<String,String> requestParamMap = new HashMap<String, String>();
 			while (headerNames.hasMoreElements()) {
@@ -66,9 +68,12 @@ public class RegLogController {
 		try {
 			if(null!=requestMap && requestMap.size()>0){	
 				RegistrationInfo registrationInfo = new RegistrationInfo();
-				Map<String, Object> clientParamMap = ClientHeaderUtil.extractClientParam(httpServletRequest);
-				 RequestProcessorUtil.enrichRegistrationInfo(requestMap,registrationInfo,clientParamMap);
-				 userId = userService.regLoginUser(registrationInfo,clientParamMap);
+				//Map<String, Object> clientParamMap = ClientHeaderUtil.extractClientParam(httpServletRequest);
+				 //RequestProcessorUtil.enrichRegistrationInfo(requestMap,registrationInfo,clientParamMap);
+				 //userId = userService.regLoginUser(registrationInfo,clientParamMap);
+				ClientInfo clientInfo= ClientHeaderUtil.extractClientHeaderParam(httpServletRequest);
+				RequestProcessorUtil.enrichRegistrationInfoObj(requestMap,registrationInfo,clientInfo);
+				userId = userService.regLoginUser(registrationInfo);
 				 if(null!= userId && userId>0){
 					 dataMap.put(MyPlaceWebConstant.USERID, userId);
 					 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.LOG_REG_SUCCESS.getSuccessMessage());
@@ -93,8 +98,7 @@ public class RegLogController {
 			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
 			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorCode());
 		}
-		
-		
+
 		if(null!= userId){
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
 		    jsonData = gson.toJson(dataMap);
@@ -103,7 +107,6 @@ public class RegLogController {
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
 			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorCode());
-			
 		}
 		
 		jsonData = gson.toJson(dataMap);

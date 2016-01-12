@@ -81,4 +81,9 @@
 		    </isNotEmpty>
 	  	</dynamic>
   </select>
+  
+  <delete id="delete_business_file_info"  parameterClass="java.lang.Long">
+	 delete from business_file_info where business_id=#businessId#
+  </delete>
+   
 </sqlMap> 

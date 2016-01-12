@@ -32,10 +32,8 @@ public class BusinessDAOImpl extends AbstractDBManager implements BusinessDAO {
 		}catch(SQLException e){
 			logger.error("Exception in saveBusinessInfo : " + e.getMessage());
 			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
-		}
-		
+		}	
 	}
-	
 	
 	public void  saveBusinessFileInfo(BusinessFileInfo businessFileInfo)  throws DataUpdateFailedException{
 		try {
@@ -45,21 +43,17 @@ public class BusinessDAOImpl extends AbstractDBManager implements BusinessDAO {
 		}catch(SQLException e){
 			logger.error("Exception in saveBusinessFileInfo : " + e.getMessage());
 			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
-		}
-		
+		}	
 	}
 	
-	public BusinessFileInfo getBusinessFileInfo (Long businessId) throws DataAccessFailedException{
-		
+	@SuppressWarnings("unchecked")
+	public List<BusinessFileInfo> getBusinessFileInfo (Long businessId) throws DataAccessFailedException{
 		try {
-			
-			return (BusinessFileInfo) sqlMapClient_.queryForObject(BusinessConstant.GET_BUSINESS_FILE_INFO,businessId);
-		
+				return (List<BusinessFileInfo>) sqlMapClient_.queryForList(BusinessConstant.GET_BUSINESS_FILE_INFO,businessId);
 			}catch(SQLException e){
 				logger.error("Exception in getBusinessFileInfo : " + e.getMessage());
 				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
 			}
-		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -74,7 +68,6 @@ public class BusinessDAOImpl extends AbstractDBManager implements BusinessDAO {
 				logger.error("Exception in getBusinessFileInfoList : " + e.getMessage());
 				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
 			}
-		
 	}
 
 	@Override
@@ -140,7 +133,17 @@ public class BusinessDAOImpl extends AbstractDBManager implements BusinessDAO {
 			logger.error("Exception in storing user details in database for the business : " + businessInfo + " error  : " + e.getMessage());
 			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
 		}
+	}
+	
+	public void deleteBusinessFileInfo (Long businessId) throws DataUpdateFailedException{
 		
+		try {
+			logger.debug("deleteBusinessFileInfo businessId="+businessId);
+			 sqlMapClient_.delete(BusinessConstant.DELETE_BUSINESS_FILE_INFO,businessId);
+			}catch(SQLException e){
+				logger.error("Exception in deleteBusinessFileInfo : " + e.getMessage());
+				throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}
 	}
 	
 	public void updateBusinessView (Long businessId) throws DataUpdateFailedException {

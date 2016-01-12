@@ -8,7 +8,6 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.myplace.common.util.DateTimeUtils;
 import com.myplace.dto.RegistrationInfo;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.myplace.service.user.exception.UserServiceValidationFailedException;

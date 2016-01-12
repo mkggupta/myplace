@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import com.myplace.common.enumeration.UserStatusEnum;
 import com.myplace.dto.RegistrationInfo;
 import com.myplace.dto.UserAuth;

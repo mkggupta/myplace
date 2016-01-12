@@ -31,6 +31,9 @@
 		<property name="feedBackService" ref="feedBackService" />
 	</bean>
 	
+	<bean id="mediaController" class="com.myplace.rest.controller.media.MediaController">
+	</bean>
+	
 	<bean id="pushController" class="com.myplace.rest.controller.push.PushController">
 		<property name="userService" ref="userService" />
 	</bean>

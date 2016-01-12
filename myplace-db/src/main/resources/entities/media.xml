@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Maps the UserProfileMod table -->
+<!DOCTYPE sqlMap
+  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+  "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="media">
+
+  <insert id="insert_default_file_info"  parameterClass="com.myplace.dto.DefaultFileInfo" >
+  	 insert into default_file_info(id,file_id,file_name,media_type,ext,size,file_location,type) 
+    values (#id#, #fileId#,#origFName#, #mediaType#,#fileExt#,#fileSize#,#filePath#,#type#)
+  </insert>
+  <select id="get_default_file_info_by_type"  parameterClass="java.lang.Long" resultClass="com.myplace.dto.DefaultFileInfo" >
+  	 SELECT id,file_id as fileId,file_name as  origFName,media_type as mediaType, ext as fileExt, 
+  	 size as fileSize,file_location as filePath,type from default_file_info where
+  	type=#type# and status='ACTIVE'
+  </select>
+	
+   <select id="get_default_file_info_by_id_type"  parameterClass="java.util.Map" resultClass="com.myplace.dto.DefaultFileInfo" >
+  	 SELECT id,file_id as fileId,file_name as  origFName,media_type as mediaType, ext as fileExt, 
+  	 size as fileSize,file_location as filePath,type from default_file_info where
+  	type=#type# and id=#id# and status=#status#
+  </select>
+  
+
+</sqlMap> 

@@ -40,5 +40,8 @@ public interface UserParameters {
 	String PUSH_STATUS="pstatus";
 	String UID="userId";
 	String ADVTCODE="advtCode";
+	
+	//default parameter
+	String DEFAULT_LANGUAGE="English";
 
 }

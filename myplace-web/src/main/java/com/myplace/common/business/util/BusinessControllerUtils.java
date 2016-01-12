@@ -7,7 +7,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -15,16 +17,16 @@ import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.util.StorageUtil;
 import com.myplace.dto.BusinessFileInfo;
-import com.myplace.dto.FileInfo;
 public class BusinessControllerUtils {
 	private static Logger logger = LoggerFactory.getLogger(BusinessControllerUtils.class);
 	private static final String TYPE = "type";
 	private static final String CAT = "cat";
 	private static final String DATA = "data";
-	private static final String USER_NAME = "usrName";
+	//private static final String USER_NAME = "usrName";
 	
 	@SuppressWarnings("unchecked")
 	public static HashMap<String, Object> getRequestMap(HttpServletRequest httpServletRequest) {

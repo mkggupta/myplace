@@ -9,7 +9,7 @@ For Phase-1 lets see what we can do
 7) User varification via email
 8) Forget Password api
 9) Change Password Api
-10) Advt APi
+10) AdMob Advt APi
 11) User Interest capturing
 12) Share APi with Web UI
 13) Data pulling from just dial
@@ -20,4 +20,5 @@ After Launch
 2) Twitter handle
 3) G+ page
 4) Email Promotion Page
+5) User Profile Pic Support
 

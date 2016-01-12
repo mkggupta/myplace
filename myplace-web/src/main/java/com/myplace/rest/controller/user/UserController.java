@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.myplace.common.business.util.BusinessControllerUtils;
+import com.myplace.common.util.ControllerUtils;
 import com.myplace.common.util.RequestProcessorUtil;
 import com.myplace.dto.UserInfo;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
@@ -98,7 +98,7 @@ public class UserController {
 	public ModelAndView updateProfile(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
-		HashMap<String, Object>  requestMap = BusinessControllerUtils.getRequestMapFromMultipart(httpServletRequest);
+		HashMap<String, Object>  requestMap = ControllerUtils.getRequestMapFromMultipart(httpServletRequest);
 		try {
 			if(null!=requestMap && requestMap.size()>0){	
 				UserInfo userInfo = new UserInfo();

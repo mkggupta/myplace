@@ -36,7 +36,14 @@ public class UserInfo {
 	private float longitude;
 	private float latitude; 
 	private Date modifiedDate;
+	UserFileInfo  userFileInfo;
 	
+	public UserFileInfo getUserFileInfo() {
+		return userFileInfo;
+	}
+	public void setUserFileInfo(UserFileInfo userFileInfo) {
+		this.userFileInfo = userFileInfo;
+	}
 	public Date getModifiedDate() {
 		return modifiedDate;
 	}

@@ -21,6 +21,8 @@ import com.google.gson.Gson;
 import com.myplace.common.business.util.BusinessControllerUtils;
 import com.myplace.common.constant.MyPlaceBusinessConstant;
 import com.myplace.common.constant.MyPlaceConstant;
+import com.myplace.common.util.ClientHeaderUtil;
+import com.myplace.common.util.ClientInfo;
 import com.myplace.common.util.ControllerUtils;
 import com.myplace.common.util.RequestProcessorUtil;
 import com.myplace.dto.BusinessInfo;
@@ -66,7 +68,8 @@ public class BusinessController {
 		try {
 			if(null!=requestMap && requestMap.size()>0){	
 				BusinessInfo businessInfo = new BusinessInfo();
-				businessInfo = RequestProcessorUtil.enrichBusinessInfo(requestMap,businessInfo);
+				ClientInfo clientInfo= ClientHeaderUtil.extractClientHeaderParam(httpServletRequest);
+				businessInfo = RequestProcessorUtil.enrichBusinessInfo(requestMap,businessInfo,clientInfo);
 				Long businessId = businessService.createBusiness(businessInfo);
 				if(null!=businessId && businessId>0){
 					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
@@ -278,7 +281,7 @@ public class BusinessController {
 		try {
 			if(null!=requestMap && requestMap.size()>0){	
 				BusinessInfo businessInfo = new BusinessInfo();
-				RequestProcessorUtil.enrichBusinessInfo(requestMap, businessInfo);
+				RequestProcessorUtil.enrichUpdatedBusinessInfo(requestMap, businessInfo);
 				if(businessInfo.getBussId()>0){
 					businessInfo = businessService.updateBusinessInfo(businessInfo);
 					 if(null!= businessInfo){

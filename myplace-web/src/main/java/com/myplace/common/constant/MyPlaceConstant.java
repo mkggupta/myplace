@@ -71,6 +71,14 @@ public interface MyPlaceConstant {
     
     String PUSH_MESSAGE = "pushMessage";
     String DEVICE_KEY = "deviceKey";
-	
+    
+    //default file info
+    String DEFAULT_FILE_DATA = "defaultfileInfo";
+    String ID = "id";
+    String MEDIA_TYPE = "type";
+	int MALE_TYPE=1;
+	int FEMALE_TYPE=2;
+	int CAT_TYPE=3;
+	int SUBCAT_TYPE=4;
 	
 }

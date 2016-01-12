@@ -64,6 +64,10 @@
 		#deviceId#, #pushKey#, #platform#,#status#,now(),now())
 	</insert>
     
+	<update id="update_user_push_info" parameterClass="com.myplace.dao.entities.UserPushInfo">
+		UPDATE user_push_info set push_key =#pushKey#,device_id=#deviceId#,modified_date=now() where user_id=#userId# 
+	</update>
+	
 	<update id="update_user_push_message_status" parameterClass="java.util.Map">
 		UPDATE user_push_info set status = #status#,modified_date=now() where user_id=#user_id# 
 	</update>
@@ -79,5 +83,19 @@
 		    </isNotEmpty>
 	  	</dynamic>
  	 </select>
+ 	 
+	<insert id="insert_user_file_info"  parameterClass="com.myplace.dto.UserFileInfo" >
+  	 insert into profile_file_info(user_id,file_id,file_name,media_type,ext,size,file_location) 
+    values (#userId#, #fileId#,#origFName#, #mediaType#,#fileExt#,#fileSize#,#filePath#)
+  </insert>
+  
+  <select id="get_user_file_info_by_userid" parameterClass="java.lang.Long" resultClass="com.myplace.dto.UserFileInfo" >
+  	 select user_id as userId,file_id as fileId,file_name as origFName,media_type as mediaType,ext as fileExt,size as fileSize,file_location as filePath
+  	 from profile_file_info where user_id=#userId#
+  </select>
+  
+  <delete id="delete_user_file_info"  parameterClass="java.lang.Long">
+	 delete from profile_file_info where user_id=#userId#
+  </delete>
 	
  </sqlMap> 

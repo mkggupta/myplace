@@ -1,7 +1,5 @@
 package com.myplace.service.user.service.v1_0;
 
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +27,11 @@ public class UserServiceImpl implements UserService {
 	public void setUserDAO(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
-	@Override
-	public Long regLoginUser(RegistrationInfo registrationInfo,Map<String, Object> clientMap) throws UserServiceFailedException,
-			UserServiceValidationFailedException {
+	@Override	
+	public Long regLoginUser(RegistrationInfo registrationInfo) throws UserServiceFailedException,
+	UserServiceValidationFailedException {
+/*	public Long regLoginUser(RegistrationInfo registrationInfo,Map<String, Object> clientMap) throws UserServiceFailedException,
+			UserServiceValidationFailedException {*/
 		//UserServiceValidator.validateRegistrationRequest(registrationInfo);
 		Long userId = null;
 		try {
@@ -75,8 +75,12 @@ public class UserServiceImpl implements UserService {
 					UserInfo userInfo = UserUtils.transformRegistrationInfoToUserInfo(registrationInfo);
 					logger.debug("userInfo--"+userInfo);
 					if(null!=userInfo){
-						userInfo.setCountry(MyPlaceConstant.DEFAULT_COUNTRY);
-						userInfo.setLanguage(MyPlaceConstant.DEFAULT_LANGUAGE);
+						if(registrationInfo.getCountry()==null){
+							userInfo.setCountry(MyPlaceConstant.DEFAULT_COUNTRY);
+						}
+						if(registrationInfo.getLanguage()==null){
+							userInfo.setLanguage(MyPlaceConstant.DEFAULT_LANGUAGE);
+						}
 						userInfo.setPrimaryEmailAddress(registrationInfo.getUserName());
 						if(StringUtils.isNotBlank(registrationInfo.getLastName())){
 							userInfo.setContactName(registrationInfo.getFirstName() +" "+registrationInfo.getLastName());
@@ -93,7 +97,6 @@ public class UserServiceImpl implements UserService {
 								registrationInfo.getUserKey(), registrationInfo.getAppKey());
 						userDAO.saveUserThirdPartyAuth(userThirdPartyAuth);
 					}
-				
 				}
 				}
 			}
@@ -148,7 +151,7 @@ public class UserServiceImpl implements UserService {
 		 try {
 			if(userDAO.isUserExists(userPushInfo.getUserId())){
 				userPushInfo.setStatus(true);
-				userDAO.saveUserPushInfo(userPushInfo);
+				userDAO.saveUpdateUserPushInfo(userPushInfo);
 				userId= userPushInfo.getUserId();
 			 }else{
 				 userId=-1l;

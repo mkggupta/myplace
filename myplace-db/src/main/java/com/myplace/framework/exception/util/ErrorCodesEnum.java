@@ -122,6 +122,9 @@ public enum ErrorCodesEnum {
 	//business search service
 	BUSINESS_SEARCH_SERVICE_FAILED_EXCEPTION("ERR11941", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.business.search.service.failed"),
 
+	//media service
+		MEDIA_SERVICE_FAILED_EXCEPTION("ERR12001", "Problem in saving default media.", "com.myplace.media.service.failed"),
+		
 	// Request Log
 
 	REQUEST_LOG_SERVICE_FAILED_EXCEPTION("ERR11605", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.requestlog.service.failed"),

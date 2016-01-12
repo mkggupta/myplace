@@ -1,0 +1,16 @@
+--task for 10-jan----
+
+push error handle  -done and test
+header parser change -- change implement in push,business,reg,Update
+multiple image support in get business api  --done and tested
+push notification change --change need to varify
+
+--task for 11-jan----
+Test for changes done on 10th
+default Pic addition for category/subcategory
+
+--task for 12 jan---
+Api Changes for image Url for default pics
+User profile pic addition
+
+

@@ -40,6 +40,9 @@
 	<bean id="appFeedbackDAOImpl" class="com.myplace.dao.modules.feedback.FeedbackDAOImpl">
 		<property name="sqlMapClient_" ref="sqlMap" />
 	</bean>
+	<bean id="appMediaDAOImpl" class="com.myplace.dao.modules.media.MediaDAOImpl">
+		<property name="sqlMapClient_" ref="sqlMap" />
+	</bean>
 	<bean id="appSearchDAOImpl" class="com.myplace.dao.modules.search.SearchDAOImpl">
 		<property name="sqlMapClient_" ref="sqlMap" />
 	</bean>
