@@ -41,7 +41,7 @@ public class RepoFileAccess implements FileAccess {
 		File file = new File(fullPath);
 		file.mkdirs();
 		storeBytes(new File(path), content) ;
-		fullPath=myplaceProperties.getProperty(MyPlacePropertyKeys.SERVER_URL)+fullPath.substring(fullPath.indexOf("myplace"), fullPath.length()).replace("\\", "/");
+		fullPath=myplaceProperties.getProperty(MyPlacePropertyKeys.MEDIA_SERVER_URL)+fullPath.substring(fullPath.indexOf(myplaceProperties.getProperty(MyPlacePropertyKeys.MEDIA_SERVER_NAME)), fullPath.length()).replace("\\", "/");
 		 logger.info("file_path fullPath@ " +fullPath);
 		return fullPath;
 	}

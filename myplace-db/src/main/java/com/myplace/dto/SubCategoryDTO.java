@@ -4,6 +4,13 @@ public class SubCategoryDTO {
 	private int catId;
 	private int subCatId;
 	private String subCatName;
+	private String imgUrl;
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
 	
 	public String getSubCatName() {
 		return subCatName;

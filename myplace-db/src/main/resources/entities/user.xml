@@ -84,18 +84,5 @@
 	  	</dynamic>
  	 </select>
  	 
-	<insert id="insert_user_file_info"  parameterClass="com.myplace.dto.UserFileInfo" >
-  	 insert into profile_file_info(user_id,file_id,file_name,media_type,ext,size,file_location) 
-    values (#userId#, #fileId#,#origFName#, #mediaType#,#fileExt#,#fileSize#,#filePath#)
-  </insert>
-  
-  <select id="get_user_file_info_by_userid" parameterClass="java.lang.Long" resultClass="com.myplace.dto.UserFileInfo" >
-  	 select user_id as userId,file_id as fileId,file_name as origFName,media_type as mediaType,ext as fileExt,size as fileSize,file_location as filePath
-  	 from profile_file_info where user_id=#userId#
-  </select>
-  
-  <delete id="delete_user_file_info"  parameterClass="java.lang.Long">
-	 delete from profile_file_info where user_id=#userId#
-  </delete>
 	
  </sqlMap> 

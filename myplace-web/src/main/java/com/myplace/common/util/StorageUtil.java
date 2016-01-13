@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.myplace.dto.BusinessFileInfo;
 import com.myplace.dto.DefaultFileInfo;
 import com.myplace.dto.FileInfo;
+import com.myplace.dto.UserFileInfo;
 
 
 
@@ -117,6 +118,27 @@ public class StorageUtil {
 			}
 	 }
 	 
+	 public static String storeProfileFile(byte[] fileContent, String fileName, String pathToStore) {
+		 try {
+				if (isLinux) {
+					 MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+					 String sanRootPath = myplaceProperties.getProperty(MyPlacePropertyKeys.PROFILE_SAN_ROOT);
+					pathToStore = getLinuxSuitableMediaPath(pathToStore,sanRootPath);
+				}
+				if (fileContent == null || fileContent.length == 0)
+					throw new IllegalArgumentException("The byte array to store was found null @ StorageUtil:storeFile");
+				if (fileName == null || fileName.length() == 0)
+					throw new IllegalArgumentException("The fileName was found null @ StorageUtil:storeFile");
+				if (pathToStore == null || pathToStore.length() == 0)
+					throw new IllegalArgumentException("The path to store was found null @ StorageUtil:storeFile");
+				logger.info("pathToStore @ " + pathToStore);
+				return fileAccess.storeBytes(pathToStore, fileName, fileContent) ;
+		 } catch (IOException e) {
+				logger.error("Error while storing file", e ) ; 
+				throw new RuntimeException(e);
+			}
+	 }
+	 
 	 public static FileInfo saveMediaFromBytes(byte[] data, String fileName ) throws Exception{
 		 
 		 if (data == null || data.length == 0) {
@@ -163,7 +185,7 @@ public class StorageUtil {
 		}
 	 
 	 
- public static DefaultFileInfo saveDefaultMediaFromBytes(byte[] data, String fileName ) throws Exception{
+    public static DefaultFileInfo saveDefaultMediaFromBytes(byte[] data, String fileName ) throws Exception{
 		 
 		 if (data == null || data.length == 0) {
              logger.error("The data to store was found null");
@@ -214,6 +236,55 @@ public class StorageUtil {
 			return fileInfo;
 		}
 		
+    public static UserFileInfo saveProfileMediaFromBytes(byte[] data, String fileName ) throws Exception{
+		 
+		 if (data == null || data.length == 0) {
+            logger.error("The data to store was found null");
+            throw new IllegalArgumentException("The data to store was found null");
+        }
+		 	UserFileInfo fileInfo = new UserFileInfo();
+			StringBuilder pathToStore = new StringBuilder("");
+			 MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+			 logger.info(myplaceProperties.getProperty(MyPlacePropertyKeys.PROFILE_REPO_PATH));
+			 //String repositoryPath ="D:\\banner\\";
+			String repositoryPath =myplaceProperties.getProperty(MyPlacePropertyKeys.PROFILE_REPO_PATH);
+			logger.info("fileName @ " +fileName);
+			String fileExt = MediaUtil.getDefaultExtension(data);
+		
+			if (fileExt.equalsIgnoreCase("raw")) {
+               throw new Exception("An unknown file type was found for Media:");
+           }
+			if(StringUtils.isBlank(fileExt)){
+				fileExt ="jpg";
+			}
+			String fileToStore = createFileName(fileExt);
+			String relativePath =computeDirToWrite("");
+			 pathToStore.append(getSuitableMediaPath(repositoryPath));
+			 pathToStore.append(relativePath);
+	         pathToStore.append("/");
+	         logger.info("Will store file @ " + pathToStore.toString());
+	         logger.info("Will fileToStore@ " + fileToStore);
+	         String file_path = storeProfileFile(data, fileToStore, pathToStore.toString());
+	        
+	         File f = new File( pathToStore.toString() + fileToStore);
+	         if (!f.exists()) {
+	             throw new RuntimeException("File was not persisted to Storage System");
+	         }
+	      
+	         fileInfo.setFileExt(fileExt);
+	         if(StringUtils.isNotBlank(fileName)){
+	            fileInfo.setOrigFName(fileName);
+	         }else{
+	        	 fileInfo.setOrigFName(fileToStore); 
+	         }
+	         fileInfo.setFileId(fileToStore.substring(0,fileToStore.indexOf(".")));
+	         fileInfo.setFileSize(data.length);
+	         fileInfo.setMediaType("image");
+	         fileInfo.setFilePath(file_path);
+			return fileInfo;
+		}
+		
+	 
 	 
 	 public static BusinessFileInfo saveBusinessMediaFromBytes(byte[] data, String fileName ) throws Exception{
 		 
@@ -332,6 +403,22 @@ public class StorageUtil {
 			 String imageUrl=null;
 			 if(null!= businessFileInfo)
 				 imageUrl=businessFileInfo.getFilePath()+"/"+businessFileInfo.getFileId()+"."+businessFileInfo.getFileExt();
+			 return imageUrl;
+			 
+		 }
+		 
+		 public static String getDefaultImageUrl(DefaultFileInfo  defaultFileInfo) {
+			 String imageUrl=null;
+			 if(null!= defaultFileInfo)
+				 imageUrl=defaultFileInfo.getFilePath()+"/"+defaultFileInfo.getFileId()+"."+defaultFileInfo.getFileExt();
+			 return imageUrl;
+			 
+		 }
+		 
+		 public static String getProfileImageUrl(UserFileInfo  userFileInfo) {
+			 String imageUrl=null;
+			 if(null!= userFileInfo)
+				 imageUrl=userFileInfo.getFilePath()+"/"+userFileInfo.getFileId()+"."+userFileInfo.getFileExt();
 			 return imageUrl;
 			 
 		 }

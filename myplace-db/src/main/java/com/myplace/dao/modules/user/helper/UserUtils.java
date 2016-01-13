@@ -35,12 +35,10 @@ public class UserUtils {
 			if (null != userInfo.getCountry()) {
 				userInfoObj.setCountry(userInfo.getCountry());
 			}
-			if (null != userInfo.getProfilePicFileId()) {
-				userInfoObj.setProfilePicFileId(userInfo.getProfilePicFileId());
+			if (null != userInfo.getUserFileInfo()) {
+				userInfoObj.setUserFileInfo(userInfo.getUserFileInfo());
 			}
-			if (null != userInfo.getProfilePicFileExt()) {
-				userInfoObj.setProfilePicFileExt(userInfo.getProfilePicFileExt());
-			}
+			
 			if (null != userInfo.getSalutation()) {
 				userInfoObj.setSalutation(userInfo.getSalutation());
 			}

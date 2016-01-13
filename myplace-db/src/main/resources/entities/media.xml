@@ -10,7 +10,7 @@
   	 insert into default_file_info(id,file_id,file_name,media_type,ext,size,file_location,type) 
     values (#id#, #fileId#,#origFName#, #mediaType#,#fileExt#,#fileSize#,#filePath#,#type#)
   </insert>
-  <select id="get_default_file_info_by_type"  parameterClass="java.lang.Long" resultClass="com.myplace.dto.DefaultFileInfo" >
+  <select id="get_default_file_info_by_type"  parameterClass="java.lang.Integer" resultClass="com.myplace.dto.DefaultFileInfo" >
   	 SELECT id,file_id as fileId,file_name as  origFName,media_type as mediaType, ext as fileExt, 
   	 size as fileSize,file_location as filePath,type from default_file_info where
   	type=#type# and status='ACTIVE'
@@ -21,6 +21,21 @@
   	 size as fileSize,file_location as filePath,type from default_file_info where
   	type=#type# and id=#id# and status=#status#
   </select>
+  
+   <insert id="insert_user_file_info"  parameterClass="com.myplace.dto.UserFileInfo" >
+  	 insert into profile_file_info(user_id,file_id,file_name,media_type,ext,size,file_location) 
+    values (#userId#, #fileId#,#origFName#, #mediaType#,#fileExt#,#fileSize#,#filePath#)
+  </insert>
+  
+  <select id="get_user_file_info_by_userid" parameterClass="java.lang.Long" resultClass="com.myplace.dto.UserFileInfo" >
+  	 select user_id as userId,file_id as fileId,file_name as origFName,media_type as mediaType,ext as fileExt,size as fileSize,file_location as filePath
+  	 from profile_file_info where user_id=#userId#
+  </select>
+  
+  <delete id="delete_user_file_info"  parameterClass="java.lang.Long">
+	 delete from profile_file_info where user_id=#userId#
+  </delete>
+	
   
 
 </sqlMap> 

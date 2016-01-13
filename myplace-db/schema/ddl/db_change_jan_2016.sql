@@ -28,3 +28,20 @@ CREATE TABLE `profile_file_info` (
   `file_name` varchar(145) NOT NULL,
   KEY `Index_bId` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `default_file_info` (
+  `id` int(10) unsigned NOT NULL COMMENT 'this will have category id or subcategoryid etc',
+  `file_id` varchar(128) NOT NULL,
+  `status` enum('ACTIVE','INACTIVE','DELETED') NOT NULL DEFAULT 'ACTIVE',
+  `media_type` varchar(10) NOT NULL,
+  `ext` varchar(10) DEFAULT NULL,
+  `size` int(10) unsigned DEFAULT '0',
+  `file_location` varchar(255) NOT NULL,
+  `file_name` varchar(145) NOT NULL,
+  `type` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '0-unknown profile pic 1- male image,2-female image,3-category, 4-subcategory',
+  KEY `Index_Id` (`type`,`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `myplace_db`.`default_file_info` MODIFY COLUMN `type` TINYINT(3) UNSIGNED NOT NULL DEFAULT 1 COMMENT '0-unknown profile pic 1- male image,2-female image,3-category, 4-subcategory';
+
+

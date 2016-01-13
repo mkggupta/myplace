@@ -42,6 +42,7 @@ public class MediaController {
 			if(null!=requestMap && requestMap.size()>0){
 				
 				DefaultFileInfo defaultFileInfo = (DefaultFileInfo)requestMap.get(MyPlaceConstant.DEFAULT_FILE_DATA);
+				logger.debug("defaultFileInfo="+defaultFileInfo);
 				if(null!=requestMap.get(MyPlaceConstant.ID)){
 					defaultFileInfo.setId(Integer.parseInt(requestMap.get(MyPlaceConstant.ID).toString()));
 				}

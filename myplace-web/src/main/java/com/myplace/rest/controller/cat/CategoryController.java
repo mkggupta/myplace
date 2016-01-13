@@ -47,6 +47,7 @@ public class CategoryController {
 		
 		if(logger.isDebugEnabled()){
 			logger.debug("CategoryController.getCategories"+httpServletRequest);
+			@SuppressWarnings("unchecked")
 			Enumeration<Object> headerNames = httpServletRequest.getHeaderNames();
 			Map<String,String> requestParamMap = new HashMap<String, String>();
 			while (headerNames.hasMoreElements()) {

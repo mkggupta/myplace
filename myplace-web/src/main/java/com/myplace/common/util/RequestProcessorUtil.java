@@ -25,6 +25,7 @@ import com.myplace.dto.FeedBackReplyInfo;
 import com.myplace.dto.FileInfo;
 import com.myplace.dto.PaymentInfo;
 import com.myplace.dto.RegistrationInfo;
+import com.myplace.dto.UserFileInfo;
 import com.myplace.dto.UserInfo;
 
 
@@ -178,6 +179,7 @@ public class RequestProcessorUtil {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void enrichUserVO(HashMap<String, Object> requestMap, UserInfo userVO,Map<String, Object> clientParamMap) {
 		if (null != requestMap) {
 			if (null != requestMap.get(UserParameters.CITY)) {
@@ -222,8 +224,8 @@ public class RequestProcessorUtil {
 			if (null != requestMap.get(UserParameters.BUSINESS_NAME)) {
 				userVO.setBusinessName(requestMap.get(UserParameters.BUSINESS_NAME).toString());
 			}
-			if (null != requestMap.get(UserParameters.PROFILE_PIC_FILE_ID)) {
-				userVO.setProfilePicFileId(requestMap.get(UserParameters.PROFILE_PIC_FILE_ID).toString());
+			if (null != requestMap.get(UserParameters.PROFILE_FILE_DATA)) {
+				userVO.setUserFileInfo((List<UserFileInfo>)requestMap.get(UserParameters.PROFILE_FILE_DATA));
 			}
 			if (null != requestMap.get(UserParameters.SATUTATION)) {
 				userVO.setSalutation(requestMap.get(UserParameters.SATUTATION).toString());
@@ -306,6 +308,7 @@ public class RequestProcessorUtil {
 	}
 
 	
+	@SuppressWarnings("unchecked")
 	public static void enrichUserVOObj(HashMap<String, Object> requestMap, UserInfo userVO,ClientInfo clientInfo) {
 		if (null != requestMap) {
 			if (null != requestMap.get(UserParameters.CITY)) {
@@ -350,8 +353,8 @@ public class RequestProcessorUtil {
 			if (null != requestMap.get(UserParameters.BUSINESS_NAME)) {
 				userVO.setBusinessName(requestMap.get(UserParameters.BUSINESS_NAME).toString());
 			}
-			if (null != requestMap.get(UserParameters.PROFILE_PIC_FILE_ID)) {
-				userVO.setProfilePicFileId(requestMap.get(UserParameters.PROFILE_PIC_FILE_ID).toString());
+			if (null != requestMap.get(UserParameters.PROFILE_FILE_DATA)) {
+				userVO.setUserFileInfo((List<UserFileInfo>)requestMap.get(UserParameters.PROFILE_FILE_DATA));
 			}
 			if (null != requestMap.get(UserParameters.SATUTATION)) {
 				userVO.setSalutation(requestMap.get(UserParameters.SATUTATION).toString());

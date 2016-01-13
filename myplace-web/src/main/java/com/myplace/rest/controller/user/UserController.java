@@ -40,21 +40,18 @@ public class UserController {
 
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
-		
 		 String jsonData = null;
 		 Gson gson = new Gson();
 		try {
-			if(StringUtils.isNotBlank(userId)){
-				
+			if(StringUtils.isNotBlank(userId)){	
 				UserInfo userInfo = userService.getUserProfile(Long.parseLong(userId));
 				 if(null!= userInfo){
 					 dataMap.put(MyPlaceWebConstant.USER_DETAIL, userInfo);
-					
 				 }else{
 					 logger.debug("getProfile() nothing");
 					   dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
-						dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
-						dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
+					   dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
+					   dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
 				 }
 			}
 		} catch (UserServiceFailedException e) {
@@ -73,7 +70,6 @@ public class UserController {
 			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorCode());
 		}
 		
-		
 		if(null!= userId){
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
 		    jsonData = gson.toJson(dataMap);
@@ -81,11 +77,10 @@ public class UserController {
 		if (dataMap.size() == 0) {
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
-			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
-			
+			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());	
 		}
 		
-		jsonData = gson.toJson(dataMap);
+			jsonData = gson.toJson(dataMap);
 		}
 		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
 		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);

@@ -1,16 +1,21 @@
 --task for 10-jan----
-
 push error handle  -done and test
 header parser change -- change implement in push,business,reg,Update
 multiple image support in get business api  --done and tested
-push notification change --change need to varify
+push notification change --change need to varify  
 
 --task for 11-jan----
-Test for changes done on 10th
-default Pic addition for category/subcategory
+Test for changes done on 10th  -done and tested
+default Pic addition for category/subcategory/profile -Done and tested
 
 --task for 12 jan---
-Api Changes for image Url for default pics
-User profile pic addition
+Api Changes for image Url for default pics - added in user/business/search api done and tested
+User profile pic addition       --- added in reg/get/update profile  done and tested
 
+--task for 13 jan---
+Try to seperate image server
+push notification change -- done and tested
+server Upgrade
 
+--task for 14 jan---
+Forget Password

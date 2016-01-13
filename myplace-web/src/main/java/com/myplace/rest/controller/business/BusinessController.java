@@ -40,12 +40,9 @@ public class BusinessController {
 	private static Logger logger = LoggerFactory.getLogger(BusinessController.class);
 	private BusinessService businessService ;
 	
-	
-	
 	public void setBusinessService(BusinessService businessService) {
 		this.businessService = businessService;
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/pvt/create", method = RequestMethod.POST)

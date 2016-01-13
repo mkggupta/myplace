@@ -23,5 +23,19 @@ public class PushMessage {
 	String Type;
 	String url;
 	String message;
+	
+	public String toString() {
+
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(Type);
+        buffer.append("\n");
+        buffer.append(url);
+        buffer.append("\n");
+        buffer.append(message);
+        buffer.append("\n");
+
+        return buffer.toString();
+    }
+
 
 }

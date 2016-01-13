@@ -2,8 +2,10 @@ package com.myplace.common.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,14 +19,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.myplace.common.constant.MyPlaceConstant;
+import com.myplace.common.constant.UserParameters;
 import com.myplace.dto.DefaultFileInfo;
 import com.myplace.dto.FileInfo;
+import com.myplace.dto.UserFileInfo;
 public class ControllerUtils {
 	private static Logger logger = LoggerFactory.getLogger(ControllerUtils.class);
 	private static final String TYPE = "type";
 	private static final String CAT = "cat";
 	private static final String DATA = "data";
-	private static final String USER_NAME = "usrName";
+    private static final String PROFILEDATA = "pdata";
 	
 	@SuppressWarnings("unchecked")
 	public static HashMap<String, Object> getRequestMap(HttpServletRequest httpServletRequest) {
@@ -44,6 +48,7 @@ public class ControllerUtils {
 	public static HashMap<String, Object> getRequestMapFromMultipart(HttpServletRequest httpServletRequest) {
 		HashMap<String, Object> requestMap = new HashMap<String, Object>();
 		boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
+		List<UserFileInfo>  userFileInfoList = new ArrayList<UserFileInfo>();
 		if (isMultipart) {
 
 			ServletFileUpload upload = new ServletFileUpload();
@@ -67,6 +72,19 @@ public class ControllerUtils {
 								logger.debug("mediaData length:", mediaData.length);
 								FileInfo fileInfo = StorageUtil.saveMediaFromBytes(mediaData, item.getName());
 								requestMap.put(MyPlaceConstant.FILE_DATA, fileInfo);
+							}else{
+								logger.debug("else mediaData: {}", item.getName());
+							}
+						}else if(fieldName.toLowerCase().startsWith(PROFILEDATA)) {
+							ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+							Streams.copy(stream, byteArrayOutputStream, true);
+							byte mediaData[] = byteArrayOutputStream.toByteArray();
+							logger.debug("profilemediaData: {}", item.getName());
+							if(null!= mediaData && mediaData.length>0){
+								logger.debug("profilemediaData length:", mediaData.length);
+								UserFileInfo fileInfo = StorageUtil.saveProfileMediaFromBytes(mediaData, item.getName());
+								userFileInfoList.add(fileInfo);
+								requestMap.put(UserParameters.PROFILE_FILE_DATA, userFileInfoList);
 							}else{
 								logger.debug("else mediaData: {}", item.getName());
 							}
@@ -124,6 +142,7 @@ public class ControllerUtils {
 								logger.debug("mediaData length:", mediaData.length);
 								DefaultFileInfo defaultFileInfo = StorageUtil.saveDefaultMediaFromBytes(mediaData, item.getName());
 								requestMap.put(MyPlaceConstant.DEFAULT_FILE_DATA, defaultFileInfo);
+								logger.debug("mediaData requestMap:", requestMap);
 							}else{
 								logger.debug("else mediaData: {}", item.getName());
 							}

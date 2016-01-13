@@ -4,6 +4,13 @@ public class CategoryDTO {
 
 	private String catName;
 	private int catId;
+	private String imgUrl;
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
 	public String getCatName() {
 		return catName;
 	}

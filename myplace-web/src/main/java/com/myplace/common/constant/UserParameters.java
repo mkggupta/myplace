@@ -16,7 +16,7 @@ public interface UserParameters {
 	String STATE = "state";
 	String COUNTRY = "country";
 	String SECONDARY_EMAIL_ADDRESS = "secEmail";
-	String PROFILE_PIC_FILE_ID = "ppFileId";
+	String PROFILE_FILE_DATA = "fileInfo";
 	String TIME_ZONE = "timeZone";
 	String PASSWORD = "password";
 	String OLD_PASSWORD="oldPassword";

@@ -215,32 +215,5 @@ public class UserDAOImpl extends AbstractDBManager implements UserDAO {
 			}
 	}
 	
-	public void saveUserFileInfo(UserFileInfo userFileInfo) throws DataUpdateFailedException{
-		try {
-			logger.debug("saveUserFileInfo=="+userFileInfo);
-			 sqlMapClient_.insert(UserConstants.INSERT_USER_FILE_INFO,userFileInfo);
-		
-			}catch(SQLException e){
-				logger.error("Exception in saveUserFileInfo : " + e.getMessage());
-				throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
-			}	
-	}
 	
-	public UserFileInfo getUserFileInfoByUserId(long userId) throws DataAccessFailedException{
-		try {
-			 return (UserFileInfo)sqlMapClient_.queryForObject(UserConstants.GET_USER_FILE_INFO,userId);
-			}catch(SQLException e){
-				logger.error("Exception in saveUserFileInfo : " + e.getMessage());
-				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
-			}	
-	}
-	public void deleteUserFileInfo(long userId) throws DataUpdateFailedException{
-		try {
-			sqlMapClient_.delete(UserConstants.DELETE_USER_FILE_INFO, userId);
-		} catch (SQLException e) {
-			logger.error("Exception in deleteUserFileInfo error  : " + e.getMessage());
-			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
-		}
-	}
-
 }

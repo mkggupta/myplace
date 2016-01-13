@@ -17,8 +17,6 @@ public interface UserConstants {
 	String QUERY_UPDATE_USER_PUSH_MESSAGE_STATUS = "update_user_push_message_status";
 	String GET_USER_PUSH_INFO_LIST= "get_user_push_ino_list_by_userid";
 	int USER_PUSH_ACTIVE_STATUS=1;
-	String INSERT_USER_FILE_INFO= "insert_user_file_info";
-	String GET_USER_FILE_INFO= "get_user_file_info_by_userid";
-	String DELETE_USER_FILE_INFO= "delete_user_file_info";
+	
 	
 }

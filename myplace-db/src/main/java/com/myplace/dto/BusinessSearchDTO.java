@@ -1,5 +1,7 @@
 package com.myplace.dto;
 
+import java.util.List;
+
 
 public class BusinessSearchDTO {
 	private Long userId;
@@ -25,12 +27,18 @@ public class BusinessSearchDTO {
 	private String bussStartDate;
 	private Long catName;
 	private long bussImgCnt;
-	private String imgUrl;
+	private List<String> imgUrls;
 	private String updateUrl;
 	private String buttonName;
 	private int feedType;
 	private String clickUrl;
-	
+
+	public List<String> getImgUrls() {
+		return imgUrls;
+	}
+	public void setImgUrls(List<String> imgUrls) {
+		this.imgUrls = imgUrls;
+	}
 	public String getUpdateUrl() {
 		return updateUrl;
 	}
@@ -56,13 +64,7 @@ public class BusinessSearchDTO {
 		this.clickUrl = clickUrl;
 	}
 	
-	
-	public String getImgUrl() {
-		return imgUrl;
-	}
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
-	}
+
 	public Long getCatName() {
 		return catName;
 	}

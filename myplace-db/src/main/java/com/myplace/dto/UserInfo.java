@@ -1,6 +1,7 @@
 package com.myplace.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class UserInfo {
 
@@ -20,11 +21,9 @@ public class UserInfo {
 	private String city;
 	private String state;
 	private String country;
-	private String secondaryEmailAddress;
-	private String profilePicFileId;
-	private String profilePicFileExt;
+	private String secondaryEmailAddress;	
 	private String timeZone;
-	private String profilePicUrl;
+	
 	private int status;
 	private String language;
 	private String location;
@@ -36,14 +35,24 @@ public class UserInfo {
 	private float longitude;
 	private float latitude; 
 	private Date modifiedDate;
-	UserFileInfo  userFileInfo;
+	List <String> pImgUrls;
+	List<UserFileInfo>  userFileInfo;
 	
-	public UserFileInfo getUserFileInfo() {
+	public List<String> getpImgUrls() {
+		return pImgUrls;
+	}
+	public void setpImgUrls(List<String> pImgUrls) {
+		this.pImgUrls = pImgUrls;
+	}
+	
+	public List<UserFileInfo> getUserFileInfo() {
 		return userFileInfo;
 	}
-	public void setUserFileInfo(UserFileInfo userFileInfo) {
+	public void setUserFileInfo(List<UserFileInfo> userFileInfo) {
 		this.userFileInfo = userFileInfo;
 	}
+	
+
 	public Date getModifiedDate() {
 		return modifiedDate;
 	}
@@ -140,30 +149,14 @@ public class UserInfo {
 	public void setSecondaryEmailAddress(String secondaryEmailAddress) {
 		this.secondaryEmailAddress = secondaryEmailAddress;
 	}
-	public String getProfilePicFileId() {
-		return profilePicFileId;
-	}
-	public void setProfilePicFileId(String profilePicFileId) {
-		this.profilePicFileId = profilePicFileId;
-	}
-	public String getProfilePicFileExt() {
-		return profilePicFileExt;
-	}
-	public void setProfilePicFileExt(String profilePicFileExt) {
-		this.profilePicFileExt = profilePicFileExt;
-	}
+	
 	public String getTimeZone() {
 		return timeZone;
 	}
 	public void setTimeZone(String timeZone) {
 		this.timeZone = timeZone;
 	}
-	public String getProfilePicUrl() {
-		return profilePicUrl;
-	}
-	public void setProfilePicUrl(String profilePicUrl) {
-		this.profilePicUrl = profilePicUrl;
-	}
+	
 	public int getStatus() {
 		return status;
 	}

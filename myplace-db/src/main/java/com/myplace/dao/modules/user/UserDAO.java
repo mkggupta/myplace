@@ -6,7 +6,6 @@ import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dto.UserAuth;
-import com.myplace.dto.UserFileInfo;
 import com.myplace.dto.UserInfo;
 import com.myplace.dto.UserThirdPartyAuth;
 
@@ -30,8 +29,6 @@ public interface UserDAO {
 	public boolean isUserExists(long userId) throws DataAccessFailedException;
 	public void updateUserPushStatus(long userId, String pushStatus) throws DataUpdateFailedException;
 	public List<UserPushInfo> getUserPushInfoList(List<Long> userIdList) throws DataAccessFailedException;
-	public void saveUserFileInfo(UserFileInfo userFileInfo) throws DataUpdateFailedException;
-	public UserFileInfo getUserFileInfoByUserId(long userId) throws DataAccessFailedException;
-	public void deleteUserFileInfo(long userId) throws DataUpdateFailedException;
+	
 
 }

@@ -9,10 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.myplace.dao.constants.MediaConstants;
+import com.myplace.dao.constants.UserConstants;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dao.modules.base.AbstractDBManager;
 import com.myplace.dto.DefaultFileInfo;
+import com.myplace.dto.UserFileInfo;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 
 
@@ -54,6 +56,37 @@ public class MediaDAOImpl extends AbstractDBManager implements MediaDAO {
 			throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
 		}
 	}
+	
+	public void saveUserFileInfo(UserFileInfo userFileInfo) throws DataUpdateFailedException{
+		try {
+			logger.debug("saveUserFileInfo=="+userFileInfo);
+			 sqlMapClient_.insert(MediaConstants.INSERT_USER_FILE_INFO,userFileInfo);
+		
+			}catch(SQLException e){
+				logger.error("Exception in saveUserFileInfo : " + e.getMessage());
+				throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserFileInfo> getUserFileInfoByUserId(long userId) throws DataAccessFailedException{
+		try {
+			 return (List<UserFileInfo>)sqlMapClient_.queryForList(MediaConstants.GET_USER_FILE_INFO,userId);
+			}catch(SQLException e){
+				logger.error("Exception in getUserFileInfoByUserId : " + e.getMessage());
+				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+			}	
+	}
+	
+	public void deleteUserFileInfo(long userId) throws DataUpdateFailedException{
+		try {
+			sqlMapClient_.delete(MediaConstants.DELETE_USER_FILE_INFO, userId);
+		} catch (SQLException e) {
+			logger.error("Exception in deleteUserFileInfo error  : " + e.getMessage());
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
+
 
 	
 }

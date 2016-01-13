@@ -21,9 +21,11 @@ import org.bouncycastle.util.io.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
 import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.util.MyPlaceProperties;
 import com.myplace.common.util.MyPlacePropertyKeys;
+import com.myplace.dto.PushMessage;
 
 public class AndroidPushMessageServiceImpl implements PushMessageService {
 	private static Logger logger = LoggerFactory
@@ -51,12 +53,12 @@ public class AndroidPushMessageServiceImpl implements PushMessageService {
 		try {
 			String deviceKey = (String) params
 					.get(MyPlaceConstant.DEVICE_KEY);
-			String pushMessage = (String) params
+			PushMessage pushMessage = (PushMessage) params
 					.get(MyPlaceConstant.PUSH_MESSAGE);
 			
-			logger.debug("pushMessage called for Android ::"+pushMessage+" for deviceKey ::"+deviceKey);
+			logger.debug("pushMessage called for Android pushMessage::"+pushMessage.toString()+" for deviceKey ::"+deviceKey);
 			
-			if(StringUtils.isNotBlank(deviceKey)&& StringUtils.isNotBlank(pushMessage)){
+			if(StringUtils.isNotBlank(deviceKey)&& null!=pushMessage){
 				boolean pushed = pushMessage(deviceKey, pushMessage);
 				return pushed;
 			}else{
@@ -70,11 +72,11 @@ public class AndroidPushMessageServiceImpl implements PushMessageService {
 		return false;
 	}
 
-	protected boolean pushMessage(String deviceKey, String message) {
+	protected boolean pushMessage(String deviceKey, PushMessage message) {
 		logger.info("pushMessage called for Android.");
 		
 		boolean pushed = false;
-
+		Gson gson = new Gson();  
 		int count = 0;
 		while (count < retryCount) {
 
@@ -86,7 +88,8 @@ public class AndroidPushMessageServiceImpl implements PushMessageService {
 				String content = "registration_id="
 						+ URLEncoder.encode(deviceKey, "UTF-8") + "&collapse_key="
 						+ URLEncoder.encode("0", "UTF-8") + "&data.message="
-						+ URLEncoder.encode(message, "UTF-8");
+						+ gson.toJson(message);
+						//+ URLEncoder.encode(message, "UTF-8");
 				url = new URL(pushurl);
 				connection = (HttpsURLConnection) url.openConnection();
 				connection.setHostnameVerifier(new HostnameVerifier() {
@@ -172,79 +175,5 @@ public class AndroidPushMessageServiceImpl implements PushMessageService {
 		return pushed;
 	}
 
-/*	public static String getToken() {
-		StringBuilder buf = new StringBuilder();
-		HttpsURLConnection httpsURLConn = null;
-		OutputStreamWriter outStreamWriter = null;
-		String strAuthToken = null;
 
-		try {
-			URL url = new URL(tokenUrl);
-			httpsURLConn = (HttpsURLConnection) url.openConnection();
-			httpsURLConn.setDoOutput(true);
-			httpsURLConn.setDoInput(true);
-			buf.append("accountType").append("=")
-					.append((URLEncoder.encode("GOOGLE ", "UTF-8")));
-			buf.append("&Email").append("=")
-					.append((URLEncoder.encode(appId, "UTF-8")));
-			buf.append("&Passwd").append("=")
-					.append((URLEncoder.encode(appPassword, "UTF-8")));
-			buf.append("&service").append("=")
-					.append((URLEncoder.encode("ac2dm", "UTF-8")));
-			buf.append("&source")
-					.append("=")
-					.append((URLEncoder.encode(
-							"Rocketalk-RocketalkApplication-1.0", "UTF-8")));
-
-			httpsURLConn.setRequestMethod("POST");
-			httpsURLConn.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
-			httpsURLConn.setRequestProperty("Content-Length", buf.toString()
-					.getBytes().length + "");
-
-			outStreamWriter = new OutputStreamWriter(
-					httpsURLConn.getOutputStream());
-			outStreamWriter.write(buf.toString());
-			outStreamWriter.flush();
-
-			int code = httpsURLConn.getResponseCode();
-			logger.info("code == " + code);
-			if (code == 200) {
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						httpsURLConn.getInputStream()));
-				buf = new StringBuilder();
-				String inputLine;
-				while ((inputLine = in.readLine()) != null) {
-					logger.info("inputLine = " + inputLine);
-					if (inputLine.startsWith("Auth=")) {
-						strAuthToken = inputLine.substring(5);
-					}
-					buf.append(inputLine);
-					inputLine = null;
-				}
-				in.close();
-
-			} else {
-				logger.error("Failed to get token " + code);
-			}
-			if (strAuthToken != null) {
-				logger.info("Auth Token = Done" + strAuthToken);
-			}
-		} catch (Exception e) {
-			logger.error("Exception occured while getting token. using url "
-					+ tokenUrl + " app id " + appId, e);
-		} finally {
-			try {
-				if (outStreamWriter != null) {
-					outStreamWriter.close();
-				}
-				if (httpsURLConn != null) {
-					httpsURLConn.disconnect();
-				}
-			} catch (IOException e) {
-				logger.error("Exception  ", e);
-			}
-		}
-		return strAuthToken;
-	}*/
 }

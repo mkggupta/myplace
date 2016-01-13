@@ -12,16 +12,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.myplace.common.business.util.BusinessUtil;
 import com.myplace.common.constant.MyPlaceBusinessConstant;
 import com.myplace.common.constant.MyPlaceConstant;
+import com.myplace.common.constant.PushConstant;
+import com.myplace.common.util.MyPlaceProperties;
+import com.myplace.common.util.MyPlacePropertyKeys;
 import com.myplace.common.util.StorageUtil;
 import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dao.modules.business.BusinessDAO;
 import com.myplace.dao.modules.category.CategoryDAO;
+import com.myplace.dao.modules.media.MediaDAO;
 import com.myplace.dao.modules.search.SearchDAO;
 import com.myplace.dao.modules.user.UserDAO;
 import com.myplace.dto.BusinessFileInfo;
 import com.myplace.dto.BusinessInfo;
+import com.myplace.dto.DefaultFileInfo;
+import com.myplace.dto.PushMessage;
 import com.myplace.dto.UserSearchDTO;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.myplace.service.business.exception.BusinessServiceException;
@@ -36,6 +42,12 @@ public class BusinessServiceImpl implements BusinessService {
 	private UserDAO  userDAO;
 	private PushMessageService pushMessageService;
 	private CategoryDAO categoryDAO ;
+	private MediaDAO mediaDAO;
+	
+	@Autowired
+	public void setMediaDAO(MediaDAO mediaDAO) {
+		this.mediaDAO = mediaDAO;
+	}
 
 	public void setBusinessDAO(BusinessDAO businessDAO) {
 		this.businessDAO = businessDAO;
@@ -94,10 +106,16 @@ public class BusinessServiceImpl implements BusinessService {
 							if(null!=userPushInfoList && userPushInfoList.size()>0){
 								String serviceName= categoryDAO.getCategoryNameByCatId(businessInfo.getCatId());
 								boolean pushStatus=false;
+								PushMessage pushMessage = new PushMessage();
+								pushMessage.setType(PushConstant.BUSINESS_CREATION_TYPE);
+								pushMessage.setMessage("Good News ! Now "+businessInfo.getBussName()+" specialized in "+serviceName+" is near you.");
+								MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+								String baseUrl = myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL);
+								pushMessage.setUrl(baseUrl+"business/pub/buss/"+businessId);
 								for(UserPushInfo userPushInfo:userPushInfoList){
 									Map<String, Object> params= new HashMap<String, Object>();
 									params.put(MyPlaceConstant.DEVICE_KEY,userPushInfo.getPushKey());
-									params.put(MyPlaceConstant.PUSH_MESSAGE,"Good News ! Now "+businessInfo.getBussName()+" specialized in "+serviceName+" is near you.");
+									params.put(MyPlaceConstant.PUSH_MESSAGE,pushMessage);
 									pushStatus=pushMessageService.pushNotification(params);
 									logger.debug("pushStatus----"+pushStatus +" for userid="+userPushInfo.getUserId());
 								}
@@ -108,7 +126,6 @@ public class BusinessServiceImpl implements BusinessService {
 					//we will not re-throw exception as business creation should not stop because of push
 					logger.error("could not send push notification---"+e.getLocalizedMessage());
 				}
-				
 			}
 			//Code end for Push Notification 
 		} catch (DataUpdateFailedException e) {
@@ -121,27 +138,30 @@ public class BusinessServiceImpl implements BusinessService {
 	public List<BusinessInfo> getMyBusinessList (Long userId) throws BusinessServiceException{
 		
 	try {
-		List<BusinessInfo> businessInfoList=businessDAO.getMyBusinessList(userId);
+		List<BusinessInfo> businessInfoList = businessDAO.getMyBusinessList(userId);
 		List<Long> businessIdList = new ArrayList<Long>();
 		for(BusinessInfo businessInfo : businessInfoList){
 			businessIdList.add(businessInfo.getBussId());
 		}
 		if(null!=businessIdList && businessIdList.size()>0){
-			List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfoList(businessIdList);
-			List<String> bussImgUrlsList = new ArrayList<String>();
 			
+			List<String> bussImgUrlsList = new ArrayList<String>();
 			for(BusinessInfo businessInfo : businessInfoList){
 				bussImgUrlsList = new ArrayList<String>();
-				for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
-						if(businessInfo.getBussId()==businessFileInfo.getBussId()){
-							bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
-						}
+				List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfo(businessInfo.getBussId());
+				if(null!=BusinessFileInfoList && BusinessFileInfoList.size()>0){
+					for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
+						bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));		
+					}
+				}else{
+					List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
+					for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+						bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+					}
 				}
-				
 				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
 					businessInfo.setBussImgUrls(bussImgUrlsList);
 				}
-				
 			}
 		}
 			return businessInfoList;
@@ -157,8 +177,15 @@ public class BusinessServiceImpl implements BusinessService {
 				BusinessInfo  businessInfo = businessDAO.getMyBusinessDetail(userId,businessId);
 				List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfo(businessId);
 				List<String> bussImgUrlsList = new ArrayList<String>();
-				for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
-						bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+				if(null!=BusinessFileInfoList && BusinessFileInfoList.size()>0){
+					for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
+							bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+					}
+				}else{
+					List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
+					for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+						bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+					}
 				}
 				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
 						businessInfo.setBussImgUrls(bussImgUrlsList);
@@ -178,8 +205,15 @@ public class BusinessServiceImpl implements BusinessService {
 			logger.debug("getBusinessDetail---businessId="+businessId);
 			List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfo(businessId);
 			List<String> bussImgUrlsList = new ArrayList<String>();
-			for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
-					bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+			if(null!=BusinessFileInfoList && BusinessFileInfoList.size()>0){
+				for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
+						bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+				}
+			}else{
+				List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
+				for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+					bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+				}
 			}
 			if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
 					businessInfo.setBussImgUrls(bussImgUrlsList);
@@ -214,28 +248,43 @@ public class BusinessServiceImpl implements BusinessService {
 		} catch (DataAccessFailedException e) {
 			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_NOT_FOUND_EXCEPTION);
 		}
-		//business file update
+		
 		try {
-			 List<BusinessFileInfo> fileInfoList = businessInfoObj.getBusinessFileInfo();
+				businessDAO.updateBusinessDetail(businessInfoObj);
+				//business file update
+			    List<BusinessFileInfo> fileInfoList = businessInfoObj.getBusinessFileInfo();
 				logger.debug("updateBusinessInfofileInfo----"+fileInfoList);
+				List<String> bussImgUrlsList = new ArrayList<String>();
 				if(null!=fileInfoList && fileInfoList.size()>0){
-					businessDAO.deleteBusinessFileInfo(businessInfo.getBussId());
+					  businessDAO.deleteBusinessFileInfo(businessInfo.getBussId());
 					for(BusinessFileInfo businessFileInfo :fileInfoList){
 						businessFileInfo.setBussId(businessInfoObj.getBussId());
 						businessDAO.saveBusinessFileInfo(businessFileInfo);
-					}	
-				}
-				
-				List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfo(businessInfo.getBussId());
-				List<String> bussImgUrlsList = new ArrayList<String>();
-				for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
 						bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+					}	
+				}else{
+					fileInfoList = businessDAO.getBusinessFileInfo(businessInfo.getBussId());
+					logger.debug("updateBusinessInfo fileInfoList----"+fileInfoList);
+					if(null!=fileInfoList && fileInfoList.size()>0){
+						for(BusinessFileInfo  businessFileInfo : fileInfoList){
+								bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+						}
+					}else{
+						List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
+						logger.debug("updateBusinessInfo defaultFileInfoList----"+defaultFileInfoList);
+						for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+							bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+						}
+					}
 				}
+				logger.debug("updateBusinessInfo bussImgUrlsList----"+bussImgUrlsList);
 				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
 					businessInfoObj.setBussImgUrls(bussImgUrlsList);
 					businessInfoObj.setBusinessFileInfo(null);
 				}
-		} catch (DataAccessFailedException |DataUpdateFailedException e) {
+			
+				
+		} catch (DataAccessFailedException|DataUpdateFailedException e) {
 			logger.error("Exception in updating user details in database for the businessInfoObj : " + businessInfoObj + " error  : " + e.getMessage());
 			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION);
 		}

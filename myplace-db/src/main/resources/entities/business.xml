@@ -42,7 +42,7 @@
    
    <select id="get_my_business_list" parameterClass="java.lang.Long" resultClass="com.myplace.dto.BusinessInfo" >
   	SELECT business_id as bussId,user_id as userId,business_name as bussName,business_contact_name as bussContName,business_address as bussAddress,
-  	 business_zip as bussZip,business_phone as bussPhone,feed_type as feedType
+  	 business_zip as bussZip,business_phone as bussPhone,feed_type as feedType,business_cat_id as catId,business_sub_cat_ids as subCatId
   	 FROM business_info where user_id=#userId# and business_status=1 order by business_id desc limit 20
    </select>
    

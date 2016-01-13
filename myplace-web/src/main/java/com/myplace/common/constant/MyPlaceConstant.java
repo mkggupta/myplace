@@ -76,9 +76,11 @@ public interface MyPlaceConstant {
     String DEFAULT_FILE_DATA = "defaultfileInfo";
     String ID = "id";
     String MEDIA_TYPE = "type";
+    int UNKNOWN_TYPE=0;
 	int MALE_TYPE=1;
 	int FEMALE_TYPE=2;
 	int CAT_TYPE=3;
 	int SUBCAT_TYPE=4;
+	
 	
 }
