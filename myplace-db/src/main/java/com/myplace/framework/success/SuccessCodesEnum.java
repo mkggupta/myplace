@@ -38,6 +38,8 @@ public enum SuccessCodesEnum {
 	DELETE_REPLY_FEEDBACK_SUCCESS("SUCC_11318", "Reply feedback deleted successfully", "reply.feedback.feedback.success"),
 	CHANGE_FEEDBACK_SUCCESS("SUCC_11319", "Feedback status has been changed successfully.", "change.feedback.status.success"),
 	CHANGE_FEEDBACK_REPLY_SUCCESS("SUCC_11320", "Status has been changed successfully.", "change.reply.feedback.status.success"),
+	NO_NOTIF_SUCCESS("SUCC_113021", "Currently there is no notification.", "no.notif.success"),
+	NOTIF_DELETE_SUCCESS("SUCC_113022", "Notification is deleted successfully.", "notif.delete.success"),
 	;
 	String successCode;
 	String successMessage;

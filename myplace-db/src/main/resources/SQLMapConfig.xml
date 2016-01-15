@@ -12,5 +12,6 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
 	<sqlMap resource="entities/search.xml"/>
 	<sqlMap resource="entities/user.xml"/>
 	<sqlMap resource="entities/media.xml"/>
+	<sqlMap resource="entities/notification.xml"/>
 	
 </sqlMapConfig>

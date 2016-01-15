@@ -13,6 +13,7 @@ import com.myplace.common.business.util.BusinessUtil;
 import com.myplace.common.constant.MyPlaceBusinessConstant;
 import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.constant.PushConstant;
+import com.myplace.common.user.util.NotificationUtils;
 import com.myplace.common.util.MyPlaceProperties;
 import com.myplace.common.util.MyPlacePropertyKeys;
 import com.myplace.common.util.StorageUtil;
@@ -22,11 +23,13 @@ import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dao.modules.business.BusinessDAO;
 import com.myplace.dao.modules.category.CategoryDAO;
 import com.myplace.dao.modules.media.MediaDAO;
+import com.myplace.dao.modules.notification.NotificationDAO;
 import com.myplace.dao.modules.search.SearchDAO;
 import com.myplace.dao.modules.user.UserDAO;
 import com.myplace.dto.BusinessFileInfo;
 import com.myplace.dto.BusinessInfo;
 import com.myplace.dto.DefaultFileInfo;
+import com.myplace.dto.NotificationMessage;
 import com.myplace.dto.PushMessage;
 import com.myplace.dto.UserSearchDTO;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
@@ -44,6 +47,13 @@ public class BusinessServiceImpl implements BusinessService {
 	private CategoryDAO categoryDAO ;
 	private MediaDAO mediaDAO;
 	
+	private NotificationDAO notificationDAO;
+	
+	@Autowired
+	public void setNotificationDAO(NotificationDAO notificationDAO) {
+		this.notificationDAO = notificationDAO;
+	}
+
 	@Autowired
 	public void setMediaDAO(MediaDAO mediaDAO) {
 		this.mediaDAO = mediaDAO;
@@ -102,16 +112,28 @@ public class BusinessServiceImpl implements BusinessService {
 						logger.debug("userIdList----"+userIdList);
 						if(null!=userIdList && userIdList.size()>0){
 							List<UserPushInfo>  userPushInfoList = userDAO.getUserPushInfoList(userIdList);
+							
+							String serviceName= categoryDAO.getCategoryNameByCatId(businessInfo.getCatId());
+							boolean pushStatus=false;
+							PushMessage pushMessage = new PushMessage();
+							pushMessage.setType(PushConstant.BUSINESS_CREATION_TYPE);
+							pushMessage.setTitle(PushConstant.BUSINESS_CREATION_TITLE);
+							pushMessage.setId(businessId);
+							pushMessage.setDescription("Good News ! Now "+businessInfo.getBussName()+" specialized in "+serviceName+" is near you.");
+							MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+							String baseUrl = myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL);
+							pushMessage.setClkurl(baseUrl+"business/pub/buss/"+businessId);
+							fileInfoList = businessInfo.getBusinessFileInfo();
+							if(null!=fileInfoList && fileInfoList.size()>0){
+									pushMessage.setImgurl(StorageUtil.getImageUrl(fileInfoList.get(0)));		
+							}
+							
+							//insert user notification info
+							NotificationMessage notificationMessage = NotificationUtils.transformPushMessageToNotificationMesage(pushMessage) ;
+							notificationDAO.saveNotificationInfo(userIdList, notificationMessage);
 							logger.debug("userPushInfoList----"+userPushInfoList);
 							if(null!=userPushInfoList && userPushInfoList.size()>0){
-								String serviceName= categoryDAO.getCategoryNameByCatId(businessInfo.getCatId());
-								boolean pushStatus=false;
-								PushMessage pushMessage = new PushMessage();
-								pushMessage.setType(PushConstant.BUSINESS_CREATION_TYPE);
-								pushMessage.setMessage("Good News ! Now "+businessInfo.getBussName()+" specialized in "+serviceName+" is near you.");
-								MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
-								String baseUrl = myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL);
-								pushMessage.setUrl(baseUrl+"business/pub/buss/"+businessId);
+								
 								for(UserPushInfo userPushInfo:userPushInfoList){
 									Map<String, Object> params= new HashMap<String, Object>();
 									params.put(MyPlaceConstant.DEVICE_KEY,userPushInfo.getPushKey());
@@ -155,8 +177,10 @@ public class BusinessServiceImpl implements BusinessService {
 					}
 				}else{
 					List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
-					for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
-						bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+					if(null!=defaultFileInfoList){
+						for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+							bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+						}
 					}
 				}
 				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
@@ -183,8 +207,10 @@ public class BusinessServiceImpl implements BusinessService {
 					}
 				}else{
 					List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
-					for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+					if(null!=defaultFileInfoList){
+					  for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
 						bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+					  }
 					}
 				}
 				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
@@ -211,8 +237,10 @@ public class BusinessServiceImpl implements BusinessService {
 				}
 			}else{
 				List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
-				for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
-					bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+				if(null!=defaultFileInfoList){
+					for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+						bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+					}
 				}
 			}
 			if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
@@ -272,8 +300,10 @@ public class BusinessServiceImpl implements BusinessService {
 					}else{
 						List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
 						logger.debug("updateBusinessInfo defaultFileInfoList----"+defaultFileInfoList);
-						for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
-							bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+						if(null!=defaultFileInfoList){
+							for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+								bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+							}
 						}
 					}
 				}

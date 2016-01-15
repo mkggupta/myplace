@@ -33,13 +33,14 @@ public class StatsController {
 		this.advtService = advtService;
 	}
 	
-	@RequestMapping(value = "/getAdvtStats", method = RequestMethod.GET)
+	@RequestMapping(value = "/pvt/getAdvtStats", method = RequestMethod.GET)
 	public ModelAndView getAdvtStats(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
 		Long userId =0l;
 		if(logger.isDebugEnabled()){
 			logger.debug("StatsController.getAdvtStats"+httpServletRequest);
+			@SuppressWarnings("unchecked")
 			Enumeration<Object> headerNames = httpServletRequest.getHeaderNames();
 			Map<String,String> requestParamMap = new HashMap<String, String>();
 			while (headerNames.hasMoreElements()) {
@@ -81,6 +82,54 @@ public class StatsController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value = "/pvt/savestats", method = RequestMethod.POST)
+	public ModelAndView saveAppStats(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+		ModelAndView modelAndView = new ModelAndView();
+		HashMap<String, Object> dataMap = new HashMap<String, Object>();
+		Long userId =0l;
+		if(logger.isDebugEnabled()){
+			logger.debug("StatsController.saveAppStats"+httpServletRequest);
+			@SuppressWarnings("unchecked")
+			Enumeration<Object> headerNames = httpServletRequest.getHeaderNames();
+			Map<String,String> requestParamMap = new HashMap<String, String>();
+			while (headerNames.hasMoreElements()) {
+				String headerName = (String) headerNames.nextElement();
+				requestParamMap.put(headerName, httpServletRequest.getHeader(headerName));	
+			}
+			logger.debug("StatsController.saveAppStats"+requestParamMap);
+		}
+		try {
+				userId = ControllerUtils.extractUserIdFromHeader(httpServletRequest);
+				Long advtCode =(null!=httpServletRequest.getParameter(MyPlaceWebConstant.ADVTCODE))?Long.parseLong(httpServletRequest.getParameter(MyPlaceWebConstant.ADVTCODE)):0;
+				if(userId>0){
+					dataMap = advtService.getAdvtStatsList(userId,advtCode);
+					 if(null!=dataMap && dataMap.size()>0){
+						dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
+					}else{
+						dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
+						dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.NO_ADVT_SUCCESS.getSuccessMessage());
+						dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.NO_ADVT_SUCCESS.getSuccessCode());	
+					}
+				}else{
+					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
+					dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.NO_ADVT_SUCCESS.getSuccessMessage());
+					dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.NO_ADVT_SUCCESS.getSuccessCode());	
+				}
+		
+		} catch (AdvtServiceException e) {
+			logger.error("StatsController()"+e.getLocalizedMessage(),e);
+			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.ADVT_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.ADVT_SERVICE_FAILED_EXCEPTION.getErrorCode());
+			
+		}
+		Gson gson = new Gson();
+		String jsonData = gson.toJson(dataMap);
+		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+		logger.debug("StatsController.getAdvtStats.dataMap="+dataMap);
+		return modelAndView;
+	}
 	
 
 }

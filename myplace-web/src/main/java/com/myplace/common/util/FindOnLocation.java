@@ -45,6 +45,13 @@ public class FindOnLocation {
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
 	}
+	public String getTAG() {
+		return TAG;
+	}
+	public void setTAG(String tAG) {
+		TAG = tAG;
+	}
+		private String TAG ;
 		private double lat ;
 		private double lol ;
 	    private String zip ;
@@ -52,6 +59,7 @@ public class FindOnLocation {
 	    private String state ;
 	    private String country ;
 	    private String countryCode ;
+	    
 
 
 }

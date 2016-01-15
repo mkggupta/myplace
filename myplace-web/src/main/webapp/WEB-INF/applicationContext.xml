@@ -36,6 +36,13 @@
 	    <property name="mediaDAO" ref="appMediaDAOImpl" />   
 	</bean>
 	
+	<bean id="notificationService" class="com.myplace.service.notification.service.v1_0.NotificationServiceImpl">
+	     <property name="notificationDAO" ref="appNotificationDAOImpl" />
+	</bean>
+	
+	<bean id="pushMessageService" class="com.myplace.service.push.AndroidPushMessageServiceImpl">
+	</bean>
+	
 	<bean id="searchService" class="com.myplace.service.search.service.v1_0.SearchServiceImpl">
 		<property name="searchDAO" ref="appSearchDAOImpl" />
 	</bean>
@@ -44,7 +51,6 @@
 		<property name="userDAO" ref="appUserDAOImpl" />
 	</bean>
 	
-	<bean id="pushMessageService" class="com.myplace.service.push.AndroidPushMessageServiceImpl">
-	</bean>
+	
 
 </beans>

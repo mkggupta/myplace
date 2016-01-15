@@ -13,9 +13,16 @@ Api Changes for image Url for default pics - added in user/business/search api d
 User profile pic addition       --- added in reg/get/update profile  done and tested
 
 --task for 13 jan---
-Try to seperate image server
-push notification change -- done and tested
-server Upgrade
+Try to seperate image server  -- done and tested
+push notification change      -- done and tested
+server Upgrade                -- done and tested
 
 --task for 14 jan---
+temp changes for push for all   -- done and tested  increase default distance
+push changes                    -- done and tested
+stats api
+
+--task for 15 jan---
+Event api
+notification api
 Forget Password

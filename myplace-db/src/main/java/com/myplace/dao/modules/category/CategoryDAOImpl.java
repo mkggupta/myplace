@@ -27,10 +27,10 @@ public class CategoryDAOImpl extends AbstractDBManager implements CategoryDAO {
 	@SuppressWarnings("unchecked")
 	public List<CategoryDTO> getCategoryList(String countryCode) throws DataAccessFailedException{
 		try {
-			logger.debug("getCategoryList==");
+			logger.debug("getCategoryList=="+ countryCode);
 			 return (List<CategoryDTO>) sqlMapClient_.queryForList(CategoryConstant.GET_CATEGORY_LIST,countryCode);
 			}catch(SQLException e){
-				logger.error("Exception in getAdvtTemplate : " + e.getMessage());
+				logger.error("Exception in getCategoryList : " + e.getMessage());
 				throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
 			}
 	}

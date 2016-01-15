@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.myplace.common.constant.ClientParamConstant;
+import com.myplace.dto.StatsVO;
 
 
 
@@ -127,6 +128,30 @@ public class ClientHeaderUtil {
 		 return clientInfo;	
 	}
 	
+	public static StatsVO extractStatsParam(HttpServletRequest request){
+		String statsParam = request.getHeader(ClientParamConstant.APPSTATS);
+		logger.debug("param--"+statsParam);
+		StatsVO statsVO = null;
+		if(StringUtils.isNotBlank(statsParam)){
+		  Gson gson = new Gson();  
+		  statsVO= gson.fromJson(statsParam, StatsVO.class);
+		}
+		logger.debug("clientInfo--"+statsVO);
+		 return statsVO;	
+	}
+	
+	public static Long extractUserIdFromHeader(HttpServletRequest httpServletRequest){
+		long userId =0 ;
+		String clientParam = httpServletRequest.getHeader(ClientParamConstant.CLIENTPARAM);
+		if(StringUtils.isNotBlank(clientParam)){
+			  Gson gson = new Gson();  
+			  ClientInfo clientInfo= gson.fromJson(clientParam, ClientInfo.class);
+			  if(null!=clientInfo && null!=clientInfo.getUserId()){
+				  userId = Long.parseLong(clientInfo.getUserId());
+			  }
+		}
+		return userId ;
+	}
 
 
 }

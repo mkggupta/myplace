@@ -125,7 +125,12 @@ public enum ErrorCodesEnum {
 	//media service
 		MEDIA_SERVICE_FAILED_EXCEPTION("ERR12001", "Problem in saving default media.", "com.myplace.media.service.failed"),
 		
-	// Request Log
+	//notification service
+	    NOTIFICATION_SERVICE_FAILED_EXCEPTION("ERR13001", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.notification.service.failed"),
+	    NOTIFICATION_DELETE_SERVICE_FAILED_EXCEPTION("ERR13002", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.notification.service.failed"),
+		
+	
+	    // Request Log
 
 	REQUEST_LOG_SERVICE_FAILED_EXCEPTION("ERR11605", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.requestlog.service.failed"),
 

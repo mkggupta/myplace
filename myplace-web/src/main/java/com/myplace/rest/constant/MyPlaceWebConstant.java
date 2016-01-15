@@ -52,4 +52,5 @@ public interface MyPlaceWebConstant {
 	String BUSINESS_DETAIL = "bussDtl";
 	String USER_DETAIL = "usrDtl";
 	String SLIMIT="sLimit";
+	String NOTIFICATION_LIST = "notifList";
 }

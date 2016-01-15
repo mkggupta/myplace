@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -301,8 +302,22 @@ public class RequestProcessorUtil {
 				registrationVO.setLongitude((float)clientInfo.getFindOnLocation().getLol());
 			}
 			if(null!=clientInfo && null!= clientInfo.getFindOnLocation()){
-				registrationVO.setLastLocation(clientInfo.getFindOnLocation().getCity()+", "+clientInfo.getFindOnLocation().getState()+","+clientInfo.getFindOnLocation().getCountry());
-			}
+				StringBuilder location = new StringBuilder();
+				if(StringUtils.isNotBlank(clientInfo.getFindOnLocation().getCity())){
+					location.append(clientInfo.getFindOnLocation().getCity()).append(", ");
+				}
+				
+				if(StringUtils.isNotBlank(clientInfo.getFindOnLocation().getState())){
+					location.append(clientInfo.getFindOnLocation().getState()).append(", ");
+				}
+				
+				if(StringUtils.isNotBlank(clientInfo.getFindOnLocation().getCountry())){
+					location.append(clientInfo.getFindOnLocation().getCountry());
+				}
+				if(location.length()>0){
+					registrationVO.setLastLocation(location.toString());
+				}
+				}
 			enrichUserVOObj(requestMap, registrationVO,clientInfo);
 		}
 	}
@@ -362,25 +377,29 @@ public class RequestProcessorUtil {
 			if (null != requestMap.get(UserParameters.SECONDARY_EMAIL_ADDRESS)) {
 				userVO.setSecondaryEmailAddress(requestMap.get(UserParameters.SECONDARY_EMAIL_ADDRESS).toString());
 			}
+			logger.debug("enrichUserVO ::STATE :: "+ requestMap.get(UserParameters.STATE));
 			if (null != requestMap.get(UserParameters.STATE)) {
 				userVO.setState((String)requestMap.get(UserParameters.STATE));
-			}else if (null!=clientInfo  && null != clientInfo.getFindOnLocation().getState()) {
+			}else if (null!=clientInfo  && null != clientInfo.getFindOnLocation() && null != clientInfo.getFindOnLocation().getState()) {
 				userVO.setState(clientInfo.getFindOnLocation().getState());
 			}
+			
+			logger.debug("enrichUserVO ::STATE end :: "+ userVO.getState());
 			if (null != requestMap.get(UserParameters.TIME_ZONE)) {
 				userVO.setTimeZone(requestMap.get(UserParameters.TIME_ZONE).toString());
 			}
 			if (null != requestMap.get(UserParameters.ZIPCODE)) {
 				userVO.setZipcode(requestMap.get(UserParameters.ZIPCODE).toString());
-			}else if (null!=clientInfo  && null != clientInfo.getFindOnLocation().getZip()) {
+			}else if (null!=clientInfo  && null != clientInfo.getFindOnLocation() && null != clientInfo.getFindOnLocation().getZip()) {
 				userVO.setZipcode(clientInfo.getFindOnLocation().getZip());
 			}
+			logger.debug("enrichUserVO ::ZIPCODE end :: "+ userVO.getZipcode());
 			if (null != requestMap.get(UserParameters.USER_NAME)) {
 				userVO.setUserName((requestMap.get(UserParameters.USER_NAME).toString()).toLowerCase());
 			}
 			if (null != requestMap.get(UserParameters.USER_ID)) {
 				userVO.setId(Long.parseLong(requestMap.get(UserParameters.USER_ID).toString()));
-			}else if (null!=clientInfo ){
+			}else if (null!=clientInfo && null!= clientInfo.getUserId()){
 				userVO.setId(Long.parseLong(clientInfo.getUserId()));
 			}
 			if (null != requestMap.get(UserParameters.USER_DESC)) {
@@ -394,11 +413,29 @@ public class RequestProcessorUtil {
 			}else{
 				userVO.setLanguage(UserParameters.DEFAULT_LANGUAGE);
 			}
-			if (null != requestMap.get(ClientParamConstant.LOCATION)) {
-				userVO.setLocation(requestMap.get(ClientParamConstant.LOCATION).toString());
-			}else if(null!=clientInfo && null!= clientInfo.getFindOnLocation()){
-				userVO.setLocation(clientInfo.getFindOnLocation().getCity()+", "+clientInfo.getFindOnLocation().getState()+","+clientInfo.getFindOnLocation().getCountry());
+			logger.debug("enrichUserVOObj ::location :: "+userVO.getLocation());
+			if(StringUtils.isBlank(userVO.getLocation())){
+			     if(null!=clientInfo && null!= clientInfo.getFindOnLocation()){
+					StringBuilder location = new StringBuilder();
+					if(StringUtils.isNotBlank(clientInfo.getFindOnLocation().getCity())){
+						location.append(clientInfo.getFindOnLocation().getCity()).append(", ");
+					}
+					
+					if(StringUtils.isNotBlank(clientInfo.getFindOnLocation().getState())){
+						location.append(clientInfo.getFindOnLocation().getState()).append(", ");
+					}
+					
+					if(StringUtils.isNotBlank(clientInfo.getFindOnLocation().getCountry())){
+						location.append(clientInfo.getFindOnLocation().getCountry());
+					}
+					if(location.length()>0){
+						userVO.setLocation(location.toString());
+					}
+					logger.debug("enrichUserVOObj ::location :: "+location);
+					
+				}
 			}
+			logger.debug("enrichUserVOObj ::end :: ");
 		}
 	}
 	

@@ -37,5 +37,6 @@ public interface ClientParamConstant {
 	 String PUSH_KEY = "pushk";
 	 String CONTENT_ID = "cntId";
 	 String CLIENTPARAM = "CLIENT_PARAM";
+	 String APPSTATS = "stats";
 	 
 }

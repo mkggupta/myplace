@@ -34,6 +34,9 @@
 	<bean id="mediaController" class="com.myplace.rest.controller.media.MediaController">
 	</bean>
 	
+	<bean id="notificationController" class="com.myplace.rest.controller.notification.NotificationController">
+	</bean>
+	
 	<bean id="pushController" class="com.myplace.rest.controller.push.PushController">
 		<property name="userService" ref="userService" />
 	</bean>

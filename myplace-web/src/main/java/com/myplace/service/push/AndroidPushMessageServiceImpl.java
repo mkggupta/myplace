@@ -56,7 +56,7 @@ public class AndroidPushMessageServiceImpl implements PushMessageService {
 			PushMessage pushMessage = (PushMessage) params
 					.get(MyPlaceConstant.PUSH_MESSAGE);
 			
-			logger.debug("pushMessage called for Android pushMessage::"+pushMessage.toString()+" for deviceKey ::"+deviceKey);
+			logger.debug("pushMessage called for Android pushMessage::"+pushMessage.toString()+" --for deviceKey ::"+deviceKey);
 			
 			if(StringUtils.isNotBlank(deviceKey)&& null!=pushMessage){
 				boolean pushed = pushMessage(deviceKey, pushMessage);

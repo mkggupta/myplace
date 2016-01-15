@@ -153,9 +153,11 @@ public class UserServiceImpl implements UserService {
 				}else{
 					//get default pic  0-unknown,1-male,2-female gender
 					List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByType(userInfo.getGender());
-					for(DefaultFileInfo defaultFileInfo:defaultFileInfoList){
-						pImgUrls.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));
-					}	
+					if(null!=defaultFileInfoList){
+						for(DefaultFileInfo defaultFileInfo:defaultFileInfoList){
+							pImgUrls.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));
+						}	
+					}
 				}
 				userInfo.setpImgUrls(pImgUrls);
 			}
@@ -201,9 +203,11 @@ public class UserServiceImpl implements UserService {
 					}else{
 					//get default pic  0-unknown,1-male,2-female gender
 						List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByType(userInfo.getGender());
-						for(DefaultFileInfo defaultFileInfo:defaultFileInfoList){
-							pImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));
-						}	
+						if(null!=defaultFileInfoList){
+							for(DefaultFileInfo defaultFileInfo:defaultFileInfoList){
+								pImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));
+							}	
+						}
 					}
 				}
 				if(null!= pImgUrlsList && pImgUrlsList.size()>0){

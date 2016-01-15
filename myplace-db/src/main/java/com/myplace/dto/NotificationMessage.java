@@ -1,22 +1,61 @@
 package com.myplace.dto;
 
-public class PushMessage {
+public class NotificationMessage extends PushMessage{
+
+	long userId;
+	long notifId;
+	int status ;
+	String createDate;
+	String delUrl;
 	
-	//notification type like business created, event etc
-	String type;
-	String title;
-	String description;
-	long id;
-	String clkurl;
-	String imgurl;
-	
-	
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+	public String getDelUrl() {
+		return delUrl;
+	}
+
+	public void setDelUrl(String delUrl) {
+		this.delUrl = delUrl;
+	}
+
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public long getNotifId() {
+		return notifId;
+	}
+
+	public void setNotifId(long notifId) {
+		this.notifId = notifId;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	
+	
+	
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 	public String getType() {
@@ -34,6 +73,8 @@ public class PushMessage {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+	
 
 	public long getId() {
 		return id;

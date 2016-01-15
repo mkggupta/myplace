@@ -35,21 +35,24 @@ public class CatServiceImpl implements CatService {
 		
 		try {
 			List<CategoryDTO> categoryDTOList ;
-			logger.debug("getCategoryList fro "+countryCode);
+			logger.debug("getCategoryList from "+countryCode);
 			 categoryDTOList = catDAO.getCategoryList(countryCode);
 			 if(null!=categoryDTOList && categoryDTOList.size()>0){
 				 List<DefaultFileInfo> fileList = mediaDAO.getDefaultFileInfoByType(MyPlaceConstant.CAT_TYPE);
-					logger.debug("getCategoryList fileList "+fileList);
-				 for(CategoryDTO categoryDTO:categoryDTOList){
-					 for(DefaultFileInfo defaultFileInfo:fileList){
-						 if(categoryDTO.getCatId()==defaultFileInfo.getId()){
-							 categoryDTO.setImgUrl(StorageUtil.getDefaultImageUrl(defaultFileInfo));	 
-						 } 
+					logger.debug("getCategoryList fileList= "+fileList);
+					 if(null!=fileList && fileList.size()>0){
+						 for(CategoryDTO categoryDTO:categoryDTOList){
+							 for(DefaultFileInfo defaultFileInfo:fileList){
+								 if(categoryDTO.getCatId()==defaultFileInfo.getId()){
+									 categoryDTO.setImgUrl(StorageUtil.getDefaultImageUrl(defaultFileInfo));	 
+								 } 
+							}
 						 }
-				 }
+					}
 			 }
 		  return categoryDTOList;
 		} catch (DataAccessFailedException e) {
+			logger.error("getCategoryList fileList error= "+e.getLocalizedMessage());
 			throw new CatServiceException(ErrorCodesEnum.CATEGORY_SERVICE_FAILED_EXCEPTION);
 		}
 	}
@@ -62,14 +65,15 @@ public class CatServiceImpl implements CatService {
 			if(null!=subCatDTOList && subCatDTOList.size()>0){
 				List<DefaultFileInfo> fileList = mediaDAO.getDefaultFileInfoByType(MyPlaceConstant.SUBCAT_TYPE);
 				logger.debug("getSubCategoryList fileList "+fileList);
-				 for(SubCategoryDTO subCategoryDTO:subCatDTOList){
-					 for(DefaultFileInfo defaultFileInfo:fileList){
-						 if(subCategoryDTO.getSubCatId()==defaultFileInfo.getId()){
-							 subCategoryDTO.setImgUrl(StorageUtil.getDefaultImageUrl(defaultFileInfo));	 
-						 } 
-					}
+				 if(null!=fileList){
+					 for(SubCategoryDTO subCategoryDTO:subCatDTOList){
+						 for(DefaultFileInfo defaultFileInfo:fileList){
+							 if(subCategoryDTO.getSubCatId()==defaultFileInfo.getId()){
+								 subCategoryDTO.setImgUrl(StorageUtil.getDefaultImageUrl(defaultFileInfo));	 
+							 } 
+						}
+					 }
 				 }
-				
 			}
 		  return subCatDTOList;
 		} catch (DataAccessFailedException e) {

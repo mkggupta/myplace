@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Maps the UserProfileMod table -->
+<!DOCTYPE sqlMap
+  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+  "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="notification">
+
+  <insert id="insert_notification_info"  parameterClass="com.myplace.dto.NotificationMessage" >
+  	 insert into notification_info(type, description, user_id, imgurl, clkurl, title,create_time) 
+    values (#type#,#description#,#userId#,#imgurl#,#clkurl#,#title#,now())
+  </insert>
+  
+   <select id="get_notification_info_by_type" parameterClass="java.lang.Integer" resultClass="com.myplace.dto.NotificationMessage" >
+  	  SELECT notification_id as notifId, type, description, user_id as userId, imgurl, clkurl, title, status, create_time as createDate
+  	 FROM notification_info where type=#type# and status=1 order by notification_id desc limit 20
+   </select>
+   
+   <select id="get_notification_file_info_by_userid_type" parameterClass="java.util.Map" resultClass="com.myplace.dto.NotificationMessage" >
+  	  SELECT notification_id as notifId, type, description, user_id as userId, imgurl, clkurl, title, status, create_time as createDate
+  	 FROM notification_info where type=#type# and user_id=#userId# and status=#status# order by notification_id desc limit 20
+   </select>
+   
+   <select id="get_notification_file_info_by_userid" parameterClass="java.util.Map" resultClass="com.myplace.dto.NotificationMessage" >
+  	  SELECT notification_id as notifId, type, description, user_id as userId, imgurl, clkurl, title, status, create_time as createDate
+  	 FROM notification_info where status=1 and (user_id=#userId# or type=#type# ) order by notification_id desc limit 20
+   </select>
+   
+    <update id="update_notification_status"  parameterClass="java.util.Map">
+	 update notification_info set status=#status#,modified_time=now()
+	 where notification_id=#notifId# and user_id=#userId# and status!=#status#
+   </update>
+   
+    <update id="update_notification_status_by_userid"  parameterClass="java.util.Map">
+	 update notification_info set status=#status#,modified_time=now()
+	 where user_id=#userId# and status!=#status#
+   </update>
+  
+	
+
+</sqlMap> 
