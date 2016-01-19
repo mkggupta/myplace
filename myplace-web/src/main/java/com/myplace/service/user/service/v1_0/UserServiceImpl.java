@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.user.util.UserUtils;
+import com.myplace.common.util.EmailUtil;
+import com.myplace.common.util.MyPlaceUtil;
 import com.myplace.common.util.StorageUtil;
 import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dao.exception.DataAccessFailedException;
@@ -17,8 +19,10 @@ import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dao.modules.media.MediaDAO;
 import com.myplace.dao.modules.user.UserDAO;
 import com.myplace.dto.DefaultFileInfo;
+import com.myplace.dto.ForgetPasswordVerification;
 import com.myplace.dto.RegistrationInfo;
 import com.myplace.dto.UserAuth;
+import com.myplace.dto.UserEmailVerification;
 import com.myplace.dto.UserFileInfo;
 import com.myplace.dto.UserInfo;
 import com.myplace.dto.UserThirdPartyAuth;
@@ -26,6 +30,8 @@ import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.myplace.service.user.exception.DeviceRegFailedException;
 import com.myplace.service.user.exception.UserServiceFailedException;
 import com.myplace.service.user.exception.UserServiceValidationFailedException;
+
+
 
 public class UserServiceImpl implements UserService {
 
@@ -122,10 +128,32 @@ public class UserServiceImpl implements UserService {
 							}
 						}
 					}
+					
+					logger.debug("registrationInfo"+registrationInfo.getRegistrationMode()); 
 					if (registrationInfo.getRegistrationMode()>0 && registrationInfo.getRegistrationMode()<4) {
 						UserThirdPartyAuth userThirdPartyAuth = new UserThirdPartyAuth(userAuth.getId(), registrationInfo.getRegistrationMode(),
 								registrationInfo.getUserKey(), registrationInfo.getAppKey());
 						userDAO.saveUserThirdPartyAuth(userThirdPartyAuth);
+					}else if (registrationInfo.getRegistrationMode()>3) {
+						String verificationCode = MyPlaceUtil.generateRandomAlphanumericKey(32);
+						logger.debug("verificationCode"+verificationCode); 
+						// SEND EMAIL
+						try {
+							UserEmailVerification userEmailVerification  = new UserEmailVerification();
+							userEmailVerification.setUserId(userId);
+							userEmailVerification.setEmailId( userAuth.getUserName());
+							userEmailVerification.setStatus(MyPlaceConstant.NOT_VERIFIED_STATUS);
+							userEmailVerification.setVerificationCode(verificationCode);
+							long emailVerificationId = userDAO.saveUserEmailVerification(userEmailVerification);
+							logger.debug("emailVerificationId :: "+emailVerificationId+" ,emailid : "+ userAuth.getUserName()+" ,verificationCode :: "+verificationCode);
+							
+							EmailUtil.sendEmailVerificationEmail(registrationInfo.getFirstName(), registrationInfo.getLastName(), emailVerificationId,
+								userAuth.getUserName(), verificationCode);
+						} catch (Exception e) {
+							logger.error("Exception in sending verification email for userid" +userId, e);
+							//EmailUtil.sendEmailVerificationEmail(registrationVO.getFirstName(), registrationVO.getLastName(), emailVerificationId,
+							//		userAuth.getUserName(), verificaitonCode);
+						}
 					}
 				}
 				}
@@ -159,7 +187,7 @@ public class UserServiceImpl implements UserService {
 						}	
 					}
 				}
-				userInfo.setpImgUrls(pImgUrls);
+				userInfo.setImgUrls(pImgUrls);
 			}
 		} catch (DataAccessFailedException e) {
 			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
@@ -211,7 +239,7 @@ public class UserServiceImpl implements UserService {
 					}
 				}
 				if(null!= pImgUrlsList && pImgUrlsList.size()>0){
-					userInfoObj.setpImgUrls(pImgUrlsList);
+					userInfoObj.setImgUrls(pImgUrlsList);
 					userInfoObj.setUserFileInfo(null);
 				}
 				
@@ -252,5 +280,94 @@ public class UserServiceImpl implements UserService {
 			throw new UserServiceFailedException(ErrorCodesEnum.USER_PUSH_UPDATE_EXCEPTION);
 		}
 	}
+	
+	public boolean changePassword(long userId, String newPassword,String oldPassword)throws UserServiceFailedException{
+		try {
+			return userDAO.changePassword(userId, newPassword ,oldPassword);
+		} catch (DataUpdateFailedException e) {
+			logger.error("Exception in changePassword"+e.getLocalizedMessage(),e);
+			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+		}
+	}
+	
+	public boolean verifyEmailAddress(long verificationId, String emailAddress, String verificationCode)throws UserServiceFailedException{
+		boolean isChanged = false ;
+		try {
+				UserEmailVerification userEmailVerification  = new UserEmailVerification();
+				userEmailVerification.setId(verificationId);
+				//userEmailVerification.setUserId(userId);verificationId
+				userEmailVerification.setEmailId(emailAddress);
+				userEmailVerification.setStatus(MyPlaceConstant.VERIFIED_STATUS);
+				userEmailVerification.setVerificationCode(verificationCode);
+				isChanged = userDAO.updateUserEmailVerification(userEmailVerification);
+				if(isChanged){
+					userDAO.updateUserStatus(emailAddress, MyPlaceConstant.ACTIVE_STATUS);
+				}
+			
+		} catch (DataUpdateFailedException e) {
+			logger.error("Exception in verifyEmailAddress"+e.getLocalizedMessage(),e);
+			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+		}
+		return isChanged;
+	}
+	
+	public void forgetPasswordRequested(String userEmail)throws UserServiceFailedException{
+		
+		try {
+			UserAuth userAuth =  userDAO.getUserAuthDetails(userEmail);
+			if (null != userAuth) {
+				logger.debug(userAuth.getStatus()+"---userAuth.getStatus()");
+				if(userAuth.getStatus()==MyPlaceConstant.BLOCKED_STATUS){
+					throw new UserServiceFailedException(ErrorCodesEnum.USER_IS_BLOCKED);
+				}else{
+					logger.debug(userAuth.getId()+"---userAuth.getStatus()");
+					UserInfo userIno = userDAO.getUserProfile(userAuth.getId());
+					logger.debug(userIno.getContactName()+"---userIno.getContactName()");
+					String verificationCode = MyPlaceUtil.generateRandomAlphanumericKey(32);
+					ForgetPasswordVerification forgetPasswordVerification = new ForgetPasswordVerification();
+					forgetPasswordVerification.setUserId(userAuth.getId());
+					forgetPasswordVerification.setVerificationCode(verificationCode);
+					forgetPasswordVerification.setStatus(MyPlaceConstant.UNUSED_STATUS);
+					long forgetPasswordId= userDAO.saveUserForgetPasswordVerification(forgetPasswordVerification);
+					logger.debug(userIno.getContactName()+"---saveUserForgetPasswordVerification()"+forgetPasswordId);
+					//send Email
+					try {
+						EmailUtil.sendResetPasswordEmail(userIno.getContactName(), userIno.getLastName(), forgetPasswordId, userAuth.getId(), userAuth.getUserName(),
+								verificationCode);
+
+					} catch (Exception e) {
+						logger.error("Exception in sending forgetPasswordRequestedd email. Trying again ", e);
+						throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+					}
+				}
+				
+			}else{
+				throw new UserServiceFailedException(ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION);
+			}
+		} catch (DataAccessFailedException |DataUpdateFailedException e) {
+			logger.error("Exception in forgetPasswordRequested"+e.getLocalizedMessage(),e);
+			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+		}
+		
+	}
+	
+	   public boolean resetPassword(long userId, long forgotPasswordId, String verificationCode, String userName, String password) throws UserServiceFailedException{
+		   	boolean isReset = false ;
+		   	try {
+		   		ForgetPasswordVerification forgetPasswordVerification = new ForgetPasswordVerification();
+				forgetPasswordVerification.setUserId(userId);
+				forgetPasswordVerification.setId(forgotPasswordId);
+				forgetPasswordVerification.setVerificationCode(verificationCode);
+				forgetPasswordVerification.setStatus(MyPlaceConstant.USED_STATUS);
+				isReset = userDAO.updateUserForgetPasswordVerification(forgetPasswordVerification);
+		   		if(isReset){
+		   			userDAO.resetPassword(userId, userName, password);
+		   		}
+		   	} catch (DataUpdateFailedException e) {
+				logger.error("Exception in resetPassword"+e.getLocalizedMessage(),e);
+				throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+			}
+			return isReset;
+	   }
 
 }

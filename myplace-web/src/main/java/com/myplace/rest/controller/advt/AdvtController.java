@@ -47,6 +47,7 @@ public class AdvtController {
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
 		if(logger.isDebugEnabled()){
 			logger.debug("AdvtController.create"+httpServletRequest);
+			@SuppressWarnings("unchecked")
 			Enumeration<Object> headerNames = httpServletRequest.getHeaderNames();
 			Map<String,String> requestParamMap = new HashMap<String, String>();
 			while (headerNames.hasMoreElements()) {

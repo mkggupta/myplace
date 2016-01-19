@@ -31,7 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
 			List<NotificationMessage> notifList =   notificationDAO.getNotificationInfoByUserId(userId);
 			if(null!=notifList && notifList.size()>0){
 				for(NotificationMessage notificationMessage:notifList){
-					if(notificationMessage.getType().equals(PushConstant.PERSONAL_NOTIFICATION_TYPE)){
+					if(notificationMessage.getType()==PushConstant.PERSONAL_NOTIFICATION_TYPE){
 						MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
 						String baseUrl = myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL);
 						notificationMessage.setDelUrl(baseUrl+"notif/pvt/delete/"+userId+"/"+notificationMessage.getNotifId());

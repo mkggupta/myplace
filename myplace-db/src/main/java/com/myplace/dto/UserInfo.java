@@ -35,14 +35,16 @@ public class UserInfo {
 	private float longitude;
 	private float latitude; 
 	private Date modifiedDate;
-	List <String> pImgUrls;
+	List <String> imgUrls;
 	List<UserFileInfo>  userFileInfo;
 	
-	public List<String> getpImgUrls() {
-		return pImgUrls;
+	
+
+	public List<String> getImgUrls() {
+		return imgUrls;
 	}
-	public void setpImgUrls(List<String> pImgUrls) {
-		this.pImgUrls = pImgUrls;
+	public void setImgUrls(List<String> imgUrls) {
+		this.imgUrls = imgUrls;
 	}
 	
 	public List<UserFileInfo> getUserFileInfo() {

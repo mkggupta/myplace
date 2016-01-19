@@ -26,6 +26,14 @@
 		#country#,now(),#language#,#location#,#primaryEmailAddress#)
 	</insert>
 	
+	
+	<select id="get_user_auth_details" parameterClass="java.lang.String" resultClass="com.myplace.dto.UserAuth">
+  		select id,username as userName, password, status, created_date as
+		createdDate, modified_date as modifiedDate,last_login_time as lastLoginTime, registration_mode as registrationMode, last_login_mode as
+		lastLoginMode,login_status as loginStatus,current_client_version as currentClientVersion ,current_platform as currentPlatform,latitude,longitude,last_location as lastLocation from user_auth where
+		username=#username#
+     </select>
+     
 	<select id="get_userid_by_userkey_id" parameterClass="java.util.Map" resultClass="java.lang.Long">
   		SELECT id FROM user_third_party_auth where user_key=#userKey# and third_party_id=#thirdPartyId#
      </select>
@@ -84,5 +92,48 @@
 	  	</dynamic>
  	 </select>
  	 
+	<update id="change_user_password" parameterClass="java.util.Map">
+		UPDATE user_auth set password =#newPassword#,modified_date=now() where id=#userId# and password=#oldPassword#
+	</update>
+ 	 
+	<insert id="insert_email_verification_details" parameterClass="com.myplace.dto.UserEmailVerification">
+		INSERT INTO user_email_verification (user_id,email_id,verification_code,status,created_date) VALUES
+		(#userId#,#emailId#,#verificationCode#,#status#,now())
+		<selectKey resultClass="long" keyProperty="id" type="post">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+	<update id="update_email_verification_details" parameterClass="com.myplace.dto.UserEmailVerification">
+		UPDATE user_email_verification set status =#status#,expiry_date=now() 
+		where id=#id# and email_id=#emailId# and verification_code=#verificationCode# and status !=#status#
+	</update>
+	
+	<insert id="insert_forget_password_verification_details" parameterClass="com.myplace.dto.ForgetPasswordVerification">
+		INSERT INTO forget_password_verification (user_id,verification_code,created_date ,status) 
+		VALUES (#userId#,#verificationCode#,now(),#status#)
+		<selectKey resultClass="long" keyProperty="id" type="post">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<update id="update_forget_password_verification_details" parameterClass="com.myplace.dto.ForgetPasswordVerification">
+		UPDATE forget_password_verification set status =#status#,expiry_date=now() 
+		where id=#id# and user_id=#userId# and verification_code=#verificationCode# and status !=#status#
+	</update>
+	
+	<select id="get_forget_password_verification_details_by_userid" parameterClass="java.util.Map" resultClass="com.myplace.dto.ForgetPasswordVerification">
+		select user_id as userId,verification_code as
+		verificationCode,created_date as createdDate, expiry_date as expiryDate,status From forget_password_verification where user_id=#userId#
+	</select>
+	
+	<update id="reset_user_password" parameterClass="java.util.Map">
+		UPDATE user_auth set password =#newPassword#,modified_date=now() where id=#userId# and username=#userName#
+	</update>
+	
+	<update id="update_user_status" parameterClass="java.util.Map">
+		UPDATE user_auth set status =#status#,modified_date=now() where username=#userName# and status !=#status#
+	</update>
+	
 	
  </sqlMap> 

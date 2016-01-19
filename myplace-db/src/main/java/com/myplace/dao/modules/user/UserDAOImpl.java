@@ -14,12 +14,14 @@ import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.exception.DataUpdateFailedException;
 import com.myplace.dao.modules.base.AbstractDBManager;
+import com.myplace.dto.ForgetPasswordVerification;
 import com.myplace.dto.UserAuth;
-import com.myplace.dto.UserFileInfo;
+import com.myplace.dto.UserEmailVerification;
 import com.myplace.dto.UserInfo;
 import com.myplace.dto.UserThirdPartyAuth;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+
 
 
 
@@ -215,5 +217,126 @@ public class UserDAOImpl extends AbstractDBManager implements UserDAO {
 			}
 	}
 	
+	public boolean changePassword(long userId, String newPassword,String oldPassword)throws DataUpdateFailedException{
+			boolean isSucceed =false ;
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("userId", userId);
+			parameterMap.put("newPassword", newPassword);
+			parameterMap.put("oldPassword", oldPassword);
+			int updateState = sqlMapClient_.update(UserConstants.CHANGE_USER_PASSWORD,parameterMap);
+			logger.debug("updateState-="+updateState);
+			if(updateState==1){
+				isSucceed=true;
+			}
+		} catch (SQLException e) {
+			logger.error("Exception in changePassword : "+e.getLocalizedMessage(),e);
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+		
+		return isSucceed;
+	}
+	
+	public long saveUserEmailVerification(UserEmailVerification userEmailVerification) throws DataUpdateFailedException {
+		try {
+			return (long) sqlMapClient_.insert(UserConstants.INSERT_EMAIL_VERIFICATION_DETAILS, userEmailVerification);
+			
+		} catch (SQLException e) {
+			logger.error("Exception in storing email verification details in database for the user : " + userEmailVerification.getUserId() + " error  : "
+					+ e.getMessage());
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
+	
+	public boolean updateUserEmailVerification(UserEmailVerification userEmailVerification) throws DataUpdateFailedException {
+		boolean recordUpdate = false;
+		try {
+			int updateState = sqlMapClient_.update(UserConstants.UPDTE_EMAIL_VERIFICATION_DETAILS, userEmailVerification);
+			if(updateState==1){
+				recordUpdate=true;
+			}	
+		} catch (SQLException e) {
+			logger.error("Exception in updateUserEmailVerification  in database for the user : " + userEmailVerification.getUserId() + " error  : "
+					+ e.getMessage());
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+		return recordUpdate;
+	}
+	
+	
+	public long saveUserForgetPasswordVerification(ForgetPasswordVerification forgetPasswordVerification) throws DataUpdateFailedException {
+		try {
+			return (long) sqlMapClient_.insert(UserConstants.INSERT_FORGET_PASSWORD_DETAILS, forgetPasswordVerification);
+			
+		} catch (SQLException e) {
+			logger.error("Exception in storing email verification details in database for the user : " + forgetPasswordVerification.getUserId() + " error  : "
+					+ e.getMessage());
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
+	
+	public boolean updateUserForgetPasswordVerification(ForgetPasswordVerification forgetPasswordVerification) throws DataUpdateFailedException {
+		boolean recordUpdate = false;
+		try {
+			int updateState = sqlMapClient_.update(UserConstants.UPDTE_FORGET_PASSWORD_DETAILS, forgetPasswordVerification);
+			 if(updateState==1){
+					recordUpdate=true;
+			}
+		} catch (SQLException e) {
+			logger.error("Exception in storing email verification details in database for the user : " +forgetPasswordVerification.getUserId() + " error  : "
+					+ e.getMessage());
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+		return recordUpdate;
+	}
+	
+	public UserAuth getUserAuthDetails(String userName) throws DataAccessFailedException {
+		try {
+			return (UserAuth) sqlMapClient_.queryForObject(UserConstants.GET_USER_AUTH_DETAILS, userName);
+		} catch (SQLException e) {
+			logger.error("Exception in getUserAuthDetails for the user : " + userName + " error  : "
+					+ e.getMessage());
+			throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
+	
+	public boolean resetPassword(long userId,String userName, String newPassword)throws DataUpdateFailedException{
+		boolean recordUpdate = false;
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("userId", userId);
+			parameterMap.put("userName", userName);
+			parameterMap.put("newPassword", newPassword);
+			logger.debug("userId-="+userId +"userName="+userName);
+			int updateState  = sqlMapClient_.update(UserConstants.RESET_USER_PASSWORD,parameterMap);
+			 if(updateState==1){
+					recordUpdate=true;
+			}
+			logger.debug("resetPassword-="+recordUpdate);
+		} catch (SQLException e) {
+			logger.error("Exception in resetPassword : "+e.getLocalizedMessage(),e);
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+		return recordUpdate;
+	}
+	
+	public boolean updateUserStatus(String userEmail, int userStatus)throws DataUpdateFailedException{
+		boolean recordUpdate = false;
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("userName", userEmail);
+			parameterMap.put("status", userStatus);
+			int updateState  = sqlMapClient_.update(UserConstants.UPDATE_USER_STATUS,parameterMap);
+			 if(updateState==1){
+				recordUpdate=true;
+			}
+			logger.debug("updateUserStatus-=");
+		} catch (SQLException e) {
+			logger.error("Exception in updateUserStatus : "+e.getLocalizedMessage(),e);
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+		return recordUpdate;
+	}
+
 	
 }

@@ -82,5 +82,25 @@ public interface MyPlaceConstant {
 	int CAT_TYPE=3;
 	int SUBCAT_TYPE=4;
 	
+	//status for email verification
+	int NOT_VERIFIED_STATUS=0;
+	int VERIFIED_STATUS=1;
+	int EXPIRED_STATUS=2;
+	//status for user
+	int INACTIVE_STATUS=0;
+	int ACTIVE_STATUS=1;
+	int BLOCKED_STATUS=2;
+	
+	//status for forget password
+	int UNUSED_STATUS=0;
+	int USED_STATUS=1;
+	int CODE_EXPIRED_STATUS=2;
+	
+	//status for business status
+		byte BUSS_ACTIVE_STATUS=1;
+		byte BUSS_INACTIVE_STATUS=2;
+		byte BUSS_DELETED_STATUS=3;
+	
+	
 	
 }

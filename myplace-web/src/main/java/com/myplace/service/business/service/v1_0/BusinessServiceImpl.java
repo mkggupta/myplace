@@ -16,6 +16,7 @@ import com.myplace.common.constant.PushConstant;
 import com.myplace.common.user.util.NotificationUtils;
 import com.myplace.common.util.MyPlaceProperties;
 import com.myplace.common.util.MyPlacePropertyKeys;
+import com.myplace.common.util.MyPlaceUtil;
 import com.myplace.common.util.StorageUtil;
 import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.dao.exception.DataAccessFailedException;
@@ -184,8 +185,11 @@ public class BusinessServiceImpl implements BusinessService {
 					}
 				}
 				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
-					businessInfo.setBussImgUrls(bussImgUrlsList);
+					businessInfo.setImgUrls(bussImgUrlsList);
 				}
+				//business/pvt/my/{userId}/{bussId} get business detail url
+				businessInfo.setDetailUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/my/"+userId+"/"+businessInfo.getBussId());
+
 			}
 		}
 			return businessInfoList;
@@ -199,6 +203,9 @@ public class BusinessServiceImpl implements BusinessService {
 
 		try {
 				BusinessInfo  businessInfo = businessDAO.getMyBusinessDetail(userId,businessId);
+				// business update url and delete url
+				businessInfo.setUpdateUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/updatebuss");
+				businessInfo.setDeleteUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/delbuss");
 				List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfo(businessId);
 				List<String> bussImgUrlsList = new ArrayList<String>();
 				if(null!=BusinessFileInfoList && BusinessFileInfoList.size()>0){
@@ -214,7 +221,7 @@ public class BusinessServiceImpl implements BusinessService {
 					}
 				}
 				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
-						businessInfo.setBussImgUrls(bussImgUrlsList);
+						businessInfo.setImgUrls(bussImgUrlsList);
 				}
 			return businessInfo;
 		} catch (DataAccessFailedException e) {
@@ -244,7 +251,7 @@ public class BusinessServiceImpl implements BusinessService {
 				}
 			}
 			if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
-					businessInfo.setBussImgUrls(bussImgUrlsList);
+					businessInfo.setImgUrls(bussImgUrlsList);
 			}
 			return businessInfo;
 		} catch (DataAccessFailedException ex) {
@@ -309,16 +316,87 @@ public class BusinessServiceImpl implements BusinessService {
 				}
 				logger.debug("updateBusinessInfo bussImgUrlsList----"+bussImgUrlsList);
 				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
-					businessInfoObj.setBussImgUrls(bussImgUrlsList);
+					businessInfoObj.setImgUrls(bussImgUrlsList);
 					businessInfoObj.setBusinessFileInfo(null);
 				}
-			
+				// business update url and delete url
+				businessInfoObj.setUpdateUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/updatebuss");
+				businessInfoObj.setDeleteUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/delbuss");
 				
 		} catch (DataAccessFailedException|DataUpdateFailedException e) {
 			logger.error("Exception in updating user details in database for the businessInfoObj : " + businessInfoObj + " error  : " + e.getMessage());
 			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION);
 		}
 		return businessInfoObj;
+	}
+	
+	//this is only for dummy
+	public Long sendPush(long businessId) throws BusinessServiceException{
+		
+		logger.debug("BusinessServiceImpl----"+businessId);
+		
+		try {
+			
+			
+			//This code start for Push Notification 
+			if(businessId>0){
+				try {
+					BusinessInfo businessInfo = businessDAO.getBusinessDetail(businessId);
+					List<UserSearchDTO> userSearchDTOList = searchDAO.getUserListNearMe(businessInfo.getBussLat(),businessInfo.getBussLong(),MyPlaceBusinessConstant.DEFAULT_PUSH_DISTANCE);
+					logger.debug("userSearchDTOList----"+userSearchDTOList);
+					if(null!=userSearchDTOList && userSearchDTOList.size()>0)
+					{	List<Long> userIdList = new ArrayList<Long>();
+						for(UserSearchDTO userSearchDTO:userSearchDTOList){
+							userIdList.add(userSearchDTO.getId());
+						}
+						logger.debug("userIdList----"+userIdList);
+						if(null!=userIdList && userIdList.size()>0){
+							List<UserPushInfo>  userPushInfoList = userDAO.getUserPushInfoList(userIdList);
+							logger.debug("userPushInfoList----"+userPushInfoList);
+							String serviceName= categoryDAO.getCategoryNameByCatId(businessInfo.getCatId());
+							boolean pushStatus=false;
+							PushMessage pushMessage = new PushMessage();
+							pushMessage.setType(PushConstant.BUSINESS_CREATION_TYPE);
+							pushMessage.setTitle(PushConstant.BUSINESS_CREATION_TITLE);
+							pushMessage.setId(businessId);
+							pushMessage.setDescription("Good News ! Now "+businessInfo.getBussName()+" specialized in "+serviceName+" is near you.");
+							MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+							String baseUrl = myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL);
+							pushMessage.setClkurl(baseUrl+"business/pub/buss/"+businessId);
+							
+							List<BusinessFileInfo>  fileInfoList = businessDAO.getBusinessFileInfo(businessId);
+							logger.debug("fileInfoList----"+fileInfoList);
+							if(null!=fileInfoList && fileInfoList.size()>0){
+									pushMessage.setImgurl(StorageUtil.getImageUrl(fileInfoList.get(0)));		
+							}
+							
+							//insert user notification info
+							//NotificationMessage notificationMessage = NotificationUtils.transformPushMessageToNotificationMesage(pushMessage) ;
+							//notificationDAO.saveNotificationInfo(userIdList, notificationMessage);
+							logger.debug("userPushInfoList----"+userPushInfoList);
+							if(null!=userPushInfoList && userPushInfoList.size()>0){
+								
+								for(UserPushInfo userPushInfo:userPushInfoList){
+									Map<String, Object> params= new HashMap<String, Object>();
+									params.put(MyPlaceConstant.DEVICE_KEY,userPushInfo.getPushKey());
+									params.put(MyPlaceConstant.PUSH_MESSAGE,pushMessage);
+									pushStatus=pushMessageService.pushNotification(params);
+									logger.debug("pushStatus----"+pushStatus +" for userid="+userPushInfo.getUserId());
+								}
+							}
+						}
+					}
+				} catch (DataAccessFailedException e) {
+					//we will not re-throw exception as business creation should not stop because of push
+					logger.error("could not send push notification---"+e.getLocalizedMessage());
+				}
+			}
+			//Code end for Push Notification 
+		} catch (Exception e) {
+			logger.error("send push---"+e.getLocalizedMessage());
+			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION);
+		}
+		return businessId;
 	}
 
 	

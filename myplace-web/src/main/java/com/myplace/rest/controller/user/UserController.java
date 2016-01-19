@@ -15,14 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.myplace.common.constant.UserParameters;
+import com.myplace.common.util.ClientHeaderUtil;
 import com.myplace.common.util.ControllerUtils;
 import com.myplace.common.util.RequestProcessorUtil;
 import com.myplace.dto.UserInfo;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
+import com.myplace.framework.success.SuccessCodesEnum;
 import com.myplace.rest.constant.MyPlaceWebConstant;
 import com.myplace.service.user.exception.UserServiceFailedException;
 import com.myplace.service.user.exception.UserServiceValidationFailedException;
 import com.myplace.service.user.service.v1_0.UserService;
+
 
 @Controller
 @RequestMapping("/api/usr")
@@ -102,7 +106,7 @@ public class UserController {
 					userInfo = userService.updateUser(userInfo);
 					 if(null!= userInfo){
 						 dataMap.put(MyPlaceWebConstant.USER_DETAIL, userInfo);
-						
+						 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
 					 }else{
 						 logger.debug("updateProfile() ");
 						   dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
@@ -128,6 +132,105 @@ public class UserController {
 		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
 		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
 		logger.debug("updateProfile.dataMap="+dataMap);
+		return modelAndView;
+	}
+	
+	
+	@RequestMapping(value = "/pvt/changepassword", method = RequestMethod.POST)
+	public ModelAndView changePassword(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+		ModelAndView modelAndView = new ModelAndView();
+		HashMap<String, Object> dataMap = new HashMap<String, Object>();
+		String newPassword = null;
+		String confirmPassword = null;
+		String oldPassword = null;
+		boolean isError = false;
+		try {
+			long userId = ClientHeaderUtil.extractUserIdFromHeader(httpServletRequest);
+			userId=48;
+		if(userId>0){
+			HashMap<String, Object>  requestMap = ControllerUtils.getRequestMapFromMultipart(httpServletRequest);
+			if(null!=requestMap && requestMap.size()>0){
+	
+				if (null != requestMap.get(UserParameters.OLD_PASSWORD) && StringUtils.isNotBlank(requestMap.get(UserParameters.OLD_PASSWORD).toString())) {
+					oldPassword = requestMap.get(UserParameters.OLD_PASSWORD).toString();
+				} else {
+					logger.debug("isError1---"+isError);
+					isError = true;
+					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.OLD_PASSWORD_MISSING.getErrorCode());
+					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.OLD_PASSWORD_MISSING.getErrorMessage());
+				}
+
+				if (null != requestMap.get(UserParameters.PASSWORD) && StringUtils.isNotBlank(requestMap.get(UserParameters.PASSWORD).toString())) {
+					newPassword = requestMap.get(UserParameters.PASSWORD).toString();
+				} else {
+					logger.debug("isError2---"+isError);
+					isError = true;
+					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.PASSWORD_MISSING.getErrorCode());
+					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.PASSWORD_MISSING.getErrorMessage());
+				}
+				
+				if (null != requestMap.get(UserParameters.CONFIRM_PASSWORD) && StringUtils.isNotBlank(requestMap.get(UserParameters.CONFIRM_PASSWORD).toString())) {
+					confirmPassword = requestMap.get(UserParameters.CONFIRM_PASSWORD).toString();
+				} else {
+					logger.debug("isError3---"+isError);
+					isError = true;
+					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.CONFIRM_PASSWORD_MISSING.getErrorCode());
+					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.CONFIRM_PASSWORD_MISSING.getErrorMessage());
+				}
+				
+				if(null!=newPassword && null!=oldPassword && newPassword.equals(oldPassword)){
+					isError = true;
+					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_CHANGE_PASSWORD_SAME.getErrorCode());
+					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_CHANGE_PASSWORD_SAME.getErrorMessage());
+				}
+				
+				if(null!=newPassword && null!=oldPassword && !newPassword.equals(confirmPassword)){
+					isError = true;
+					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_PASSWORD_MISMATCH.getErrorCode());
+					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_PASSWORD_MISMATCH.getErrorMessage());
+				}
+				
+				if (!isError) {
+					logger.debug("isError4---"+isError);
+					boolean isSucceed = userService.changePassword(userId, newPassword, oldPassword);
+					logger.debug("isSucceed---"+isSucceed);
+					if(isSucceed){
+						 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.PASSWORD_CHANGE_SUCCESS.getSuccessMessage());
+						 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.PASSWORD_CHANGE_SUCCESS.getSuccessCode());	
+						 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
+					}else{
+						dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+						dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_PASSWORD_NOT_CHANGE.getErrorMessage());
+						dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_PASSWORD_NOT_CHANGE.getErrorCode());
+					}
+				}
+			}
+		}else{
+				isError = true;
+				dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_INFO_MISSING.getErrorCode());
+				dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_INFO_MISSING.getErrorMessage());
+			}
+			
+		} catch (UserServiceFailedException e) {
+			logger.error("changePassword()"+e.getLocalizedMessage(),e);
+			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
+			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
+			
+		}catch (Exception e) {
+			logger.error("changePassword11()"+e.getLocalizedMessage(),e);
+			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorCode());
+		}
+		Gson gson = new Gson();
+		String jsonData = gson.toJson(dataMap);
+		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+		logger.debug("change password.dataMap="+dataMap);
 		return modelAndView;
 	}
 	

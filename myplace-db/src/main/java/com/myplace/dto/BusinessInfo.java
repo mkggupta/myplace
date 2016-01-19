@@ -29,14 +29,35 @@ public class BusinessInfo {
 	private String catName;
 	private int feedType;
 	List<BusinessFileInfo> businessFileInfo;
-	private List<String> bussImgUrls;
+	private List<String> imgUrls;
+	private String detailUrl;
+	private String updateUrl;
+	private String deleteUrl;
 
-	
-	public List<String> getBussImgUrls() {
-		return bussImgUrls;
+	public String getDetailUrl() {
+		return detailUrl;
 	}
-	public void setBussImgUrls(List<String> bussImgUrls) {
-		this.bussImgUrls = bussImgUrls;
+	public void setDetailUrl(String detailUrl) {
+		this.detailUrl = detailUrl;
+	}
+	public String getUpdateUrl() {
+		return updateUrl;
+	}
+	public void setUpdateUrl(String updateUrl) {
+		this.updateUrl = updateUrl;
+	}
+	public String getDeleteUrl() {
+		return deleteUrl;
+	}
+	public void setDeleteUrl(String deleteUrl) {
+		this.deleteUrl = deleteUrl;
+	}
+
+	public List<String> getImgUrls() {
+		return imgUrls;
+	}
+	public void setImgUrls(List<String> imgUrls) {
+		this.imgUrls = imgUrls;
 	}
 	public int getFeedType() {
 		return feedType;

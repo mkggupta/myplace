@@ -16,4 +16,8 @@ public interface UserService {
 	public UserInfo updateUser(UserInfo userInfo) throws UserServiceFailedException;
 	public Long regPushDevice(UserPushInfo userPushInfo) throws DeviceRegFailedException,UserServiceFailedException;
 	void updateUserPushStatus(long userId, String pushStatus) throws UserServiceFailedException;
+	public boolean changePassword(long userId, String newPassword,String oldPassword)throws UserServiceFailedException;
+	public boolean verifyEmailAddress(long verificationId, String emailAddress, String verificationCode)throws UserServiceFailedException;
+	public void forgetPasswordRequested(String userEmail)throws UserServiceFailedException;
+	public boolean resetPassword(long userId, long forgotPasswordId, String verificationCode, String userName, String password) throws UserServiceFailedException;
 }

@@ -2,15 +2,21 @@ package com.myplace.dto;
 
 public class PushMessage {
 	
-	//notification type like business created, event etc
-	String type;
+	//notification type like 1- business created,2-event etc
+	int type;
 	String title;
 	String description;
 	long id;
 	String clkurl;
 	String imgurl;
 	
-	
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
 	public String getDescription() {
 		return description;
 	}
@@ -19,14 +25,7 @@ public class PushMessage {
 		this.description = description;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
+	
 	public String getTitle() {
 		return title;
 	}

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ import com.myplace.dao.entities.UserPushInfo;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.myplace.framework.success.SuccessCodesEnum;
 import com.myplace.rest.constant.MyPlaceWebConstant;
+import com.myplace.service.business.service.v1_0.BusinessService;
 import com.myplace.service.user.exception.DeviceRegFailedException;
 import com.myplace.service.user.service.v1_0.UserService;
 
@@ -35,6 +37,12 @@ private UserService userService;
 	
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+	
+	private BusinessService businessService ;
+	@Autowired
+	public void setBusinessService(BusinessService businessService) {
+		this.businessService = businessService;
 	}
 	private static Logger logger = LoggerFactory.getLogger(PushController.class);
 	
@@ -128,6 +136,40 @@ private UserService userService;
 					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 					logger.error("Exception while updateUserPushStatus= "+requestMap);
 				}
+			}else{
+				dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+				logger.error("Exception while updateUserPushStatus "+requestMap);
+			}
+		}catch (Exception e) {
+			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+			logger.error("Exception while updateUserPushStatus "+e.getLocalizedMessage(),e);
+		}
+		Gson gson = new Gson();
+		String jsonData = gson.toJson(dataMap);
+		logger.debug("PushController :: jsonData :: " + jsonData);
+		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+		return modelAndView;
+
+	}
+	
+	@RequestMapping(value = "/pub/sendpush", method = RequestMethod.POST)
+	public ModelAndView sendPush(HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) {
+		ModelAndView modelAndView = new ModelAndView();
+		HashMap<String, Object> dataMap = new HashMap<String, Object>();
+		try {
+	
+			//HashMap<String, Object> requestMap = ControllerUtils.getRequestMapFromMultipart(httpServletRequest);
+			HashMap<String, Object> requestMap = new HashMap<String, Object>();
+			requestMap.put("BusinessId", "88932");
+			if(null!=requestMap && requestMap.size()>0){
+				//if(null!=requestMap.get(UserParameters.UID) && null!=requestMap.get(UserParameters.PUSH_STATUS) ){
+					Long businessId = Long.parseLong(requestMap.get("BusinessId").toString());
+					//String pushStatus = requestMap.get(UserParameters.PUSH_STATUS).toString();
+					businessService.sendPush(businessId);
+					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.SUCCESS_CODE);
+				
 			}else{
 				dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 				logger.error("Exception while updateUserPushStatus "+requestMap);

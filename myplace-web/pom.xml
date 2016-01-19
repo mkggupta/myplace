@@ -194,27 +194,43 @@
 	<groupId>jmimemagic</groupId>
 	<artifactId>jmimemagic</artifactId>
 	<version>0.1.2</version>
-</dependency>
-<dependency>
+	</dependency>
+	<dependency>
+	  <groupId>com.github.fernandospr</groupId>
+	  <artifactId>javapns-jdk16</artifactId>
+	  <version>2.2.1</version>
+	</dependency>
+
+	<dependency>
+		<groupId>org.bouncycastle</groupId>
+		<artifactId>bcprov-jdk16</artifactId>
+		<version>1.46</version>
+	</dependency>
+<!--
+	<dependency>
 			<groupId>javapns</groupId>
 			<artifactId>javapns</artifactId>
 			<version>jdk1.5-v1.6</version>
-		</dependency>
-<dependency>
-	<groupId>org.bouncycastle</groupId>
-	<artifactId>bcprov-jdk16</artifactId>
-	<version>1.45</version>
-</dependency>
+	</dependency>
+	<dependency>
+		<groupid>javax.mail</groupid>
+		<artifactid>mail</artifactid>
+		<version>1.4.7</version>
+	</dependency>
+	 
+	<dependency>
+		<groupid>javax.mail</groupid>
+		<artifactid>javax.mail-api</artifactid>
+		<version>1.5.2</version>
+	</dependency>
+-->
 
-<!--
 
 		<dependency>
-			<groupId>bcprov</groupId>
-			<artifactId>bcprov</artifactId>
-			<version>jdk15-145</version>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.3</version>
 		</dependency>
- 
-  -->
  </dependencies>
 <build>
 		<defaultGoal>install</defaultGoal>

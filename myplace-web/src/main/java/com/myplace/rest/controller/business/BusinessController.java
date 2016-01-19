@@ -311,5 +311,46 @@ public class BusinessController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value = "/pvt/delbuss", method = RequestMethod.POST)
+	public ModelAndView deleteBusiness(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+		ModelAndView modelAndView = new ModelAndView();
+		HashMap<String, Object> dataMap = new HashMap<String, Object>();
+		Long userId= 0l,bussId=0l;
+		Byte status = MyPlaceConstant.BUSS_DELETED_STATUS;
+		
+		HashMap<String, Object> requestMap = ControllerUtils.getRequestMapFromMultipart(httpServletRequest);
+		try {
+			if(null!=requestMap.get(MyPlaceBusinessConstant.USERID)){
+				userId = Long.parseLong(requestMap.get(MyPlaceBusinessConstant.USERID).toString());
+			}
+			if(null!=requestMap.get(MyPlaceBusinessConstant.BID)){
+				bussId = Long.parseLong(requestMap.get(MyPlaceBusinessConstant.BID).toString());
+			}
+			/*if(null!=requestMap.get(MyPlaceConstant.STATUS)){
+				status = Byte.parseByte(requestMap.get(MyPlaceConstant.STATUS).toString());
+			}*/
+			if(userId>0 && bussId>0){
+				  businessService.changeBussStatus(userId,bussId, status);
+				 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
+				 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.BUSS_DELETE_SUCCESS.getSuccessMessage());
+				 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.BUSS_DELETE_SUCCESS.getSuccessCode());
+			}else{
+				 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
+				 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.NO_BUSS_STATUS_SUCCESS.getSuccessMessage());
+				 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.NO_BUSS_STATUS_SUCCESS.getSuccessCode());
+			}
+		}catch (BusinessServiceException e) {
+			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION.getErrorCode());
+			
+		}
+		Gson gson = new Gson();
+		String jsonData = gson.toJson(dataMap);
+		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+		logger.debug("BussController.changeBusinessStatus.dataMap="+dataMap);
+		return modelAndView;
+	}
 	
 }

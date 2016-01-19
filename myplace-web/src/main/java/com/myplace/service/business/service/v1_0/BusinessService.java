@@ -12,6 +12,6 @@ public interface BusinessService {
 	public BusinessInfo getBusinessDetail (Long businessId) throws BusinessServiceException;
 	public void changeBussStatus(long userId,long businessId,Byte status) throws BusinessServiceException;
 	public BusinessInfo updateBusinessInfo (BusinessInfo businessInfo) throws BusinessServiceException;
-	
+	public Long sendPush(long businessId) throws BusinessServiceException;
 	
 }

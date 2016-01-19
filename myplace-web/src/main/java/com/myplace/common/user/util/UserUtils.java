@@ -27,7 +27,7 @@ public class UserUtils {
 			userAuth.setPassword(registrationVO.getPassword());
 			userAuth.setRegistrationMode(registrationVO.getRegistrationMode());
 			if(StringUtils.isNotBlank(registrationVO.getUserName())){
-			userAuth.setUserName(registrationVO.getUserName());
+				userAuth.setUserName(registrationVO.getUserName());
 			}else if(StringUtils.isNotBlank(registrationVO.getFirstName()) && StringUtils.isNotBlank(registrationVO.getLastName())){
 				userAuth.setUserName(registrationVO.getFirstName()+" "+registrationVO.getLastName());
 			}else if(StringUtils.isNotBlank(registrationVO.getFirstName())){
@@ -38,14 +38,14 @@ public class UserUtils {
 			userAuth.setCurrentClientVersion(registrationVO.getCurrentClientVersion());
 			userAuth.setCurrentPlatform(registrationVO.getCurrentPlatform());
 			if (isRegistration) {
-				if (registrationVO.getRegistrationMode() > 0) {
+				if (registrationVO.getRegistrationMode() > 0 && registrationVO.getRegistrationMode() <4 ) {
 					userAuth.setStatus(UserStatusEnum.ACTIVE.getStatus());
 				} else {
 					userAuth.setStatus(UserStatusEnum.INACTIVE.getStatus());
 				}
 				userAuth.setLastLoginMode(registrationVO.getRegistrationMode());
 				userAuth.setCreatedDate(new Date());
-				userAuth.setLoginStatus(0);
+				userAuth.setLoginStatus(1);
 				userAuth.setLatitude(registrationVO.getLatitude());
 				userAuth.setLongitude(registrationVO.getLongitude());
 				userAuth.setLastLocation(registrationVO.getLastLocation());

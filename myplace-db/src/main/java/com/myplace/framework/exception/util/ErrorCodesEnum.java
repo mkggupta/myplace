@@ -65,6 +65,8 @@ public enum ErrorCodesEnum {
 	USER_PUSH_UPDATE_EXCEPTION("ERR11110", "Invalid userid", "com.myplace.user.push.update"),
 	
 	USER_DEVICE_PUSH_REG_EXCEPTION("ERR1111", "Exception in user push service", "com.myplace.user.device.push.reg"),
+	
+	USER_EMAIL_MISSING("ERR1112", "User Email is missing", "com.myplace.user.email.missing"),
 
 	// media service
 	MEDIA_UPDATE_SERVICE_FAILED_EXCEPTION("ERR11301", "Exception in updating media business rules", "com.myplace.service.media.bo.failed"),
@@ -86,7 +88,7 @@ public enum ErrorCodesEnum {
 	// Authentication Service
 	AUTHENTICATION_SERVICE_FAILED_EXCEPTION("ERR11501", "Exception in authentication service", "com.myplace.authentication.service.failed"),
 
-	INVALID_EMAIL_VERIFICATION_CREDENTIALS_EXCEPTION("ERR11502", "Invalid email verification credentials", "com.myplace.email.verification.credential.invalid"),
+	INVALID_EMAIL_VERIFICATION_CREDENTIALS_EXCEPTION("ERR11502", "Invalid email verification credentials or Link expired.", "com.myplace.email.verification.credential.invalid"),
 
 	LINK_EXPIRED_EXCEPTION("ERR11503", "Link expired", "com.myplace.link.expired"),
 
@@ -144,7 +146,17 @@ public enum ErrorCodesEnum {
 	USERNAME_MISSING("ERR21001", "Username is missing", "common.error.validation.username.missing"),
 
 	PASSWORD_MISSING("ERR21002", "Password is missing", "common.error.validation.password.missing"),
-
+	
+	CONFIRM_PASSWORD_MISSING("ERR21013", "Confirm password is missing", "common.error.validation.confirm.password.missing"),
+	
+	USER_INFO_MISSING("ERR21014", "Some information is missing", "common.error.validation.user.info.missing"),
+	
+	USER_PASSWORD_MISMATCH("ERR21015", "New and confirm password are not same", "common.error.validation.password.not.match"),
+	
+	USER_CHANGE_PASSWORD_SAME("ERR21016", "New and old password can not be same", "common.error.validation.password.same"),
+	
+	USER_PASSWORD_NOT_CHANGE("ERR21017", "Password can not be change currently", "common.error.validation.password.not.change"),
+	
 	LOGIN_MODE_MISSING("ERR21003", "Login mode is missing", "common.error.validation.loginMode.missing"),
 
 	APP_ID_MISSING("ERR21004", "App Id is missing", "common.error.validation.appId.missing"),
@@ -157,7 +169,7 @@ public enum ErrorCodesEnum {
 	
 	USER_GENDER_MISSING("ERR21008", "Gender is missing", "common.error.validation.gender.missing"),
 
-	FORGOT_PASSWORD_ID_MISSING("ERR21008", "Forgot password id is missing", "common.error.validation.forgotPasswordId.missing"),
+	FORGOT_PASSWORD_ID_MISSING("ERR21012", "Forgot password id is missing", "common.error.validation.forgotPasswordId.missing"),
 
 	USERID_MISSING("ERR21009", "UserId is missing", "common.error.validation.userId.missing"),
 

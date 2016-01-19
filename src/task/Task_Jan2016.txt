@@ -23,6 +23,35 @@ push changes                    -- done and tested
 stats api
 
 --task for 15 jan---
-Event api
-notification api
-Forget Password
+Event api		        --done
+notification api		--done
+Forget Password                 --done
+
+
+--task for 16 jan---
+
+user varification  -done
+varify Email      -done
+forget Password request    -done
+forget password mail will go to user -- done
+from mail user will use reset Password link to reset password- done
+need to check forget password  -done
+need to check verify user    -done
+
+--task for 17 jan---
+change PushMessage type into id   -done
+change imgUrls in place of user and business service  -done
+need to check image update issue for user profile  - working fine for me
+
+--task for 18 jan---
+
+dummy url to send dummy push --done
+
+business detail url in business get url  --done
+business edit url in business get url   --done
+business delete url in detail view url   --done
+
+
+--task for 19 jan---
+
+need to update userdetail on every login

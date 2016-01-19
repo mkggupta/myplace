@@ -20,6 +20,7 @@ public interface UserParameters {
 	String TIME_ZONE = "timeZone";
 	String PASSWORD = "password";
 	String OLD_PASSWORD="oldPassword";
+	String CONFIRM_PASSWORD="confPassword";
 	String REGISTRATION_MODE = "registrationMode";
 	String USER_NAME = "usrName";
 	String USER_ID = "id";
@@ -27,7 +28,7 @@ public interface UserParameters {
 	String PARTNER_USER_KEY = "partnerUserKey";
 	String PARTNER_APP_ID = "appId";
 	String FORGOT_PASSWORD_ID = "forgetPasswordId";
-	String VERIFCIATION_CODE = "verificationCode";
+	String VERIFICAATION_CODE = "verificationCode";
 	String WEB_SITE="wsite";
 	String USER_DESC="udesc";
 	String USER_LOCATION="loc";
@@ -40,6 +41,7 @@ public interface UserParameters {
 	String PUSH_STATUS="pstatus";
 	String UID="userId";
 	String ADVTCODE="advtCode";
+	String USER_EMAIL="email";
 	
 	//default parameter
 	String DEFAULT_LANGUAGE="English";

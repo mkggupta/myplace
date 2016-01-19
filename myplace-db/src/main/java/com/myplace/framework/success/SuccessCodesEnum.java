@@ -40,6 +40,12 @@ public enum SuccessCodesEnum {
 	CHANGE_FEEDBACK_REPLY_SUCCESS("SUCC_11320", "Status has been changed successfully.", "change.reply.feedback.status.success"),
 	NO_NOTIF_SUCCESS("SUCC_113021", "Currently there is no notification.", "no.notif.success"),
 	NOTIF_DELETE_SUCCESS("SUCC_113022", "Notification is deleted successfully.", "notif.delete.success"),
+	PASSWORD_CHANGE_SUCCESS("SUCC_11323", "Password changed successfully.", "log.password.change.success"),
+	EMAIL_VARIFICATION_SUCCESS("SUCC_11324", "Email is verified successfully.", "log.email.veriy.success"),
+	EMAIL_ALREADY_VARIFICATION_SUCCESS("SUCC_11325", "Email is verified successfully.", "log.email.veriy.success"),
+	FORGET_PASSWORD_EMAIL_SUCCESS("SUCC_11326", "Email is sent to your inbox successfully.", "log.forget.email.sent.success"),
+	RESET_PASSWORD_SUCCESS("SUCC_11327", "Password is changed successfully.", "log.reset.password.change.success"),
+	BUSS_DELETE_SUCCESS("SUCC_11328", "Business has been deleted successfully.", "buss.delete.success"),
 	;
 	String successCode;
 	String successMessage;

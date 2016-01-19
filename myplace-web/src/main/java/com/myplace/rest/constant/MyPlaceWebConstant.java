@@ -53,4 +53,8 @@ public interface MyPlaceWebConstant {
 	String USER_DETAIL = "usrDtl";
 	String SLIMIT="sLimit";
 	String NOTIFICATION_LIST = "notifList";
+	String EMAIL_VERIFICATION_FAILURE_VIEW_NAME = "emailVerificationFailure";
+	String EMAIL_VERIFICATION_SUCCESS_VIEW_NAME = "emailVerificationSuccess";
+	String PASSWORD_CHANGE_FAILURE_VIEW_NAME = "passwordChangeFailure";
+	String PASSWORD_CHANGE_SUCCESS_VIEW_NAME = "passwordChangeSuccess";
 }

@@ -53,6 +53,9 @@
 		<property name="advtService" ref="advtService" />
 	</bean>
 	
+	<bean id="userAuthController" class="com.myplace.rest.controller.user.UserAuthController">
+	</bean>
+	
 	<bean id="userController" class="com.myplace.rest.controller.user.UserController">
 		<property name="userService" ref="userService" />
 	</bean>

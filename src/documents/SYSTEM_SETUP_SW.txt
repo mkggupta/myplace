@@ -1,0 +1,11 @@
+1) JAVA 1.7 set-up     -done
+2) MAVEN set_up        -done
+3) ECLIPSE             -done
+4) EDIT Plus           -done
+5) Mysql server 5.5    -done
+6) Mysql query browser -done
+7) Tomcat 8.0          -done
+8) Github	       -done
+9) FileZilla
+10)
+

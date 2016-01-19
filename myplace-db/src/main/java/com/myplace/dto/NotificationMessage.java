@@ -8,27 +8,12 @@ public class NotificationMessage extends PushMessage{
 	String createDate;
 	String delUrl;
 	
-	public String getCreateDate() {
-		return createDate;
+	public long getUserId() {
+		return userId;
 	}
 
-	public void setCreateDate(String createDate) {
-		this.createDate = createDate;
-	}
-	public String getDelUrl() {
-		return delUrl;
-	}
-
-	public void setDelUrl(String delUrl) {
-		this.delUrl = delUrl;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 	public long getNotifId() {
@@ -39,6 +24,7 @@ public class NotificationMessage extends PushMessage{
 		this.notifId = notifId;
 	}
 
+
 	public int getStatus() {
 		return status;
 	}
@@ -47,58 +33,22 @@ public class NotificationMessage extends PushMessage{
 		this.status = status;
 	}
 
+	public String getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
 	
-	
-	
-	public long getUserId() {
-		return userId;
+	public String getDelUrl() {
+		return delUrl;
 	}
 
-	public void setUserId(long userId) {
-		this.userId = userId;
+	public void setDelUrl(String delUrl) {
+		this.delUrl = delUrl;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getClkurl() {
-		return clkurl;
-	}
-
-	public void setClkurl(String clkurl) {
-		this.clkurl = clkurl;
-	}
-
-	public String getImgurl() {
-		return imgurl;
-	}
-
-	public void setImgurl(String imgurl) {
-		this.imgurl = imgurl;
-	}
 
 	public String toString() {
 

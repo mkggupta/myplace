@@ -14,5 +14,15 @@ public interface MyPlacePropertyKeys {
 	String ANDROID_WAIT_TIME="android.wait.time";
 	String MEDIA_SERVER_NAME = "media.server.name";
 	String MEDIA_SERVER_URL = "media.server.url";
+	String APP_NAME = "appName";
+	
+	//Email properties
+	String SMTP_SERVER = "smtphost.server";
+	String SMTP_SERVER_PORT = "smtpport.server";
+	String EMAIL_SENDER = "sender.email.id";
+	String SMTP_USER = "sender.smtp.user";
+	String SMTP_PASSWORD = "sender.email.password";
+	String EMAIL_VERIFICATION_SUBJECT = "verify.email.subject";
+	String EMAIL_CHANGE_PASSWORD_SUBJECT = "verify.email.change.password.subject";
 
 }
