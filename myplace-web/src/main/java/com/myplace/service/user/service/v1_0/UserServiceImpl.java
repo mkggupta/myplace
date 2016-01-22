@@ -25,6 +25,7 @@ import com.myplace.dto.UserAuth;
 import com.myplace.dto.UserEmailVerification;
 import com.myplace.dto.UserFileInfo;
 import com.myplace.dto.UserInfo;
+import com.myplace.dto.UserStats;
 import com.myplace.dto.UserThirdPartyAuth;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.myplace.service.user.exception.DeviceRegFailedException;
@@ -48,15 +49,16 @@ public class UserServiceImpl implements UserService {
 		this.userDAO = userDAO;
 	}
 	@Override	
-	public Long regLoginUser(RegistrationInfo registrationInfo) throws UserServiceFailedException,
+	public UserInfo regLoginUser(RegistrationInfo registrationInfo) throws UserServiceFailedException,
 	UserServiceValidationFailedException {
 /*	public Long regLoginUser(RegistrationInfo registrationInfo,Map<String, Object> clientMap) throws UserServiceFailedException,
 			UserServiceValidationFailedException {*/
 		//UserServiceValidator.validateRegistrationRequest(registrationInfo);
 		Long userId = null;
+		UserInfo userInfo = null;
 		try {
 			if(registrationInfo.getRegistrationMode()==0){
-				return -1l;
+				return null;
 			}
 			UserAuth userAuth = UserUtils.transformRegistrationInfoToUserAuth(registrationInfo, true);
 			logger.debug("userAuth--"+userAuth);
@@ -73,7 +75,12 @@ public class UserServiceImpl implements UserService {
 				logger.debug("userId--"+userId);
 				//user is exist and possibly trying to login 
 				if(null!=userId && userId>0){
-					return userId;
+					if(userAuth.getLatitude()>0.0 && userAuth.getLatitude()>0.0 ){
+						logger.debug(userAuth.getLatitude()+"userId--"+userId+" getLongitude="+ userAuth.getLongitude()+" getLastLocation="+userAuth.getLastLocation());
+						userDAO.updateUserLocation(userId, userAuth.getLatitude(), userAuth.getLongitude(), userAuth.getLastLocation())	;
+					}
+					userInfo = getUserProfile(userId);
+					return userInfo;
 				}else{
 					//user is trying to register
 					// again check that user is not exist in our db
@@ -87,12 +94,12 @@ public class UserServiceImpl implements UserService {
 					logger.debug("userId after app check--"+userId);
 					//user is exist and possibly trying to login 
 					if(null!=userId && userId>0){
-						return -1l;
+						return null;
 					}else{ 
 					registrationInfo.setId(userDAO.saveUserAuth(userAuth));
 					logger.debug("after saving userauth user id --"+registrationInfo.getId() +" userAuth ="+userAuth.getId());
 					userId = registrationInfo.getId();
-					UserInfo userInfo = UserUtils.transformRegistrationInfoToUserInfo(registrationInfo);
+					userInfo = UserUtils.transformRegistrationInfoToUserInfo(registrationInfo);
 					logger.debug("userInfo--"+userInfo);
 					if(null!=userInfo){
 						if(registrationInfo.getCountry()==null){
@@ -110,7 +117,17 @@ public class UserServiceImpl implements UserService {
 							userInfo.setContactName(registrationInfo.getUserName());
 						}
 						userDAO.saveUserInfo(userInfo);
+						userInfo.setRegister(true);
+						userInfo.setStatus(userAuth.getStatus());
 						logger.debug("after saving userInfo  id ="+userAuth.getId());
+						//saving stats but it should not stop user to register
+						try {
+							UserStats userStats = new UserStats();
+							userStats.setUserId(userAuth.getId());
+							userDAO.saveUserStats(userStats);
+						} catch (Exception e1) {
+							logger.error("Could not save stats for userid "+userAuth.getId());	
+						}
 						
 						//save user profile pic data
 						if(null!= userInfo.getUserFileInfo() && userInfo.getUserFileInfo().size()>0){
@@ -161,17 +178,27 @@ public class UserServiceImpl implements UserService {
 		} catch (DataUpdateFailedException e) {
 			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
 		}
-		return userId;
+		return userInfo;
 	}
 	
 	
 	public UserInfo getUserProfile(long userId) throws UserServiceFailedException, UserServiceValidationFailedException{
 		UserInfo userInfo = null;
 		try {
-			String userName = userDAO.getUserNameById(userId);
-			if(StringUtils.isNotBlank(userName)){
-				userInfo = userDAO.getUserProfile(userId);
-				userInfo.setUserName(userName);
+			//String userName = userDAO.getUserNameById(userId);
+			UserAuth userAuth = userDAO.getUserAuthDetailsByUserId(userId);
+			logger.debug(userAuth+"  userAuth");
+			if(null!=userAuth){
+				userInfo = userDAO.getUserInfoByUserId(userId);
+				UserUtils.transformUserAuthToUserInfo(userAuth,userInfo);
+				logger.debug(userInfo.getLatitude()+" getLatitude");
+				UserStats userStats = userDAO.getUserStats(userId);
+				logger.debug(userStats+" userStats");
+				if (null!=userStats){
+					userInfo.setBussCnt(userStats.getBussCnt());
+				}
+						
+			
 				List<String> pImgUrls = new ArrayList<String>();
 				List<UserFileInfo> userFileInfoList =mediaDAO.getUserFileInfoByUserId(userId);
 				if(null!=userFileInfoList && userFileInfoList.size()>0){
@@ -200,7 +227,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			UserInfo userInfoObj = null;
 			try {
-				userInfoObj = userDAO.getUserProfile(userInfo.getId());
+				userInfoObj = userDAO.getUserInfoByUserId(userInfo.getId());
 				UserUtils.updateDBUserVO(userInfoObj, userInfo);
 			} catch (DataAccessFailedException e) {
 				if (null == userInfoObj || userInfoObj.getId() == 0) {
@@ -321,7 +348,7 @@ public class UserServiceImpl implements UserService {
 					throw new UserServiceFailedException(ErrorCodesEnum.USER_IS_BLOCKED);
 				}else{
 					logger.debug(userAuth.getId()+"---userAuth.getStatus()");
-					UserInfo userIno = userDAO.getUserProfile(userAuth.getId());
+					UserInfo userIno = userDAO.getUserInfoByUserId(userAuth.getId());
 					logger.debug(userIno.getContactName()+"---userIno.getContactName()");
 					String verificationCode = MyPlaceUtil.generateRandomAlphanumericKey(32);
 					ForgetPasswordVerification forgetPasswordVerification = new ForgetPasswordVerification();
@@ -370,4 +397,28 @@ public class UserServiceImpl implements UserService {
 			return isReset;
 	   }
 
+	   /*
+	    * 
+	    * @see com.myplace.service.user.service.v1_0.UserService#getUserPublicProfile(long, long)
+	    * this is used to see users public profile
+	    */
+	   public UserInfo getUserPublicProfile(long userId,long visitorId) throws UserServiceFailedException, UserServiceValidationFailedException{
+		   
+		   UserInfo userInfo = getUserProfile(userId);
+		   
+		   return userInfo;
+	   }
+	   /*
+	    *
+	    * @see com.myplace.service.user.service.v1_0.UserService#getUserStatus(long)
+	    * this method will return the user current status
+	    */
+	   public byte getUserStatus(long userId) throws UserServiceFailedException{
+		   try {
+				return userDAO.getUserStatus(userId);
+			} catch (DataAccessFailedException e) {
+				logger.error("Exception in getUserStatus"+e.getLocalizedMessage(),e);
+				throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+			}
+	   }
 }

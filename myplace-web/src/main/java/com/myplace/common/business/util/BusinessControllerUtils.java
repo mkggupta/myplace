@@ -57,6 +57,7 @@ public class BusinessControllerUtils {
 					FileItemStream item = iter.next();
 					String fieldName = item.getFieldName();
 					logger.debug("fieldName: {}", fieldName);
+					logger.debug("item.getName(): {}", item.getName());
 					InputStream stream = item.openStream();
 					String fieldValue = null;
 					//if (item.isFormField()) {
@@ -67,13 +68,13 @@ public class BusinessControllerUtils {
 							Streams.copy(stream, byteArrayOutputStream, true);
 							byte mediaData[] = byteArrayOutputStream.toByteArray();
 							logger.debug("mediaData: {}", item.getName());
-							if(null!= mediaData && mediaData.length>0){
+							if(null!= mediaData && mediaData.length>0 && null!=item.getName()){
 								logger.debug("mediaData length:", mediaData.length);
 								BusinessFileInfo fileInfo = StorageUtil.saveBusinessMediaFromBytes(mediaData, item.getName());
 								businessList.add(fileInfo);
 								requestMap.put(MyPlaceConstant.B_FILE_DATA, businessList);
 							}else{
-								logger.debug("else mediaData: {}", item.getName());
+								logger.debug("else not saving mediaData: {}", item.getName());
 							}
 						}else {
 							fieldValue = Streams.asString(stream);

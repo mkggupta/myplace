@@ -32,13 +32,9 @@ public class CategoryController {
 	
 	private CatService catService ;
 	
-	
-	
 	public void setCatService(CatService catService) {
 		this.catService = catService;
 	}
-
-
 
 	@RequestMapping(value = "/pub/getCats", method = RequestMethod.GET)
 	public ModelAndView getCategories(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {

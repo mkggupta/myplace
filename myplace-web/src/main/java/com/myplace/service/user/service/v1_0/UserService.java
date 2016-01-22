@@ -11,7 +11,7 @@ import com.myplace.service.user.exception.UserServiceValidationFailedException;
 public interface UserService {
 	 
 	//public Long  regLoginUser(RegistrationInfo registrationInfo, Map<String, Object> clientMap)throws UserServiceFailedException, UserServiceValidationFailedException;
-	public Long  regLoginUser(RegistrationInfo registrationInfo)throws UserServiceFailedException, UserServiceValidationFailedException;
+	public UserInfo  regLoginUser(RegistrationInfo registrationInfo)throws UserServiceFailedException, UserServiceValidationFailedException;
 	public UserInfo getUserProfile(long userId) throws UserServiceFailedException, UserServiceValidationFailedException;
 	public UserInfo updateUser(UserInfo userInfo) throws UserServiceFailedException;
 	public Long regPushDevice(UserPushInfo userPushInfo) throws DeviceRegFailedException,UserServiceFailedException;
@@ -20,4 +20,6 @@ public interface UserService {
 	public boolean verifyEmailAddress(long verificationId, String emailAddress, String verificationCode)throws UserServiceFailedException;
 	public void forgetPasswordRequested(String userEmail)throws UserServiceFailedException;
 	public boolean resetPassword(long userId, long forgotPasswordId, String verificationCode, String userName, String password) throws UserServiceFailedException;
+	public UserInfo getUserPublicProfile(long userId,long visitorId) throws UserServiceFailedException, UserServiceValidationFailedException;
+	public byte getUserStatus(long userId) throws UserServiceFailedException;
 }

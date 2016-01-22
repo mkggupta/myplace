@@ -19,7 +19,7 @@ public enum SuccessCodesEnum {
 	
 	
 	NO_ADVT_TEMPLATE_SUCCESS("SUCC_11301", "Currently there is no advertisement template.", "no.advt.template.success"),
-	LOG_REG_SUCCESS("SUCC_11302", "Register/Login sucessfully.", "log.reg.success"),
+	THIRD_REG_SUCCESS("SUCC_11302", "User Registered Sucessfully.", "log.reg.success"),
 	NO_ADVT_SUCCESS("SUCC_11303", "Currently there is no advertisement.", "no.advt.success"),
 	ADVT_STATUS_CHANGE_SUCCESS("SUCC_11304", "Advertisement status has been changed successfully.", "advt.status.change.success"),
 	NO_ADVT_STATUS_SUCCESS("SUCC_11305", "No action taken.", "advt.no.action.success"),
@@ -46,6 +46,14 @@ public enum SuccessCodesEnum {
 	FORGET_PASSWORD_EMAIL_SUCCESS("SUCC_11326", "Email is sent to your inbox successfully.", "log.forget.email.sent.success"),
 	RESET_PASSWORD_SUCCESS("SUCC_11327", "Password is changed successfully.", "log.reset.password.change.success"),
 	BUSS_DELETE_SUCCESS("SUCC_11328", "Business has been deleted successfully.", "buss.delete.success"),
+	LOGIN_SUCCESS("SUCC_11329", "User logged in sucessfully.", "log.logged.success"),
+	APP_REG_SUCCESS("SUCC_11330", "User registered sucessfully.Email has been sent to inbox for verification.", "log.app.reg.success"),
+	USER_ACTIVE_STATUS_SUCCESS("SUCC_11331", "User has Active status.", "log.user.active.status.success"),
+	USER_INACTIVE_STATUS_SUCCESS("SUCC_11332", "User has Inactive status.", "log.user.inactive.status.success"),
+	USER_BOLCKED_STATUS_SUCCESS("SUCC_11333", "User has Blocked status.", "log.user.blocked.status.success"),
+	NO_REASON_SUCCESS("SUCC_11334", "Currently there is no reason category.", "no.reason.cat.success"),
+	NO_BUSS_REPORT_SUCCESS("SUCC_11335", "Currently there is nothing reported against this business.", "no.buss.report.success"),
+	BUSS_REPORT_SUCCESS("SUCC_11336", "You have successfully reported business.We will review and get back to you soon. Keep good work.", "buss.report.success"),
 	;
 	String successCode;
 	String successMessage;

@@ -28,9 +28,15 @@
         <xstream-version>1.3.1</xstream-version>
         <xbean-spring-version>3.7</xbean-spring-version>
 		<jackson-version>1.5.4</jackson-version>
+		<jstl-version>1.2</jstl-version>
 		<velocity-version>1.6.4</velocity-version>
+		<mail-version>1.4.3</mail-version>
+		<bouncycastle-version>1.46</bouncycastle-version>
+		<javapns-version>2.2.1</javapns-version>
+	  	<jmimemagic-version>0.1.2</jmimemagic-version>
 		<myplace-path>../myplace/buildtools/src/main/resources/</myplace-path>
 		<myplace-datamodel-path>../myplace-db/target/classes/</myplace-datamodel-path>
+	
   </properties>
   <dependencies>
 	<dependency>
@@ -193,18 +199,29 @@
 	<dependency>
 	<groupId>jmimemagic</groupId>
 	<artifactId>jmimemagic</artifactId>
-	<version>0.1.2</version>
+	 <version>${jmimemagic-version}</version>
 	</dependency>
 	<dependency>
 	  <groupId>com.github.fernandospr</groupId>
 	  <artifactId>javapns-jdk16</artifactId>
-	  <version>2.2.1</version>
+	 <version>${javapns-version}</version>
 	</dependency>
 
 	<dependency>
 		<groupId>org.bouncycastle</groupId>
 		<artifactId>bcprov-jdk16</artifactId>
-		<version>1.46</version>
+		<version>${bouncycastle-version}</version>
+	</dependency>
+	<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl-version}</version>
+	</dependency>
+	
+	<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>${mail-version}</version>
 	</dependency>
 <!--
 	<dependency>
@@ -226,11 +243,7 @@
 -->
 
 
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.3</version>
-		</dependency>
+		
  </dependencies>
 <build>
 		<defaultGoal>install</defaultGoal>

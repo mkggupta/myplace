@@ -2,7 +2,7 @@ package com.myplace.dto;
 
 public class PushMessage {
 	
-	//notification type like 1- business created,2-event etc
+	//notification type like 1- business created,2-event ,3- build upgrade etc
 	int type;
 	String title;
 	String description;

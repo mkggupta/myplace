@@ -5,6 +5,7 @@ public interface UserConstants {
 	String INSERT_USER_AUTH = "insert_user_auth";
 	String INSERT_USER_THIRD_PARTY_AUTH_DETAILS = "insert_user_third_party_auth";
 	String GET_USER_AUTH_DETAILS = "get_user_auth_details";
+	String GET_USER_AUTH_DETAILS_BY_ID = "get_user_auth_details_by_id";
 	String INSERT_USER_INFO = "insert_user_info";
 	String GET_USERID_BY_USERKEY_ID = "get_userid_by_userkey_id";
 	String GET_USERID_BY_USERNAME_PASSWORD = "get_userid_by_username_password";
@@ -25,6 +26,11 @@ public interface UserConstants {
 	String INSERT_FORGET_PASSWORD_DETAILS="insert_forget_password_verification_details";
 	String UPDTE_FORGET_PASSWORD_DETAILS="update_forget_password_verification_details";
 	String UPDATE_USER_STATUS = "update_user_status";
+	String UPDATE_USER_LOCATION = "update_user_location";
+	String 	SAVE_USER_STATS= "save_user_stats";
+	String 	UPDATE_USER_BUSSINESS_STATS= "update_user_buss_stats";
+	String 	GET_USER_STATS= "get_user_stats";
+	String 	GET_USER_STATUS= "get_user_status";
 	
 	
 }

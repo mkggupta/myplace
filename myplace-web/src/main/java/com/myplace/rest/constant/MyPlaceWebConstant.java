@@ -57,4 +57,6 @@ public interface MyPlaceWebConstant {
 	String EMAIL_VERIFICATION_SUCCESS_VIEW_NAME = "emailVerificationSuccess";
 	String PASSWORD_CHANGE_FAILURE_VIEW_NAME = "passwordChangeFailure";
 	String PASSWORD_CHANGE_SUCCESS_VIEW_NAME = "passwordChangeSuccess";
+	String REASONLIST = "reasonList";
+	String BUSINESS_REPORT_LIST = "bReportList";
 }

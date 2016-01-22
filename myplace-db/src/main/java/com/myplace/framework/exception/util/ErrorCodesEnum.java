@@ -131,7 +131,9 @@ public enum ErrorCodesEnum {
 	    NOTIFICATION_SERVICE_FAILED_EXCEPTION("ERR13001", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.notification.service.failed"),
 	    NOTIFICATION_DELETE_SERVICE_FAILED_EXCEPTION("ERR13002", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.notification.service.failed"),
 		
-	
+	  //Report service
+	   REPORT_SERVICE_FAILED_EXCEPTION("ERR14001", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.report.service.failed"),
+	    
 	    // Request Log
 
 	REQUEST_LOG_SERVICE_FAILED_EXCEPTION("ERR11605", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.requestlog.service.failed"),
@@ -182,6 +184,8 @@ public enum ErrorCodesEnum {
 	OLD_PASSWORD_MISSING("ERR21102", "Old Password is missing", "common.error.validation.old.password.missing"),
 	
 	USER_PASSWORD_WRONG("ERR21103", "The username or password you entered is incorrect.", "common.error.login.fail"),
+	
+	PARAMETER_MISSING("ERR21104", "Some parameter are missing.", "common.report.fail"),
 
 	;
 

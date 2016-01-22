@@ -9,9 +9,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
 	<sqlMap resource="entities/business.xml"/>
 	<sqlMap resource="entities/category.xml"/>
 	<sqlMap resource="entities/feedback.xml"/>
-	<sqlMap resource="entities/search.xml"/>
-	<sqlMap resource="entities/user.xml"/>
 	<sqlMap resource="entities/media.xml"/>
 	<sqlMap resource="entities/notification.xml"/>
+	<sqlMap resource="entities/report.xml"/>
+	<sqlMap resource="entities/search.xml"/>
+	<sqlMap resource="entities/user.xml"/>
 	
 </sqlMapConfig>

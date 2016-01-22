@@ -12,6 +12,7 @@ import com.myplace.common.constant.ClientParamConstant;
 import com.myplace.common.constant.FeedBackWebConstant;
 import com.myplace.common.constant.MyPlaceBusinessConstant;
 import com.myplace.common.constant.MyPlaceConstant;
+import com.myplace.common.constant.ReportInfoConstant;
 import com.myplace.common.constant.UserParameters;
 import com.myplace.common.enumeration.DateTimeFormatEnum;
 import com.myplace.dao.entities.UserPushInfo;
@@ -20,6 +21,7 @@ import com.myplace.dto.AdvertisementInfo;
 import com.myplace.dto.AdvtBusinessInfo;
 import com.myplace.dto.BusinessFileInfo;
 import com.myplace.dto.BusinessInfo;
+import com.myplace.dto.BusinessReportInfo;
 import com.myplace.dto.BusinessSearchVO;
 import com.myplace.dto.FeedBackInfo;
 import com.myplace.dto.FeedBackReplyInfo;
@@ -295,11 +297,14 @@ public class RequestProcessorUtil {
 			if(null!=clientInfo && null != clientInfo.getPlatform()){
 				registrationVO.setCurrentPlatform(clientInfo.getPlatform());
 			}
+			
 			if(null!=clientInfo && null!= clientInfo.getFindOnLocation()){
 				registrationVO.setLatitude((float)clientInfo.getFindOnLocation().getLat());
+				
 			}
 			if(null!=clientInfo && null!= clientInfo.getFindOnLocation()){
 				registrationVO.setLongitude((float)clientInfo.getFindOnLocation().getLol());
+				
 			}
 			if(null!=clientInfo && null!= clientInfo.getFindOnLocation()){
 				StringBuilder location = new StringBuilder();
@@ -513,7 +518,7 @@ public class RequestProcessorUtil {
 	@SuppressWarnings("unchecked")
 	public static BusinessInfo enrichBusinessInfo(HashMap<String, Object> requestMap,BusinessInfo businessInfo,ClientInfo clientInfo ){
 		if (null != requestMap) {
-			
+			logger.debug("clientInfo==>>"+clientInfo)	;
 			if(null!=requestMap.get(MyPlaceConstant.B_FILE_DATA)){
 				businessInfo.setBusinessFileInfo((List<BusinessFileInfo>) requestMap.get(MyPlaceConstant.B_FILE_DATA));
 			}
@@ -553,6 +558,9 @@ public class RequestProcessorUtil {
 			}
 			if(null!=requestMap.get(MyPlaceBusinessConstant.BPHONE)){
 				businessInfo.setBussPhone((String) requestMap.get(MyPlaceBusinessConstant.BPHONE));
+			}
+			if(null!=requestMap.get(MyPlaceBusinessConstant.BCONTNAME)){
+				businessInfo.setBussContName((String) requestMap.get(MyPlaceBusinessConstant.BCONTNAME));
 			}
 			if(null!=requestMap.get(MyPlaceBusinessConstant.BEMAIL)){
 				businessInfo.setBussEmail((String) requestMap.get(MyPlaceBusinessConstant.BEMAIL));
@@ -734,5 +742,35 @@ public class RequestProcessorUtil {
 				userPushInfo.setPlatform((byte)1);
 			}
 		}
+	}
+	
+	public static void enrichBusinessReportInfoObj(HashMap<String, Object> requestMap, BusinessReportInfo businessReportInfo) {
+		if (null != requestMap) {
+			if (null != requestMap.get(ReportInfoConstant.BUSINESS_ID)) {
+				businessReportInfo.setBusinessId(Long.parseLong(requestMap.get(ReportInfoConstant.BUSINESS_ID).toString()));
+			}
+		
+			if (null != requestMap.get(ReportInfoConstant.REPORTER_ID)) {
+				businessReportInfo.setReporterId(Long.parseLong(requestMap.get(ReportInfoConstant.REPORTER_ID).toString()));
+			}
+			
+			if (null != requestMap.get(ReportInfoConstant.REPORTER_REASON_ID)) {
+				businessReportInfo.setReportReasonId(Long.parseLong(requestMap.get(ReportInfoConstant.REPORTER_REASON_ID).toString()));
+			}
+			if (null != requestMap.get(ReportInfoConstant.COMMENT)) {
+				businessReportInfo.setComment(requestMap.get(ReportInfoConstant.COMMENT).toString());
+			}
+			if (null != requestMap.get(ReportInfoConstant.REPORTER_MAIL)) {
+				businessReportInfo.setReporterMail(requestMap.get(ReportInfoConstant.REPORTER_MAIL).toString());
+			}
+			
+			if (null != requestMap.get(ReportInfoConstant.REPORTER_PHONE)) {
+				businessReportInfo.setReporterPhone(requestMap.get(ReportInfoConstant.REPORTER_PHONE).toString());
+			}
+			if (null != requestMap.get(ReportInfoConstant.REPORTER_NAME)) {
+				businessReportInfo.setReporterName(requestMap.get(ReportInfoConstant.REPORTER_NAME).toString());
+			}
+		}
+		
 	}
 }

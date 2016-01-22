@@ -97,9 +97,15 @@ public interface MyPlaceConstant {
 	int CODE_EXPIRED_STATUS=2;
 	
 	//status for business status
-		byte BUSS_ACTIVE_STATUS=1;
-		byte BUSS_INACTIVE_STATUS=2;
-		byte BUSS_DELETED_STATUS=3;
+	 byte BUSS_ACTIVE_STATUS=1;
+	 byte BUSS_INACTIVE_STATUS=2;
+	 byte BUSS_DELETED_STATUS=3;
+	 
+	//status for reason type 
+	 byte BUSS_TYPE=1;
+	 byte user_TYPE=2;
+	 
+	 
 	
 	
 	

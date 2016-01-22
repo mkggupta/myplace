@@ -9,6 +9,7 @@ import com.myplace.dto.ForgetPasswordVerification;
 import com.myplace.dto.UserAuth;
 import com.myplace.dto.UserEmailVerification;
 import com.myplace.dto.UserInfo;
+import com.myplace.dto.UserStats;
 import com.myplace.dto.UserThirdPartyAuth;
 
 
@@ -22,7 +23,7 @@ public interface UserDAO {
 	public Long saveUserAuth(UserAuth userAuth) throws DataUpdateFailedException;
 	public void saveUserThirdPartyAuth(UserThirdPartyAuth userThirdPartyAuth) throws DataUpdateFailedException;
 	public Long getUserExists(String userKey,int thirdPartyId) throws DataAccessFailedException;
-	public UserInfo getUserProfile(long userId) throws DataAccessFailedException ;
+	public UserInfo getUserInfoByUserId(long userId) throws DataAccessFailedException ;
 	public String getUserNameById(long userId) throws DataAccessFailedException ;
 	public void updateUser(UserInfo userInfo) throws DataUpdateFailedException ;
 	public Long getUserIdByNamePassword(String userName,String password) throws DataAccessFailedException;
@@ -39,6 +40,12 @@ public interface UserDAO {
 	public UserAuth getUserAuthDetails(String userName) throws DataAccessFailedException;
 	public boolean resetPassword(long userId,String userName, String newPassword)throws DataUpdateFailedException;
 	public boolean updateUserStatus(String userEmail, int userStatus)throws DataUpdateFailedException;
+	public void updateUserLocation(long userId ,float latitude, float longitude, String location)throws DataUpdateFailedException;
+	public UserAuth getUserAuthDetailsByUserId(long userId) throws DataAccessFailedException;
+	public void saveUserStats(UserStats userStats) throws DataUpdateFailedException;
+	public void updateBussinessStats(long userId, boolean isIncrement) throws DataUpdateFailedException;
+	public UserStats getUserStats(long userId) throws DataAccessFailedException;
+	public byte getUserStatus(long userId) throws DataAccessFailedException;
 	
 
 }

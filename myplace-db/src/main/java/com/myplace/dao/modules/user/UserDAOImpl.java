@@ -18,6 +18,7 @@ import com.myplace.dto.ForgetPasswordVerification;
 import com.myplace.dto.UserAuth;
 import com.myplace.dto.UserEmailVerification;
 import com.myplace.dto.UserInfo;
+import com.myplace.dto.UserStats;
 import com.myplace.dto.UserThirdPartyAuth;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
@@ -133,7 +134,7 @@ public class UserDAOImpl extends AbstractDBManager implements UserDAO {
 		
 	}
 	
-	public UserInfo getUserProfile(long userId) throws DataAccessFailedException {
+	public UserInfo getUserInfoByUserId(long userId) throws DataAccessFailedException {
 		try {
 			return (UserInfo) sqlMapClient_.queryForObject(UserConstants.GET_USER_DETAIL_BY_ID, userId);
 		} catch (SQLException e) {
@@ -300,6 +301,16 @@ public class UserDAOImpl extends AbstractDBManager implements UserDAO {
 		}
 	}
 	
+	public UserAuth getUserAuthDetailsByUserId(long userId) throws DataAccessFailedException {
+		try {
+			return (UserAuth) sqlMapClient_.queryForObject(UserConstants.GET_USER_AUTH_DETAILS_BY_ID, userId);
+		} catch (SQLException e) {
+			logger.error("Exception in getUserAuthDetailsByUserId for the user : " + userId + " error  : "
+					+ e.getMessage());
+			throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
+	
 	public boolean resetPassword(long userId,String userName, String newPassword)throws DataUpdateFailedException{
 		boolean recordUpdate = false;
 		try {
@@ -337,6 +348,67 @@ public class UserDAOImpl extends AbstractDBManager implements UserDAO {
 		}
 		return recordUpdate;
 	}
+	
+	public void updateUserLocation(long userId ,float latitude, float longitude, String location)throws DataUpdateFailedException{	
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("userId", userId);
+			parameterMap.put("latitude", latitude);
+			parameterMap.put("longitude", longitude);
+			parameterMap.put("location", location);
+			 sqlMapClient_.update(UserConstants.UPDATE_USER_LOCATION,parameterMap);
+			
+			logger.debug("updateUserLocation-for userId="+userId);
+		} catch (SQLException e) {
+			logger.error("Exception in updateUserLocation : "+e.getLocalizedMessage(),e);
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
 
+	public void saveUserStats(UserStats userStats) throws DataUpdateFailedException{
+		try {
+			sqlMapClient_.insert(UserConstants.SAVE_USER_STATS, userStats);	 
+		} catch (SQLException e) {
+				logger.error("Exception in storing saveUserStats in database for the  userid="+userStats.getUserId() + " error  : " + e.getMessage());
+				throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
+	
+	public void updateBussinessStats(long userId, boolean isIncrement) throws DataUpdateFailedException{
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("userId", userId);
+			if(isIncrement) {
+				parameterMap.put("cnt", 1);	
+			}else{
+				parameterMap.put("cnt", -1);
+			}
+			sqlMapClient_.update(UserConstants.UPDATE_USER_BUSSINESS_STATS, parameterMap);
+		} catch (SQLException e) {
+			logger.error("Exception in storing update in database for the  userid="+userId + " error  : " + e.getMessage());
+			throw new DataUpdateFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
+	
+	public UserStats getUserStats(long userId) throws DataAccessFailedException{
+		try {
+			return (UserStats) sqlMapClient_.queryForObject(UserConstants.GET_USER_STATS, userId);
+		} catch (SQLException e) {
+			logger.error("Exception in getUserStats for the user : " + userId + " error  : "
+					+ e.getMessage());
+			throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
+	
+	public byte getUserStatus(long userId) throws DataAccessFailedException{
+		try {
+			return (byte) sqlMapClient_.queryForObject(UserConstants.GET_USER_STATUS, userId);
+		} catch (SQLException e) {
+			logger.error("Exception in getUserStatus for the user : " + userId + " error  : "
+					+ e.getMessage());
+			throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+	}
+	
 	
 }

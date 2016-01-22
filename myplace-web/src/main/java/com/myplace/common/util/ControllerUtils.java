@@ -59,6 +59,7 @@ public class ControllerUtils {
 					FileItemStream item = iter.next();
 					String fieldName = item.getFieldName();
 					logger.debug("fieldName: {}", fieldName);
+					logger.debug("item.getName(): {}", item.getName());
 					InputStream stream = item.openStream();
 					String fieldValue = null;
 					//if (item.isFormField()) {
@@ -68,7 +69,7 @@ public class ControllerUtils {
 							Streams.copy(stream, byteArrayOutputStream, true);
 							byte mediaData[] = byteArrayOutputStream.toByteArray();
 							logger.debug("mediaData: {}", item.getName());
-							if(null!= mediaData && mediaData.length>0){
+							if(null!= mediaData && mediaData.length>0 && null!=item.getName()){
 								logger.debug("mediaData length:", mediaData.length);
 								FileInfo fileInfo = StorageUtil.saveMediaFromBytes(mediaData, item.getName());
 								requestMap.put(MyPlaceConstant.FILE_DATA, fileInfo);
@@ -80,7 +81,7 @@ public class ControllerUtils {
 							Streams.copy(stream, byteArrayOutputStream, true);
 							byte mediaData[] = byteArrayOutputStream.toByteArray();
 							logger.debug("profilemediaData: {}", item.getName());
-							if(null!= mediaData && mediaData.length>0){
+							if(null!= mediaData && mediaData.length>0 && null!=item.getName()){
 								logger.debug("profilemediaData length:", mediaData.length);
 								UserFileInfo fileInfo = StorageUtil.saveProfileMediaFromBytes(mediaData, item.getName());
 								userFileInfoList.add(fileInfo);

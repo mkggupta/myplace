@@ -30,7 +30,8 @@
 	<select id="get_user_auth_details" parameterClass="java.lang.String" resultClass="com.myplace.dto.UserAuth">
   		select id,username as userName, password, status, created_date as
 		createdDate, modified_date as modifiedDate,last_login_time as lastLoginTime, registration_mode as registrationMode, last_login_mode as
-		lastLoginMode,login_status as loginStatus,current_client_version as currentClientVersion ,current_platform as currentPlatform,latitude,longitude,last_location as lastLocation from user_auth where
+		lastLoginMode,login_status as loginStatus,current_client_version as currentClientVersion ,current_platform as currentPlatform,
+		latitude,longitude,last_location as lastLocation from user_auth where
 		username=#username#
      </select>
      
@@ -39,7 +40,7 @@
      </select>
      
      <select id="get_user_name_by_id" parameterClass="java.lang.Long" resultClass="java.lang.String">
-	  	 SELECT username FROM user_auth where id=#userId# and status=1
+	  	 SELECT username FROM user_auth where id=#userId#
 	 </select>
 	  
 	  <select id="get_userid_by_username_password" parameterClass="java.util.Map" resultClass="java.lang.Long">
@@ -64,7 +65,7 @@
 		where id=#id#
 	</update>
 	<select id="get_user_exist_by_id" parameterClass="java.lang.Long" resultClass="java.lang.Long">
-	  	 SELECT 1 FROM user_auth where id=#userId# and status=1
+	  	 SELECT 1 FROM user_auth where id=#userId#
 	 </select>
 	 
 	<insert id="insert_user_push_info" parameterClass="com.myplace.dao.entities.UserPushInfo">
@@ -135,5 +136,29 @@
 		UPDATE user_auth set status =#status#,modified_date=now() where username=#userName# and status !=#status#
 	</update>
 	
+	<update id="update_user_location" parameterClass="java.util.Map">
+		UPDATE user_auth set latitude=#latitude#,longitude=#longitude#,last_location=#location#,modified_date=now() where id=#userId#
+	</update>
+	
+	<select id="get_user_auth_details_by_id" parameterClass="java.lang.Long" resultClass="com.myplace.dto.UserAuth">
+  		select id,username as userName, password, status, created_date as
+		createdDate, modified_date as modifiedDate,last_login_time as lastLoginTime, registration_mode as registrationMode, last_login_mode as
+		lastLoginMode,login_status as loginStatus,current_client_version as currentClientVersion ,current_platform as currentPlatform,latitude,longitude,last_location as lastLocation from user_auth where
+		id=#userId#
+     </select>
+     
+	<insert id="save_user_stats" parameterClass="com.myplace.dto.UserStats">
+		INSERT INTO user_stats(userid, business_count) VALUES (#userId#,#bussCnt#)
+	</insert>
+	<update id="update_user_buss_stats" parameterClass="java.util.Map">
+		UPDATE user_stats set business_count=business_count+#cnt# where userid=#userId#
+	</update>
+
+	<select id="get_user_stats" parameterClass="java.lang.Long" resultClass="com.myplace.dto.UserStats">
+		select userid as userId,business_count as bussCnt From user_stats where userid=#userId#
+	</select>
+	<select id="get_user_status" parameterClass="java.lang.Long" resultClass="java.lang.Byte">
+		select status From user_auth where id=#userId#
+	</select>
 	
  </sqlMap> 

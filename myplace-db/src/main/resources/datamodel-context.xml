@@ -48,6 +48,10 @@
 		<property name="sqlMapClient_" ref="sqlMap" />
 	</bean>
 	
+	<bean id="appReportDAOImpl" class="com.myplace.dao.modules.report.ReportDAOImpl">
+		<property name="sqlMapClient_" ref="sqlMap" />
+	</bean>
+	
 	<bean id="appSearchDAOImpl" class="com.myplace.dao.modules.search.SearchDAOImpl">
 		<property name="sqlMapClient_" ref="sqlMap" />
 	</bean>

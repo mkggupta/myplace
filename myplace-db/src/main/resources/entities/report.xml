@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- Maps the UserProfileMod table -->
+<!DOCTYPE sqlMap
+  PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+  "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="report">
+
+  
+   <select id="get_report_reason_list" parameterClass="java.lang.Byte" resultClass="com.myplace.dto.ReportReasonInfo" >
+  	SELECT reason_id as reasonId, reason_text as reasonText FROM report_reason_info where reason_type=#type# and status=1
+  </select>
+  
+	
+	<select id="get_report_business_list_by_business_id" parameterClass="java.lang.Long" resultClass="com.myplace.dto.BusinessReportInfo">
+		SELECT business_id as businessId, reporter_id as reporterId, reporter_mail as reporterMail, comment, reporter_phone as reporterPhone, report_time, 
+  		report_reason_id, reporter_name from business_report_info where business_id=#businessId# and status=1
+	</select>
+	
+	<insert id="save_business_report_info" parameterClass="com.myplace.dto.BusinessReportInfo">
+  		insert into business_report_info (business_id, reporter_id, reporter_mail, comment, reporter_phone, report_time, 
+  		report_reason_id, reporter_name)
+  		values(#businessId#,#reporterId#, #reporterMail#,#comment#,#reporterPhone#,now(),#reportReasonId#,#reporterName#)
+   </insert>
+  
+ 
+
+</sqlMap> 

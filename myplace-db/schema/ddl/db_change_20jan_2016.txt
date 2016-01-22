@@ -1,0 +1,8 @@
+CREATE TABLE `user_stats` (
+  `userid` bigint(20) unsigned NOT NULL,
+  `business_count` int(11) NOT NULL default '0',
+  UNIQUE KEY `Index_uid` (`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+insert into user_stats select user_id,count(*) as cnt from  business_info where business_status!=3 group by user_id  order by user_id

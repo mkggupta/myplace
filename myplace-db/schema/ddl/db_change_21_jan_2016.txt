@@ -1,0 +1,33 @@
+CREATE TABLE `myplace_db`.`report_reason_info` (
+  `reason_id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `reason_text` VARCHAR(45) NOT NULL,
+  `reason_type` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '1- business,2-user',
+  `status` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '1-active,2-inactive,3-deleted',
+  PRIMARY KEY(`reason_id`),
+  INDEX `Index_type`(`reason_type`, `status`)
+)
+ENGINE = InnoDB;
+
+
+CREATE TABLE `business_report_info` (
+  `id` bigint(20) unsigned NOT NULL auto_increment,
+  `business_id` bigint(20) unsigned NOT NULL,
+  `reporter_id` bigint(20) unsigned default NULL,
+  `reporter_mail` varchar(55) default NULL,
+  `comment` varchar(255) NOT NULL,
+  `reporter_phone` varchar(45) default NULL,
+  `report_time` datetime NOT NULL,
+  `report_reason_id` int(10) unsigned NOT NULL,
+  `reporter_name` varchar(45) default NULL,
+  `status` tinyint(3) unsigned NOT NULL default '1' COMMENT '1-open,2- under discussion,3-rejected,4-action taken against business',
+  PRIMARY KEY  (`id`),
+  KEY `Index_buss` (`business_id`,`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+insert into report_reason_info (reason_text) values ('Business has shutdown')
+insert into report_reason_info (reason_text) values ('Business name changed')
+insert into report_reason_info (reason_text) values ('Business has Shifted')
+insert into report_reason_info (reason_text) values ('Location is inaccurate')
+insert into report_reason_info (reason_text) values ('Report abuse')
+insert into report_reason_info (reason_text) values ('Other')

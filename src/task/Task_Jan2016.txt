@@ -53,5 +53,14 @@ business delete url in detail view url   --done
 
 
 --task for 19 jan---
+need to update userdetail on every login  -done
+Change reg/login api to send user profile in place of userid -done
 
-need to update userdetail on every login
+--task for 20 jan---
+Need to add business count on user profile   -done
+Need to check reg/login with proper message and fields -done
+Need to add user public profile
+
+need to check chat app
+
+Use redis pub-sub to handle the heavy loading. Let it handle the publication of channels and subscription of the clients. Jedis is an excellent library to use with Java to handle the messaging with minimal amount of code.

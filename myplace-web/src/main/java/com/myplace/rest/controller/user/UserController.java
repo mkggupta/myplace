@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.constant.UserParameters;
 import com.myplace.common.util.ClientHeaderUtil;
 import com.myplace.common.util.ControllerUtils;
@@ -146,7 +147,6 @@ public class UserController {
 		boolean isError = false;
 		try {
 			long userId = ClientHeaderUtil.extractUserIdFromHeader(httpServletRequest);
-			userId=48;
 		if(userId>0){
 			HashMap<String, Object>  requestMap = ControllerUtils.getRequestMapFromMultipart(httpServletRequest);
 			if(null!=requestMap && requestMap.size()>0){
@@ -233,6 +233,99 @@ public class UserController {
 		logger.debug("change password.dataMap="+dataMap);
 		return modelAndView;
 	}
+	@RequestMapping(value = "/pub/pubprofile/{userId}", method = RequestMethod.GET)
+	public ModelAndView getPublicProfile(@PathVariable String userId,HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+
+		ModelAndView modelAndView = new ModelAndView();
+		HashMap<String, Object> dataMap = new HashMap<String, Object>();
+		 String jsonData = null;
+		 Gson gson = new Gson();
+		try {
+			if(StringUtils.isNotBlank(userId)){	
+				UserInfo userInfo = userService.getUserPublicProfile(Long.parseLong(userId),Long.parseLong(userId));
+				 if(null!= userInfo){
+					 dataMap.put(MyPlaceWebConstant.USER_DETAIL, userInfo);
+				 }else{
+					 logger.debug("getPublicProfile() nothing "+userId);
+					   dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+					   dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
+					   dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
+				 }
+			}
+		} catch (UserServiceFailedException e) {
+			logger.error("getProfile()"+e.getLocalizedMessage(),e);
+			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
+			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
+			
+		} catch (UserServiceValidationFailedException e) {
+			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+			dataMap.put(MyPlaceWebConstant.MESSAGE,ErrorCodesEnum.getErrorCodesEnum(e.getErrorCode()).getErrorMessage());
+			dataMap.put(MyPlaceWebConstant.CODE, e.getErrorCode());
+		}catch (Exception e) {
+			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorCode());
+		}
+		
+		if(null!= userId){
+			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
+		    jsonData = gson.toJson(dataMap);
+		}else{
+		if (dataMap.size() == 0) {
+			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
+			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());	
+		}
+			jsonData = gson.toJson(dataMap);
+		}
+		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+		logger.debug("getProfile.dataMap="+dataMap);
+		return modelAndView;
+		
+	}
 	
+	@RequestMapping(value = "/pvt/status/{userId}", method = RequestMethod.GET)
+	public ModelAndView getUserStatus(@PathVariable String userId,HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+		ModelAndView modelAndView = new ModelAndView();
+		HashMap<String, Object> dataMap = new HashMap<String, Object>();
+		
+		try {	
+			if(StringUtils.isNotBlank(userId)){
+					logger.debug("userId---"+userId);
+					byte userStatus = userService.getUserStatus(Long.parseLong(userId));
+					logger.debug("userStatus---"+userStatus);
+					if(MyPlaceConstant.INACTIVE_STATUS==userStatus){
+						dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.USER_INACTIVE_STATUS_SUCCESS.getSuccessMessage());
+						dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.USER_INACTIVE_STATUS_SUCCESS.getSuccessCode());	
+					}else if(MyPlaceConstant.ACTIVE_STATUS==userStatus){
+						dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.USER_ACTIVE_STATUS_SUCCESS.getSuccessMessage());
+						dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.USER_ACTIVE_STATUS_SUCCESS.getSuccessCode());	
+						
+					}else{
+						dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.USER_BOLCKED_STATUS_SUCCESS.getSuccessMessage());
+						dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.USER_BOLCKED_STATUS_SUCCESS.getSuccessCode());	
+					}
+					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
+			}else{
+				dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+				dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
+				dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
+			}
+		
+		} catch (Exception e) {
+			logger.error("getUserStatus()"+e.getLocalizedMessage(),e);
+			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorCode());
+		}
+		Gson gson = new Gson();
+		String jsonData = gson.toJson(dataMap);
+		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+		logger.debug("getUserStatus.dataMap="+dataMap);
+		return modelAndView;
+	}
 
 }

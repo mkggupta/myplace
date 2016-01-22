@@ -135,4 +135,12 @@ public class UserUtils {
 			}
 		}
 	}
+  
+  public static UserInfo transformUserAuthToUserInfo(UserAuth userAuth, UserInfo userInfo ){
+	  userInfo.setUserName(userAuth.getUserName());
+	  userInfo.setLatitude(userAuth.getLatitude());
+	  userInfo.setLongitude(userAuth.getLongitude());
+	  userInfo.setStatus(userAuth.getStatus());
+	  return userInfo;
+  }
 }

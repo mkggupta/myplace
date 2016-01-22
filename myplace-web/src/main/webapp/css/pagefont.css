@@ -1,0 +1,19 @@
+@charset "utf-8";
+/* CSS 2016 */
+
+
+.textfield {width:35%; height:30px; line-height:30px;}
+.save {font-weight:bold; background-color:#e89431; width:35%; height:32px; color:#FFFFFF;}
+@media only screen and (max-width: 640px) { .textfield {width:100%; height:30px; line-height:30px;}
+.save {font-weight:bold; background-color:#e89431; width:100%; height:32px; color:#FFFFFF;}
+}
+
+@media only screen and (min-width:320px)  { .textfield {width:100%; height:30px; line-height:30px;} 
+.save {font-weight:bold; background-color:#e89431; width:100%; height:32px; color:#FFFFFF;} }
+@media only screen and (min-width:768px)  { .textfield {width:80%; height:30px; line-height:30px;}
+.save {font-weight:bold; background-color:#e89431; width:80%; height:32px; color:#FFFFFF;} }
+@media only screen and (min-width:1024px) { .textfield {width:35%; height:30px; line-height:30px;}
+.save {font-weight:bold; background-color:#e89431; width:35%; height:32px; color:#FFFFFF;} }
+@media only screen and (min-width:1900px) { .textfield {width:35%; height:30px; line-height:30px;}
+.save {font-weight:bold; background-color:#e89431; width:35%; height:32px; color:#FFFFFF;} }
+

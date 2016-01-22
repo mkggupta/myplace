@@ -20,6 +20,7 @@ import com.myplace.common.util.ClientInfo;
 import com.myplace.common.util.ControllerUtils;
 import com.myplace.common.util.RequestProcessorUtil;
 import com.myplace.dto.RegistrationInfo;
+import com.myplace.dto.UserInfo;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.myplace.framework.success.SuccessCodesEnum;
 import com.myplace.rest.constant.MyPlaceWebConstant;
@@ -73,12 +74,22 @@ public class RegLogController {
 				 //userId = userService.regLoginUser(registrationInfo,clientParamMap);
 				ClientInfo clientInfo= ClientHeaderUtil.extractClientHeaderParam(httpServletRequest);
 				RequestProcessorUtil.enrichRegistrationInfoObj(requestMap,registrationInfo,clientInfo);
-				userId = userService.regLoginUser(registrationInfo);
-				 if(null!= userId && userId>0){
-					 dataMap.put(MyPlaceWebConstant.USERID, userId);
-					 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.LOG_REG_SUCCESS.getSuccessMessage());
-					 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.LOG_REG_SUCCESS.getSuccessCode());	
-				 }else if(null!= userId && userId==-1){
+				UserInfo userInfo = userService.regLoginUser(registrationInfo);
+				 if(null!= userInfo){
+					 logger.debug(registrationInfo.getRegistrationMode()+" --RegLogController.userInfo =="+userInfo.isRegister());
+					 dataMap.put(MyPlaceWebConstant.USER_DETAIL, userInfo);
+					 userId=userInfo.getId();
+					 if(userInfo.isRegister() && registrationInfo.getRegistrationMode()<4){
+						 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.THIRD_REG_SUCCESS.getSuccessMessage());
+						 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.THIRD_REG_SUCCESS.getSuccessCode());	
+					 }else if(userInfo.isRegister() && registrationInfo.getRegistrationMode()>3){
+						 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.APP_REG_SUCCESS.getSuccessMessage());
+						 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.APP_REG_SUCCESS.getSuccessCode());	
+					 }else if(!userInfo.isRegister()){
+						 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.LOGIN_SUCCESS.getSuccessMessage());
+						 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.LOGIN_SUCCESS.getSuccessCode());	
+					 }
+				 }else{
 					 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.LOG_REG_ALREADY_EXIST.getSuccessMessage());
 					 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.LOG_REG_ALREADY_EXIST.getSuccessCode());	
 				 }

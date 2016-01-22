@@ -23,7 +23,7 @@ public class UserInfo {
 	private String country;
 	private String secondaryEmailAddress;	
 	private String timeZone;
-	
+	private boolean isRegister; // this will tell user is newly register or login
 	private int status;
 	private String language;
 	private String location;
@@ -37,8 +37,20 @@ public class UserInfo {
 	private Date modifiedDate;
 	List <String> imgUrls;
 	List<UserFileInfo>  userFileInfo;
+	private int bussCnt;  // give business count of users
 	
-	
+	public int getBussCnt() {
+		return bussCnt;
+	}
+	public void setBussCnt(int bussCnt) {
+		this.bussCnt = bussCnt;
+	}
+	public boolean isRegister() {
+		return isRegister;
+	}
+	public void setRegister(boolean isRegister) {
+		this.isRegister = isRegister;
+	}
 
 	public List<String> getImgUrls() {
 		return imgUrls;

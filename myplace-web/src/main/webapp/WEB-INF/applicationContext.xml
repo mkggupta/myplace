@@ -43,6 +43,10 @@
 	<bean id="pushMessageService" class="com.myplace.service.push.AndroidPushMessageServiceImpl">
 	</bean>
 	
+	<bean id="reportService" class="com.myplace.service.report.service.v1_0.ReportServiceImpl">
+		<property name="reportDAO" ref="appReportDAOImpl" />
+	</bean>
+	
 	<bean id="searchService" class="com.myplace.service.search.service.v1_0.SearchServiceImpl">
 		<property name="searchDAO" ref="appSearchDAOImpl" />
 	</bean>

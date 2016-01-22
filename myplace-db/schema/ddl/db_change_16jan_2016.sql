@@ -18,3 +18,5 @@ CREATE TABLE `user_email_verification` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+ALTER TABLE `myplace_db`.`user_info` DROP INDEX `user_info_fk1`;

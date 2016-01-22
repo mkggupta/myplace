@@ -26,7 +26,7 @@ public class BusinessSearchDTO {
 	private String bussRegDate;
 	private String bussStartDate;
 	private Long catName;
-	private long bussImgCnt;
+	//private long bussImgCnt;
 	private List<String> imgUrls;
 	private String updateUrl;
 	private String buttonName;
@@ -71,12 +71,12 @@ public class BusinessSearchDTO {
 	public void setCatName(Long catName) {
 		this.catName = catName;
 	}
-	public long getBussImgCnt() {
+	/*public long getBussImgCnt() {
 		return bussImgCnt;
 	}
 	public void setBussImgCnt(long bussImgCnt) {
 		this.bussImgCnt = bussImgCnt;
-	}
+	}*/
 	
 	public Long getUserId() {
 		return userId;

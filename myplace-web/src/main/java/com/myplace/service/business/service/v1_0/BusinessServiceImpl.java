@@ -33,6 +33,7 @@ import com.myplace.dto.DefaultFileInfo;
 import com.myplace.dto.NotificationMessage;
 import com.myplace.dto.PushMessage;
 import com.myplace.dto.UserSearchDTO;
+import com.myplace.dto.UserStats;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.myplace.service.business.exception.BusinessServiceException;
 import com.myplace.service.push.PushMessageService;
@@ -88,6 +89,11 @@ public class BusinessServiceImpl implements BusinessService {
 		try {
 			businessId = businessDAO.saveBusinessInfo(businessInfo);
 			logger.debug("businessId----"+businessId);
+			try {
+				userDAO.updateBussinessStats(businessInfo.getUserId(),true);
+			} catch (Exception e1) {
+				logger.error("Could not update stats for user "+businessInfo.getUserId()+" and businessId----"+businessId);	
+			}
 			if(null==businessId || businessId ==0){
 				throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION);
 			}
@@ -104,7 +110,7 @@ public class BusinessServiceImpl implements BusinessService {
 			if(null!=businessId && businessId>0){
 				try {
 					List<UserSearchDTO> userSearchDTOList = searchDAO.getUserListNearMe(businessInfo.getBussLat(),businessInfo.getBussLong(),MyPlaceBusinessConstant.DEFAULT_PUSH_DISTANCE);
-					logger.debug("userSearchDTOList----"+userSearchDTOList);
+					logger.debug("userSearchDTOList----"+userSearchDTOList +"for getBussLat "+businessInfo.getBussLat()+" getBussLong="+businessInfo.getBussLong()+" dist="+MyPlaceBusinessConstant.DEFAULT_PUSH_DISTANCE);
 					if(null!=userSearchDTOList && userSearchDTOList.size()>0)
 					{	List<Long> userIdList = new ArrayList<Long>();
 						for(UserSearchDTO userSearchDTO:userSearchDTOList){
@@ -265,13 +271,21 @@ public class BusinessServiceImpl implements BusinessService {
 
 	@Override
 	public void changeBussStatus(long userId, long businessId, Byte status)throws BusinessServiceException {
+		int isupdated =0 ;
 		try {
-			businessDAO.updateBussStatus(userId, businessId, status);
+			isupdated = businessDAO.updateBussStatus(userId, businessId, status);
 		} catch (DataUpdateFailedException e) {
 			logger.error("changeBussStatus---"+e.getLocalizedMessage());
 			throw new BusinessServiceException(ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION);
 		}
-		
+		logger.debug(isupdated+" changeBussStatus---"+status);
+		if(status == MyPlaceConstant.BUSS_DELETED_STATUS && isupdated>0){
+			try {
+				userDAO.updateBussinessStats(userId,false);
+			} catch (Exception e1) {
+				logger.error("Could not update stats in changeBussStatus() for user "+userId+" and businessId----"+businessId);	
+			}
+		}
 	}
 	
 	public BusinessInfo updateBusinessInfo (BusinessInfo businessInfo) throws BusinessServiceException{
