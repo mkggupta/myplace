@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.user.util.UserUtils;
 import com.myplace.common.util.EmailUtil;
+import com.myplace.common.util.MediaUtil;
 import com.myplace.common.util.MyPlaceUtil;
 import com.myplace.common.util.StorageUtil;
 import com.myplace.dao.entities.UserPushInfo;
@@ -65,6 +66,7 @@ public class UserServiceImpl implements UserService {
 			if(null!=userAuth){
 				try {
 					if(registrationInfo.getRegistrationMode()==4 || registrationInfo.getRegistrationMode()==5){
+						logger.debug(registrationInfo.getUserName()+"userId--"+registrationInfo.getPassword());
 						userId = userDAO.getUserIdByNamePassword(registrationInfo.getUserName(),registrationInfo.getPassword());
 					}else{
 						userId = userDAO.getUserExists(registrationInfo.getUserKey(), registrationInfo.getRegistrationMode());
@@ -189,32 +191,7 @@ public class UserServiceImpl implements UserService {
 			UserAuth userAuth = userDAO.getUserAuthDetailsByUserId(userId);
 			logger.debug(userAuth+"  userAuth");
 			if(null!=userAuth){
-				userInfo = userDAO.getUserInfoByUserId(userId);
-				UserUtils.transformUserAuthToUserInfo(userAuth,userInfo);
-				logger.debug(userInfo.getLatitude()+" getLatitude");
-				UserStats userStats = userDAO.getUserStats(userId);
-				logger.debug(userStats+" userStats");
-				if (null!=userStats){
-					userInfo.setBussCnt(userStats.getBussCnt());
-				}
-						
-			
-				List<String> pImgUrls = new ArrayList<String>();
-				List<UserFileInfo> userFileInfoList =mediaDAO.getUserFileInfoByUserId(userId);
-				if(null!=userFileInfoList && userFileInfoList.size()>0){
-					for(UserFileInfo userFileInfo:userFileInfoList){
-						pImgUrls.add(StorageUtil.getProfileImageUrl(userFileInfo));
-					}
-				}else{
-					//get default pic  0-unknown,1-male,2-female gender
-					List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByType(userInfo.getGender());
-					if(null!=defaultFileInfoList){
-						for(DefaultFileInfo defaultFileInfo:defaultFileInfoList){
-							pImgUrls.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));
-						}	
-					}
-				}
-				userInfo.setImgUrls(pImgUrls);
+				userInfo= getUserInfoFromUserAuth(userAuth,userInfo);
 			}
 		} catch (DataAccessFailedException e) {
 			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
@@ -420,5 +397,71 @@ public class UserServiceImpl implements UserService {
 				logger.error("Exception in getUserStatus"+e.getLocalizedMessage(),e);
 				throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
 			}
+	   }
+	   /*
+	    * this is used to check user exist or not
+	    * @see com.myplace.service.user.service.v1_0.UserService#findUserByUserNamePassword(java.lang.String, java.lang.String)
+	    */
+	   public UserInfo findUserByUserNamePassword (String userName, String password)throws UserServiceFailedException{
+		    UserInfo userInfo = null;
+		   try {
+			   logger.debug(userName+"  findUserByUserNamePassword.password="+password);
+				UserAuth userAuth = userDAO.getUserAuthDetailsByUserNamePassword(userName, password);
+				logger.debug(userAuth+"  findUserByUserNamePassword.userAuth");
+				if(null!=userAuth){
+					userInfo= getUserInfoFromUserAuth(userAuth,userInfo);
+					if (userInfo.getBussCnt()>0){
+						userInfo.setBussListUrl(MyPlaceUtil.getMyBusinessListUrl(userInfo.getId()));
+					}
+					if (userInfo.getStatus()==0){
+						userInfo.setVerifyAccUrl(MyPlaceUtil.getVerifyAccountUrl(userInfo.getId()));
+					}
+					userInfo.setChangePassUrl(MyPlaceUtil.getChangePassUrl(userInfo.getId()));
+					userInfo.setProfileUpdateUrl(MyPlaceUtil.getEditProfileUIUrl());
+				}
+			} catch (DataAccessFailedException e) {
+				throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+			}
+			
+			return userInfo;
+	   }
+	   
+	   
+	 /*
+	  * this is used as helper method to convert userauth object into userinfo  
+	  */
+	 public UserInfo getUserInfoFromUserAuth(UserAuth userAuth, UserInfo userInfo) throws UserServiceFailedException{
+		   
+		   try {
+			userInfo = userDAO.getUserInfoByUserId(userAuth.getId());
+			UserUtils.transformUserAuthToUserInfo(userAuth,userInfo);
+			logger.debug(userInfo.getLatitude()+" getLatitude");
+			userInfo.setProfileUpdateUrl(MyPlaceUtil.getUpdateProfileApiUrl());
+			UserStats userStats = userDAO.getUserStats(userAuth.getId());
+			logger.debug(userStats+" userStats");
+			if (null!=userStats){
+				userInfo.setBussCnt(userStats.getBussCnt());
+			}
+			List<String> pImgUrls = new ArrayList<String>();
+			List<UserFileInfo> userFileInfoList =mediaDAO.getUserFileInfoByUserId(userAuth.getId());
+			if(null!=userFileInfoList && userFileInfoList.size()>0){
+				for(UserFileInfo userFileInfo:userFileInfoList){
+					pImgUrls.add(StorageUtil.getProfileImageUrl(userFileInfo));
+				}
+			}else{
+				//get default pic  0-unknown,1-male,2-female gender
+				List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByType(userInfo.getGender());
+				if(null!=defaultFileInfoList){
+					for(DefaultFileInfo defaultFileInfo:defaultFileInfoList){
+						pImgUrls.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));
+					}	
+				}
+			}
+			userInfo.setImgUrls(pImgUrls);
+		   } catch (DataAccessFailedException e) {
+				throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+			}
+		   
+		   return userInfo;
 	   }
 }

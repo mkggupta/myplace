@@ -22,4 +22,5 @@ public interface UserService {
 	public boolean resetPassword(long userId, long forgotPasswordId, String verificationCode, String userName, String password) throws UserServiceFailedException;
 	public UserInfo getUserPublicProfile(long userId,long visitorId) throws UserServiceFailedException, UserServiceValidationFailedException;
 	public byte getUserStatus(long userId) throws UserServiceFailedException;
+	public UserInfo findUserByUserNamePassword (String userName, String password)throws UserServiceFailedException;
 }

@@ -5,51 +5,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Myplace</title>
+<title>Myplace-change</title>
 
 <link rel="stylesheet" href="../css/myplace.css" type="text/css">
-
-<style>
-.textfield {width:35%; height:30px; line-height:30px;}
-.save {font-weight:bold; background-color:#e89431; width:35%; height:32px; color:#FFFFFF;}
-@media only screen and (max-width: 640px) { .textfield {width:100%; height:30px; line-height:30px;}
-.save {font-weight:bold; background-color:#e89431; width:100%; height:32px; color:#FFFFFF;}
-}
-
-@media only screen and (min-width:320px)  { .textfield {width:100%; height:30px; line-height:30px;} 
-.save {font-weight:bold; background-color:#e89431; width:100%; height:32px; color:#FFFFFF;} }
-@media only screen and (min-width:768px)  { .textfield {width:80%; height:30px; line-height:30px;}
-.save {font-weight:bold; background-color:#e89431; width:80%; height:32px; color:#FFFFFF;} }
-@media only screen and (min-width:1024px) { .textfield {width:35%; height:30px; line-height:30px;}
-.save {font-weight:bold; background-color:#e89431; width:35%; height:32px; color:#FFFFFF;} }
-@media only screen and (min-width:1900px) { .textfield {width:35%; height:30px; line-height:30px;}
-.save {font-weight:bold; background-color:#e89431; width:35%; height:32px; color:#FFFFFF;} }
-
-
-</style>
-
+<link type="text/css" rel="stylesheet" href="../css/pagefont.css" />
+<script type="text/javascript" src="../js/validation.js"></script>
 </head>
 
 <body>
-<script type="text/javascript">
-		function validateForm() {
-			var password = document.forms["cpForm"]["password"].value;
-			if (password == null || password == "") {
-				alert("Please enter your new password");
-				return false;
-			}
-			var confPassword = document.forms["cpForm"]["confPassword"].value;
-			if (confPassword == null || confPassword == "") {
-				alert("Please re-enter your new password");
-				return false;
-			}
-			if (confPassword != password) {
-				alert("Passwords do not match.");
-				return false;
-			}
-			return true;
-		}
-	</script>
 	<div style=" width:98%; margin:auto; margin-top:50px; margin-bottom:10px;"><br />
 <div style=" width:98%; margin:auto;"><img src="../images/logo.jpg" /></div>
 
@@ -58,7 +21,7 @@
   
   <form name="cpForm"
 		action="/myplace/rest/api/usrauth/resetPassword" method="post"
-		enctype="multipart/form-data" onsubmit="return validateForm();" style="margin:0px;">
+		enctype="multipart/form-data" onsubmit="return validateChangePassForm();" style="margin:0px;">
 
   <div style=" width:98%; margin:auto; margin-top:15px; margin-bottom:10px;">
   <div style=" width:98%; float:left; margin-right:10px;"></div><div style="width:98%; float:left; margin-top:2px;"><label>

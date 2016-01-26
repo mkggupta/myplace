@@ -4,14 +4,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Email Verification Success</title>
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
+<title>Myplace-Error</title>
 
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 </head>
 <body>
 <div style=" width:98%; margin:auto; margin-top:50px; margin-bottom:10px;"><br />
  <div style=" width:98%; margin:auto;"><img src="<%=request.getContextPath()%>/images/logo.jpg" /></div>
 <div style=" width:98%; margin:auto; margin-top:70px; margin-bottom:10px;"><br />
-Email Verified Successfully. You can now use full fledged application.
+
+	<strong>{message}</strong><br />
+
+
 </body>
 </html>

@@ -67,7 +67,7 @@ public enum ErrorCodesEnum {
 	USER_DEVICE_PUSH_REG_EXCEPTION("ERR1111", "Exception in user push service", "com.myplace.user.device.push.reg"),
 	
 	USER_EMAIL_MISSING("ERR1112", "User Email is missing", "com.myplace.user.email.missing"),
-
+	
 	// media service
 	MEDIA_UPDATE_SERVICE_FAILED_EXCEPTION("ERR11301", "Exception in updating media business rules", "com.myplace.service.media.bo.failed"),
 
@@ -185,7 +185,7 @@ public enum ErrorCodesEnum {
 	
 	USER_PASSWORD_WRONG("ERR21103", "The username or password you entered is incorrect.", "common.error.login.fail"),
 	
-	PARAMETER_MISSING("ERR21104", "Some parameter are missing.", "common.report.fail"),
+	PARAMETER_MISSING("ERR21104", "Some parameters are missing.", "common.report.fail"),
 
 	;
 

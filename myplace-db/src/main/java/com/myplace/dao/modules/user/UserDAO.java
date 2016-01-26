@@ -46,6 +46,7 @@ public interface UserDAO {
 	public void updateBussinessStats(long userId, boolean isIncrement) throws DataUpdateFailedException;
 	public UserStats getUserStats(long userId) throws DataAccessFailedException;
 	public byte getUserStatus(long userId) throws DataAccessFailedException;
+	public UserAuth getUserAuthDetailsByUserNamePassword(String userName, String password) throws DataAccessFailedException;
 	
 
 }

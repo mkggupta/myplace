@@ -30,6 +30,9 @@ public class UserInfo {
 	private String userDescription;
 	private String webSite;
 	private String profileUpdateUrl;
+	private String bussListUrl;
+	private String changePassUrl;
+	private String verifyAccUrl;
 	private String address;
 	private String primaryEmailAddress;
 	private float longitude;
@@ -39,6 +42,24 @@ public class UserInfo {
 	List<UserFileInfo>  userFileInfo;
 	private int bussCnt;  // give business count of users
 	
+	public String getBussListUrl() {
+		return bussListUrl;
+	}
+	public void setBussListUrl(String bussListUrl) {
+		this.bussListUrl = bussListUrl;
+	}
+	public String getChangePassUrl() {
+		return changePassUrl;
+	}
+	public void setChangePassUrl(String changePassUrl) {
+		this.changePassUrl = changePassUrl;
+	}
+	public String getVerifyAccUrl() {
+		return verifyAccUrl;
+	}
+	public void setVerifyAccUrl(String verifyAccUrl) {
+		this.verifyAccUrl = verifyAccUrl;
+	}
 	public int getBussCnt() {
 		return bussCnt;
 	}

@@ -33,7 +33,6 @@ import com.myplace.dto.DefaultFileInfo;
 import com.myplace.dto.NotificationMessage;
 import com.myplace.dto.PushMessage;
 import com.myplace.dto.UserSearchDTO;
-import com.myplace.dto.UserStats;
 import com.myplace.framework.exception.util.ErrorCodesEnum;
 import com.myplace.service.business.exception.BusinessServiceException;
 import com.myplace.service.push.PushMessageService;
@@ -127,9 +126,7 @@ public class BusinessServiceImpl implements BusinessService {
 							pushMessage.setTitle(PushConstant.BUSINESS_CREATION_TITLE);
 							pushMessage.setId(businessId);
 							pushMessage.setDescription("Good News ! Now "+businessInfo.getBussName()+" specialized in "+serviceName+" is near you.");
-							MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
-							String baseUrl = myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL);
-							pushMessage.setClkurl(baseUrl+"business/pub/buss/"+businessId);
+							pushMessage.setClkurl(MyPlaceUtil.getServerBaseUrl()+"business/pub/buss/"+businessId);
 							fileInfoList = businessInfo.getBusinessFileInfo();
 							if(null!=fileInfoList && fileInfoList.size()>0){
 									pushMessage.setImgurl(StorageUtil.getImageUrl(fileInfoList.get(0)));		
@@ -195,6 +192,10 @@ public class BusinessServiceImpl implements BusinessService {
 				}
 				//business/pvt/my/{userId}/{bussId} get business detail url
 				businessInfo.setDetailUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/my/"+userId+"/"+businessInfo.getBussId());
+				if (businessInfo.getCatId()>0){
+					String catName= categoryDAO.getCategoryNameByCatId(businessInfo.getCatId());
+					businessInfo.setCatName(catName);
+				}
 
 			}
 		}
@@ -209,25 +210,31 @@ public class BusinessServiceImpl implements BusinessService {
 
 		try {
 				BusinessInfo  businessInfo = businessDAO.getMyBusinessDetail(userId,businessId);
-				// business update url and delete url
-				businessInfo.setUpdateUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/updatebuss");
-				businessInfo.setDeleteUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/delbuss");
-				List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfo(businessId);
-				List<String> bussImgUrlsList = new ArrayList<String>();
-				if(null!=BusinessFileInfoList && BusinessFileInfoList.size()>0){
-					for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
-							bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+				if (null!=businessInfo){
+					// business update url and delete url
+					businessInfo.setUpdateUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/updatebuss");
+					businessInfo.setDeleteUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/delbuss");
+					if (businessInfo.getCatId()>0){
+						String catName= categoryDAO.getCategoryNameByCatId(businessInfo.getCatId());
+						businessInfo.setCatName(catName);
 					}
-				}else{
-					List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
-					if(null!=defaultFileInfoList){
-					  for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
-						bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
-					  }
+					List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfo(businessId);
+					List<String> bussImgUrlsList = new ArrayList<String>();
+					if(null!=BusinessFileInfoList && BusinessFileInfoList.size()>0){
+						for(BusinessFileInfo  businessFileInfo : BusinessFileInfoList){
+								bussImgUrlsList.add(StorageUtil.getImageUrl(businessFileInfo));	
+						}
+					}else{
+						List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
+						if(null!=defaultFileInfoList){
+						  for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+							bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+						  }
+						}
 					}
-				}
-				if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
-						businessInfo.setImgUrls(bussImgUrlsList);
+					if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
+							businessInfo.setImgUrls(bussImgUrlsList);
+					}
 				}
 			return businessInfo;
 		} catch (DataAccessFailedException e) {
@@ -242,6 +249,10 @@ public class BusinessServiceImpl implements BusinessService {
 			BusinessInfo  businessInfo = businessDAO.getBusinessDetail(businessId);
 			businessDAO.updateBusinessView(businessId);
 			logger.debug("getBusinessDetail---businessId="+businessId);
+			if (businessInfo.getCatId()>0){
+				String catName= categoryDAO.getCategoryNameByCatId(businessInfo.getCatId());
+				businessInfo.setCatName(catName);
+			}
 			List<BusinessFileInfo>  BusinessFileInfoList = businessDAO.getBusinessFileInfo(businessId);
 			List<String> bussImgUrlsList = new ArrayList<String>();
 			if(null!=BusinessFileInfoList && BusinessFileInfoList.size()>0){

@@ -113,10 +113,12 @@ public class UserAuthController {
 					 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.FORGET_PASSWORD_EMAIL_SUCCESS.getSuccessCode());
 					
 				}else{
+					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorMessage());
 					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorCode());
 				}
 			}else{
+				dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 				dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorMessage());
 				dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorCode());
 			}
@@ -196,9 +198,15 @@ public class UserAuthController {
 					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.VERIFICTION_CODE_MISSING.getErrorMessage());
 				}
 				isSuccess = userService.resetPassword(userId, forgotPasswordId, verificationCode, userName, password);
+				if (isSuccess){
 				 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
 				 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.RESET_PASSWORD_SUCCESS.getSuccessMessage());
 				 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.RESET_PASSWORD_SUCCESS.getSuccessCode());
+				}else{
+					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_PASSWORD_NOT_CHANGE.getErrorMessage());
+					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_PASSWORD_NOT_CHANGE.getErrorCode());
+				}
 			}
 			
 		} catch (UserServiceFailedException e) {

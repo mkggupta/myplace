@@ -21,9 +21,9 @@
 	
 	<insert id="insert_user_info" parameterClass="com.myplace.dto.UserInfo">
 		INSERT INTO user_info (id,contact_name,business_name, dob, gender, secondary_email_address, contact_number,
-		contact_address1, contact_address2, zipcode, city, state, country, modified_date,language,location,primary_email_address) VALUES (#id#,
+		contact_address1, contact_address2, zipcode, city, state, country, modified_date,language,location,primary_email_address,user_desc) VALUES (#id#,
 		#contactName#,#businessName#,#dob#, #gender#, #secondaryEmailAddress#, #contactNumber#, #contactAddressLine1#,#contactAddressLine2#, #zipcode#, #city#, #state#,
-		#country#,now(),#language#,#location#,#primaryEmailAddress#)
+		#country#,now(),#language#,#location#,#primaryEmailAddress#,#userDescription# )
 	</insert>
 	
 	
@@ -54,7 +54,7 @@
     <select id="get_user_info_by_id" parameterClass="java.lang.Long" resultClass="com.myplace.dto.UserInfo">
 	  	SELECT id,contact_name as contactName , dob, gender, secondary_email_address as secondaryEmailAddress, contact_number as contactNumber,
 		contact_address1 as contactAddressLine1, contact_address2 as contactAddressLine2, zipcode, city, state, country, 
-		language,location,primary_email_address as primaryEmailAddress FROM user_info where id=#userId# 
+		language,location,primary_email_address as primaryEmailAddress,user_desc as userDescription FROM user_info where id=#userId# 
      </select>
      
      <update id="update_user_info" parameterClass="com.myplace.dto.UserInfo">
@@ -160,5 +160,13 @@
 	<select id="get_user_status" parameterClass="java.lang.Long" resultClass="java.lang.Byte">
 		select status From user_auth where id=#userId#
 	</select>
+	
+	<select id="get_user_auth_details_by_name_password" parameterClass="java.util.Map" resultClass="com.myplace.dto.UserAuth">
+  		select id,username as userName, password, status, created_date as
+		createdDate, modified_date as modifiedDate,last_login_time as lastLoginTime, registration_mode as registrationMode, last_login_mode as
+		lastLoginMode,login_status as loginStatus,current_client_version as currentClientVersion ,current_platform as currentPlatform,
+		latitude,longitude,last_location as lastLocation from user_auth where
+		username=#userName# and password=#password#
+     </select>
 	
  </sqlMap> 

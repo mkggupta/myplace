@@ -410,5 +410,19 @@ public class UserDAOImpl extends AbstractDBManager implements UserDAO {
 		}
 	}
 	
+	public UserAuth getUserAuthDetailsByUserNamePassword(String userName, String password) throws DataAccessFailedException{
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("userName", userName);
+			parameterMap.put("password", password);
+			return (UserAuth) sqlMapClient_.queryForObject(UserConstants.GET_USER_AUTH_DETAILS_BY_NAME_PASSWORD, parameterMap);
+		} catch (SQLException e) {
+			logger.error("Exception in getUserAuthDetailsByUserIdPassword for the userName : " + userName + " error  : "
+					+ e.getMessage());
+			throw new DataAccessFailedException(ErrorCodesEnum.DATABASE_LAYER_EXCEPTION, e);
+		}
+		
+	}
+	
 	
 }

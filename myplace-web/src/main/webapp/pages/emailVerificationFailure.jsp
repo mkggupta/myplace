@@ -6,11 +6,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Myplace-Error</title>
 
-<link rel="stylesheet" href="/myplace/css/myplace.css" type="text/css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 </head>
 <body>
 <div style=" width:98%; margin:auto; margin-top:50px; margin-bottom:10px;"><br />
- <div style=" width:98%; margin:auto;"><img src="/myplace/images/logo.jpg" /></div>
+ <div style=" width:98%; margin:auto;"><img src="<%=request.getContextPath()%>/images/logo.jpg" /></div>
 <div style=" width:98%; margin:auto; margin-top:70px; margin-bottom:10px;"><br />
 
 	<strong>Oops Email Verification Failed due to invalid Email verification credentials or Link expired.</strong><br />

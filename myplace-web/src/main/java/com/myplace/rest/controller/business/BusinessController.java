@@ -98,13 +98,26 @@ public class BusinessController {
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
 		 String jsonData = null;
+		 List<BusinessInfo> businessList=null;
 		 Gson gson = new Gson();
+		 int appType =0 ;
+		 boolean isSuccess = false;
 		try {
+			String type = httpServletRequest.getParameter(MyPlaceWebConstant.APP_TYPE);
+			logger.debug("getMyBusinessList.type="+type);
+			if(StringUtils.isNotBlank(type)){
+				appType=Integer.parseInt(type);
+			}
 			if(StringUtils.isNotBlank(userId)){	
 				
-				List<BusinessInfo> businessList = businessService.getMyBusinessList(Long.parseLong(userId));
+				 businessList = businessService.getMyBusinessList(Long.parseLong(userId));
 				 if(null!= businessList && businessList.size()>0){
-					 dataMap.put(MyPlaceWebConstant.BUSINESS_LIST, businessList);
+					 isSuccess = true;
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE, businessList);
+					 }else{
+						 dataMap.put(MyPlaceWebConstant.BUSINESS_LIST, businessList);
+					 }
 				 }else{
 					 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.NO_BUSINESS_SUCCESS.getSuccessMessage());
 				 }
@@ -131,8 +144,18 @@ public class BusinessController {
 		}	
 		jsonData = gson.toJson(dataMap);
 		}
-		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
-		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+		
+		if(appType>3){
+			if (isSuccess){
+				modelAndView.setViewName(MyPlaceWebConstant.BUSINESS_LIST_PROFILE);
+			}else{
+				modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  SuccessCodesEnum.NO_BUSINESS_SUCCESS.getSuccessMessage());
+				modelAndView.setViewName(MyPlaceWebConstant.USER_PROFILE);
+			}
+		}else{
+			modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+			modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+		}
 		logger.debug("getMyBusinessList.dataMap="+dataMap);
 		return modelAndView;
 
@@ -144,12 +167,25 @@ public class BusinessController {
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
 		 String jsonData = null;
 		 Gson gson = new Gson();
+		 int appType =0 ;
+		 boolean isSuccess = false;
+		 BusinessInfo businessInfo = null;
 		try {
+			String type = httpServletRequest.getParameter(MyPlaceWebConstant.APP_TYPE);
+			logger.debug("getMyBusinessDetail.type="+type);
+			if(StringUtils.isNotBlank(type)){
+				appType=Integer.parseInt(type);
+			}
 			if(StringUtils.isNotBlank(userId) && StringUtils.isNotBlank(bussId)  ){	
 				
-				BusinessInfo businessInfo = businessService.getMyBusinessDetail(Long.parseLong(userId),Long.parseLong(bussId));
+				 businessInfo = businessService.getMyBusinessDetail(Long.parseLong(userId),Long.parseLong(bussId));
 				 if(null!= businessInfo ){
-					 dataMap.put(MyPlaceWebConstant.BUSINESS_DETAIL, businessInfo);
+					 isSuccess = true;
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE, businessInfo);
+					 }else{
+						 	dataMap.put(MyPlaceWebConstant.BUSINESS_DETAIL, businessInfo);
+					 }
 				 }else{
 					 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.NO_BUSINESS_SUCCESS.getSuccessMessage());
 				 }
@@ -176,8 +212,18 @@ public class BusinessController {
 		}	
 		jsonData = gson.toJson(dataMap);
 		}
-		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
-		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+		
+		if(appType>3){
+			if (isSuccess){
+				modelAndView.setViewName(MyPlaceWebConstant.BUSINESS_PROFILE);
+			}else{
+				modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  SuccessCodesEnum.NO_BUSINESS_SUCCESS.getSuccessMessage());
+				modelAndView.setViewName(MyPlaceWebConstant.BUSINESS_LIST_PROFILE);
+			}
+		}else{
+			modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+			modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+		}
 		logger.debug("getMyBusinessDetail.dataMap="+dataMap);
 		return modelAndView;
 

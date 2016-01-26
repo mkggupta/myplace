@@ -6,6 +6,7 @@ public interface UserConstants {
 	String INSERT_USER_THIRD_PARTY_AUTH_DETAILS = "insert_user_third_party_auth";
 	String GET_USER_AUTH_DETAILS = "get_user_auth_details";
 	String GET_USER_AUTH_DETAILS_BY_ID = "get_user_auth_details_by_id";
+	String GET_USER_AUTH_DETAILS_BY_NAME_PASSWORD = "get_user_auth_details_by_name_password";
 	String INSERT_USER_INFO = "insert_user_info";
 	String GET_USERID_BY_USERKEY_ID = "get_userid_by_userkey_id";
 	String GET_USERID_BY_USERNAME_PASSWORD = "get_userid_by_username_password";

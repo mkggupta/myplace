@@ -16,6 +16,7 @@ public interface MyPlaceWebConstant {
 	String NO_RESULT_FOUND = "No result found.";
 	String DEFAULT_VIEW_NAME = "json";
 	String RESPONSE = "jsonData";
+	String JSP_RESPONSE = "respObj";
 	String REQUEST_TYPE = "requesttype";
 	Integer ERROR_CODE = 0;
 	Integer SUCCESS_CODE = 1;
@@ -59,4 +60,30 @@ public interface MyPlaceWebConstant {
 	String PASSWORD_CHANGE_SUCCESS_VIEW_NAME = "passwordChangeSuccess";
 	String REASONLIST = "reasonList";
 	String BUSINESS_REPORT_LIST = "bReportList";
+	String APP_TYPE= "appType";
+	
+	//name of jsp pages for output
+	String USER_PROFILE = "userProfile";
+	String EDIT_USER_PROFILE = "editUserProfile";
+	String BUSINESS_PROFILE = "bussProfile";
+	String BUSINESS_LIST_PROFILE = "bussListProfile";
+	String SEARCH= "search";
+	String SEARCH_RESPONSE = "searchResult";
+	String LOGIN = "login";
+	String REGISTER = "register";
+	
+	//API URL
+	String GET_USER_PVT_PROFILE_API = "userProfile";
+	String GET_USER_PUB_PROFILE_API = "businessProfile";
+	String EDIT_USER_PROFILE_API =   "usr/pvt/editprofile";//will return UI
+	String UPDATE_USER_PROFILE_API =   "usr/pvt/updateprofile";//will update profile
+	String GET_BUSINESS_PROFILE_API = "business/pub/buss/";
+	String GET_MY_BUSINESS_LIST_API = "business/pvt/my/";
+	String GET_MY_BUSINESS_PROFILE_API = "business//pvt/my/";
+	String UPDATE_BUSINESS_PROFILE_API = "login";
+	String DELETE_BUSINESS_PROFILE_API = "login";
+	String CHANGE_PROFILE_PASSWORD_API = "login";
+	String SEARCH_BUSINESS_API = "login";
+	
+	
 }
