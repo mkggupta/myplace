@@ -157,7 +157,7 @@ public enum ErrorCodesEnum {
 	
 	USER_CHANGE_PASSWORD_SAME("ERR21016", "New and old password can not be same", "common.error.validation.password.same"),
 	
-	USER_PASSWORD_NOT_CHANGE("ERR21017", "Password can not be change currently", "common.error.validation.password.not.change"),
+	USER_PASSWORD_NOT_CHANGE("ERR21017", "Password could not be change, please re-check that you have entered your current password correctly.", "common.error.validation.password.not.change"),
 	
 	LOGIN_MODE_MISSING("ERR21003", "Login mode is missing", "common.error.validation.loginMode.missing"),
 
@@ -183,10 +183,10 @@ public enum ErrorCodesEnum {
 
 	OLD_PASSWORD_MISSING("ERR21102", "Old Password is missing", "common.error.validation.old.password.missing"),
 	
-	USER_PASSWORD_WRONG("ERR21103", "The username or password you entered is incorrect.", "common.error.login.fail"),
+	USER_PASSWORD_WRONG("ERR21103", "Username or password is incorrect.", "common.error.login.fail"),
 	
 	PARAMETER_MISSING("ERR21104", "Some parameters are missing.", "common.report.fail"),
-
+	SERVICE_FAILED_EXCEPTION("ERR21105", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "common.service.failed"),
 	;
 
 	String errorCode;

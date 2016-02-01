@@ -5,38 +5,63 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Myplace-change</title>
+<title>Myplace-change-password</title>
 
-<link rel="stylesheet" href="../css/myplace.css" type="text/css">
-<link type="text/css" rel="stylesheet" href="../css/pagefont.css" />
-<script type="text/javascript" src="../js/validation.js"></script>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/validation.js"></script>
 </head>
 
 <body>
-	<div style=" width:98%; margin:auto; margin-top:50px; margin-bottom:10px;"><br />
-<div style=" width:98%; margin:auto;"><img src="../images/logo.jpg" /></div>
+<jsp:include page="header.jsp" />
+<table width="750" border="0">
+<tr>
+      <td colspan="2" align="center"> &nbsp; </td>
+  </tr>
+  <tr>
+      <td colspan="2" align="center"> &nbsp; </td>
+  </tr>
+	<tr>
+      <td colspan="2" align="center">Please fill in your new password to change your current password <br/>
+  </td>
+  </tr>
+  <c:if test="${not empty message}">
+ <tr>
+      <td colspan="2" align="center"> <font size="3" color="red"><b>${message}</b> &nbsp; </td>
+  </tr>
+ </c:if>
 
-<div style=" width:98%; margin:auto; margin-top:50px; margin-bottom:10px;">Please fill in your new password to reset your password<br /></div>
-  
-  
   <form name="cpForm"
-		action="/myplace/rest/api/usrauth/resetPassword" method="post"
+		action="/myplace/rest/api/usr/pvt/changepassword" method="post"
 		enctype="multipart/form-data" onsubmit="return validateChangePassForm();" style="margin:0px;">
+ 		
+  <c:if test="${not empty userId}">
+  	<input type="hidden" name="id" value="${userId}" />
+   </c:if>
+   
+  <input type="hidden" name="appType" value="4"/> 
+  <tr>
+ <td width="50%" align="right"> OLD PASSWORD:&nbsp; </td>
+ <td ><input type="password" name="oldPassword" maxlength="50"   /></td>
+</tr>
+ <tr>
+ <td width="50%" align="right"> NEW PASSWORD:&nbsp; </td>
+ <td><input type="password" name="password" maxlength="50"/></td>
+ </tr>
 
-  <div style=" width:98%; margin:auto; margin-top:15px; margin-bottom:10px;">
-  <div style=" width:98%; float:left; margin-right:10px;"></div><div style="width:98%; float:left; margin-top:2px;"><label>
-   <input type="hidden" name="usrName" value=<%=request.getParameter("usrName")%> />
- 	<input type="hidden" name="forgetPasswordId" value=<%=request.getParameter("forgetPasswordId")%> />
- 	 <input type="hidden" name="id" value=<%=request.getParameter("userId")%> />
- 	 <input type="hidden" name="verificationCode" value=<%=request.getParameter("verificationCode")%> />
+ <tr>
+ <td width="50%" align="right"> PLEASE RE-ENTER YOUR PASSWORD:&nbsp; </td>
+ <td ><input type="password" name="confPassword" maxlength="50"/></td>
+ </tr>
+<tr>
+      <td colspan="2" align="center"> &nbsp; </td>
+  </tr>
+  <tr>
+      <td colspan="2" align="center"> <input type="submit" value="SUBMIT" /> </td>
+  </tr>
+  
 
-  <div style=" width:98%; float:left; margin-top:15px; margin-right:10px;">NEW PASSWORD</div><div style="width:98%; margin-top:2px; float:left;"><label><input type="password" name="password" class="textfield" /></label></div>
-  <div style=" width:98%; float:left; margin-top:15px; margin-right:10px;">PLEASE RE-ENTER YOUR PASSWORD</div><div style="width:98%; margin-top:2px; float:left;"><label><input type="password" name="confPassword" class="textfield" /></label></div>
- 
- <div style="width:98%; float:left; margin-top:15px; margin-right:10px;"><label>
- <input type="submit" value="SAVE" class="save" /></label></div>
-  </div>
 </form>
-
+</table>
 </body>
 </html>

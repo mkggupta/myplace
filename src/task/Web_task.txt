@@ -1,0 +1,52 @@
+----Jan 27---
+Login Screen
+Register screen
+Profile Screen
+Edit profile screen
+Business profile screen
+Update Business Profile screen
+Search Screen
+Search Result Screen
+Forget Password Screen
+
+
+Pending :-
+G+ login
+G+ register
+Seesion Creation
+Logout
+FB
+Twitter
+
+
+
+Task Completed :-
+28-1-2016
+Login Screen   
+Forget Password Flow.
+
+29-1-2016
+
+Registration complete  -done
+validation for profile update  -done
+Profile linking to business  -done
+Account verification  -done
+Change Password
+Edit Business     -done
+
+30-1-2016
+
+Change Password      -done
+Search need to complete
+Report need to add in serach
+Change in reset password   -done
+Need to create a footer    -done
+Added About API           -done
+Need to open in new Window -
+
+31-1-2016
+T&C need to find
+Contact US page need to design
+Search need to complete
+Report need to add in serach
+About Us Need to open in new Window -

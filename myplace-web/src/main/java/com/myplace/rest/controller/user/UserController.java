@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -108,13 +109,14 @@ public class UserController {
 				}
 				UserInfo userInfo = new UserInfo();
 				RequestProcessorUtil.enrichUserVO(requestMap, userInfo, null);
+				logger.debug("updateProfile()appType "+appType);
 				if(userInfo.getId()>0){
-					userInfo = userService.updateUser(userInfo);
+					userInfo = userService.updateUser(userInfo,appType);
 					 if(null!= userInfo){
 						 isSuccess = true;
 						 if(appType>3){
 							 modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE, userInfo);
-							 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, "Profile is updated successfully");
+							 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.PROFILE_UPDATE_SUCCESS.getSuccessMessage());
 						 }else{
 							 dataMap.put(MyPlaceWebConstant.USER_DETAIL, userInfo);
 							 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
@@ -167,12 +169,26 @@ public class UserController {
 		String confirmPassword = null;
 		String oldPassword = null;
 		boolean isError = false;
+		int appType =0;
+		boolean isSuccess = false;
 		try {
-			long userId = ClientHeaderUtil.extractUserIdFromHeader(httpServletRequest);
-		if(userId>0){
+			long userId=0;
+			
 			HashMap<String, Object>  requestMap = ControllerUtils.getRequestMapFromMultipart(httpServletRequest);
 			if(null!=requestMap && requestMap.size()>0){
+				if (null!=requestMap.get(MyPlaceWebConstant.APP_TYPE)){
+					appType = Integer.parseInt(requestMap.get(MyPlaceWebConstant.APP_TYPE).toString());
+				}
 	
+				if(appType>3){
+					if (null != requestMap.get(UserParameters.USER_ID) && StringUtils.isNotBlank(requestMap.get(UserParameters.USER_ID).toString())){
+						userId = Long.parseLong(requestMap.get(UserParameters.USER_ID).toString());
+					}	
+				}else{
+					userId = ClientHeaderUtil.extractUserIdFromHeader(httpServletRequest);
+				}
+				logger.debug("isErroruserId---"+userId);
+				if(userId>0){
 				if (null != requestMap.get(UserParameters.OLD_PASSWORD) && StringUtils.isNotBlank(requestMap.get(UserParameters.OLD_PASSWORD).toString())) {
 					oldPassword = requestMap.get(UserParameters.OLD_PASSWORD).toString();
 				} else {
@@ -220,6 +236,8 @@ public class UserController {
 					boolean isSucceed = userService.changePassword(userId, newPassword, oldPassword);
 					logger.debug("isSucceed---"+isSucceed);
 					if(isSucceed){
+						isSuccess = true;
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.PASSWORD_CHANGE_SUCCESS.getSuccessMessage());
 						 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.PASSWORD_CHANGE_SUCCESS.getSuccessMessage());
 						 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.PASSWORD_CHANGE_SUCCESS.getSuccessCode());	
 						 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
@@ -229,13 +247,13 @@ public class UserController {
 						dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_PASSWORD_NOT_CHANGE.getErrorCode());
 					}
 				}
-			}
-		}else{
+			}else{
 				isError = true;
 				dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_INFO_MISSING.getErrorCode());
 				dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_INFO_MISSING.getErrorMessage());
 			}
-			
+			}
+		
 		} catch (UserServiceFailedException e) {
 			logger.error("changePassword()"+e.getLocalizedMessage(),e);
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
@@ -248,11 +266,28 @@ public class UserController {
 			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
 			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorCode());
 		}
-		Gson gson = new Gson();
-		String jsonData = gson.toJson(dataMap);
-		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
-		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
-		logger.debug("change password.dataMap="+dataMap);
+		if(appType>3){
+			if (isSuccess){
+				
+				HttpSession session = httpServletRequest.getSession(false);
+				logger.debug("changePassword ="+session);
+				if (null!=session){
+					logger.debug("changePassword userid ="+session.getAttribute("userId"));
+			        session.invalidate();  
+			        logger.debug("changePassword invalidate ="+session);
+				}
+				modelAndView.setViewName(MyPlaceWebConstant.LOGIN);	
+			}else{
+				modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_PASSWORD_NOT_CHANGE.getErrorMessage());
+				modelAndView.setViewName(MyPlaceWebConstant.CHANGE_PASSWORD);
+			}
+		}else{
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(dataMap);
+			modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+			modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+			logger.debug("change password.dataMap="+dataMap);
+		}
 		return modelAndView;
 	}
 	
@@ -385,5 +420,37 @@ public class UserController {
 		}
 		return modelAndView;
 	}
+	
+	
+
+	/*
+	 * This method is only used for web application to load change password UI
+	 * 
+	 */
+	@RequestMapping(value = "/pvt/loadchangepassword", method = RequestMethod.POST)
+	public ModelAndView loadChangePasswordUI(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+		ModelAndView modelAndView = new ModelAndView();
+		 boolean isSuccess = false;
+		HashMap<String, Object>  requestMap = ControllerUtils.getRequestMapFromMultipart(httpServletRequest);
+	   try {
+		   logger.debug("loadChangePasswordUI() requestMap="+requestMap);
+		   if(null!=requestMap && requestMap.size()>0){
+			if (null != requestMap.get(UserParameters.USER_ID) && StringUtils.isNotBlank(requestMap.get(UserParameters.USER_ID).toString())){
+					modelAndView.addObject("userId",requestMap.get(UserParameters.USER_ID).toString());
+				}else{
+					modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.SERVICE_FAILED_EXCEPTION.getErrorMessage());
+				}
+		   }
+		}  catch (Exception e) {
+			modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.SERVICE_FAILED_EXCEPTION.getErrorMessage());
+		}
+	   if (isSuccess){
+			modelAndView.setViewName(MyPlaceWebConstant.CHANGE_PASSWORD);
+		}else{
+			modelAndView.setViewName(MyPlaceWebConstant.CHANGE_PASSWORD);
+		}
+		return modelAndView;
+	}
+	
 
 }

@@ -67,7 +67,7 @@ public class EmailUtil {
 	private static String getResetPasswordEmailText(String firstName, String lastName, long forgetPasswordId, long userId, String emailAddress,
 			String verificationCode) {
 
-		String resetPasswordUrl = MyPlaceUtil.getApplicationUrl() + "/pages/changePassword.jsp?forgetPasswordId=" + forgetPasswordId + "&userId=" + userId
+		String resetPasswordUrl = MyPlaceUtil.getApplicationUrl() + "/pages/resetPassword.jsp?forgetPasswordId=" + forgetPasswordId + "&userId=" + userId
 				+ "&usrName=" + emailAddress + "&verificationCode=" + verificationCode;
 		Properties props = new Properties();
 		props.put("resource.loader", "class");

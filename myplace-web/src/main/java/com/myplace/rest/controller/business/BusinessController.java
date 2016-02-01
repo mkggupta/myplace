@@ -178,7 +178,7 @@ public class BusinessController {
 			}
 			if(StringUtils.isNotBlank(userId) && StringUtils.isNotBlank(bussId)  ){	
 				
-				 businessInfo = businessService.getMyBusinessDetail(Long.parseLong(userId),Long.parseLong(bussId));
+				 businessInfo = businessService.getMyBusinessDetail(Long.parseLong(userId),Long.parseLong(bussId),appType);
 				 if(null!= businessInfo ){
 					 isSuccess = true;
 					 if(appType>3){
@@ -321,19 +321,31 @@ public class BusinessController {
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
 		HashMap<String, Object>  requestMap = BusinessControllerUtils.getRequestMapFromMultipart(httpServletRequest);
+		int appType =0;
+		 boolean isSuccess = false;
 		try {
 			if(null!=requestMap && requestMap.size()>0){	
+				if (null!=requestMap.get(MyPlaceWebConstant.APP_TYPE)){
+					appType = Integer.parseInt(requestMap.get(MyPlaceWebConstant.APP_TYPE).toString());
+				}
 				BusinessInfo businessInfo = new BusinessInfo();
 				RequestProcessorUtil.enrichUpdatedBusinessInfo(requestMap, businessInfo);
 				if(businessInfo.getBussId()>0){
-					businessInfo = businessService.updateBusinessInfo(businessInfo);
+					businessInfo = businessService.updateBusinessInfo(businessInfo,appType);
 					 if(null!= businessInfo){
-						 dataMap.put(MyPlaceWebConstant.BUSINESS_DETAIL, businessInfo);
+						 isSuccess = true;
+						 if(appType>3){
+							 modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE, businessInfo);
+							 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.BUSINSEE_UPDATE_SUCCESS.getSuccessMessage());
+						 }else{
+							 dataMap.put(MyPlaceWebConstant.BUSINESS_DETAIL, businessInfo);
+						 }
 					 }else{
 						 logger.debug("updateBusinessInfo() ");
 						   dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 							dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.BUSINESS_NOT_FOUND_EXCEPTION.getErrorMessage());
 							dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.BUSINESS_NOT_FOUND_EXCEPTION.getErrorCode());
+							modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.BUSINESS_NOT_FOUND_EXCEPTION.getErrorMessage());
 					}
 				}
 			}
@@ -343,17 +355,28 @@ public class BusinessController {
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.BUSINESS_NOT_FOUND_EXCEPTION.getErrorMessage());
 			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.BUSINESS_NOT_FOUND_EXCEPTION.getErrorCode());
+			modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.BUSINESS_NOT_FOUND_EXCEPTION.getErrorMessage());
 			
 		}catch (Exception e) {
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION.getErrorMessage());
 			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION.getErrorCode());
+			modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION.getErrorMessage());
 		}
-		Gson gson = new Gson();
-		String jsonData = gson.toJson(dataMap);
-		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
-		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
-		logger.debug("updateBusinessInfo.dataMap="+dataMap);
+		
+		if(appType>3){
+			if (isSuccess){
+				modelAndView.setViewName(MyPlaceWebConstant.BUSINESS_PROFILE);	
+			}else{
+				modelAndView.setViewName(MyPlaceWebConstant.EDIT_BUSINESS_PROFILE);
+			}
+		}else{
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(dataMap);
+			modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+			modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+			logger.debug("updateBusinessInfo.dataMap="+dataMap);
+		}
 		return modelAndView;
 	}
 	
@@ -398,5 +421,45 @@ public class BusinessController {
 		logger.debug("BussController.changeBusinessStatus.dataMap="+dataMap);
 		return modelAndView;
 	}
+	/*
+	 * This method is used to render business profile for edit
+	 */
 	
+	@RequestMapping(value = "/pvt/editbuss", method = RequestMethod.POST)
+	public ModelAndView editBusinessUI(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+		ModelAndView modelAndView = new ModelAndView();
+		HashMap<String, Object>  requestMap = BusinessControllerUtils.getRequestMapFromMultipart(httpServletRequest);
+		 int appType =0 ;
+		 boolean isSuccess = false;
+		try {
+			logger.debug("BussController.editBusinessUI.requestMap="+requestMap);
+			if(null!=requestMap && requestMap.size()>0){
+				String userId = requestMap.get(MyPlaceBusinessConstant.USERID).toString();
+				String bussId = requestMap.get(MyPlaceBusinessConstant.BID).toString();
+				if(StringUtils.isNotBlank(userId) && StringUtils.isNotBlank(bussId)  ){	
+					BusinessInfo businessInfo = businessService.getMyBusinessDetail(Long.parseLong(userId),Long.parseLong(bussId),appType);
+					 if(null!= businessInfo ){
+						 isSuccess = true;
+						 modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE, businessInfo);
+					 }else{
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.NO_BUSINESS_SUCCESS.getSuccessMessage());
+					 }
+				}
+			}
+		} catch (BusinessServiceException e) {
+			logger.error("updateBusinessInfo()"+e.getLocalizedMessage(),e);
+			 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.BUSINESS_NOT_FOUND_EXCEPTION.getErrorMessage());
+			
+		}catch (Exception e) {
+			 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.BUSINESS_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+		}
+		logger.debug("BussController.editBusinessUI.isSuccess="+isSuccess);
+		if (isSuccess){
+			modelAndView.setViewName(MyPlaceWebConstant.EDIT_BUSINESS_PROFILE);
+		}else{
+			modelAndView.setViewName(MyPlaceWebConstant.BUSINESS_PROFILE);
+		}
+
+		return modelAndView;
+	}
 }

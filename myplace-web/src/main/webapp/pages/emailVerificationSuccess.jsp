@@ -9,8 +9,7 @@
 
 </head>
 <body>
-<div style=" width:98%; margin:auto; margin-top:50px; margin-bottom:10px;"><br />
- <div style=" width:98%; margin:auto;"><img src="<%=request.getContextPath()%>/images/logo.jpg" /></div>
+
 <div style=" width:98%; margin:auto; margin-top:70px; margin-bottom:10px;"><br />
 Email Verified Successfully. You can now use full fledged application.
 </body>

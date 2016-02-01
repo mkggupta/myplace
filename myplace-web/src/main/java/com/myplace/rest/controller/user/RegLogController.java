@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -77,9 +79,12 @@ public class RegLogController {
 				//Map<String, Object> clientParamMap = ClientHeaderUtil.extractClientParam(httpServletRequest);
 				 //RequestProcessorUtil.enrichRegistrationInfo(requestMap,registrationInfo,clientParamMap);
 				 //userId = userService.regLoginUser(registrationInfo,clientParamMap);
+				if (null!=requestMap.get(MyPlaceWebConstant.APP_TYPE)){
+					appType = Integer.parseInt(requestMap.get(MyPlaceWebConstant.APP_TYPE).toString());
+				}
 				ClientInfo clientInfo= ClientHeaderUtil.extractClientHeaderParam(httpServletRequest);
 				RequestProcessorUtil.enrichRegistrationInfoObj(requestMap,registrationInfo,clientInfo);
-			     userInfo = userService.regLoginUser(registrationInfo);
+			     userInfo = userService.regLoginUser(registrationInfo,appType);
 				 if(null!= userInfo){
 					 logger.debug(registrationInfo.getRegistrationMode()+" --RegLogController.userInfo =="+userInfo.isRegister());
 					 dataMap.put(MyPlaceWebConstant.USER_DETAIL, userInfo);
@@ -91,13 +96,21 @@ public class RegLogController {
 						 isSuccess =true;
 						 if(appType>3){
 							 modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE, userInfo);
+							  HttpSession session=httpServletRequest.getSession();  
+						      session.setAttribute("userId",userInfo.getId());  
+						      session.setAttribute("userName",userInfo.getUserName());
+						      session.setMaxInactiveInterval(120);//time will be in second
 						 }else{
 							 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.APP_REG_SUCCESS.getSuccessMessage());
 							 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.APP_REG_SUCCESS.getSuccessCode());
 						 }
 					 }else if(!userInfo.isRegister()){
-						 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.LOGIN_SUCCESS.getSuccessMessage());
-						 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.LOGIN_SUCCESS.getSuccessCode());	
+						 if(registrationInfo.getRegistrationMode()>3){
+							  modelAndView.addObject(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.LOG_REG_ALREADY_EXIST.getSuccessMessage());
+						 }else{
+							 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.LOGIN_SUCCESS.getSuccessMessage());
+							 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.LOGIN_SUCCESS.getSuccessCode());	
+						 }
 					 }
 				 }else{
 					 if(appType>3){
@@ -167,7 +180,7 @@ public class RegLogController {
 	 * This method is currently used for web login
 	 */
 	@RequestMapping(value = "/pub/login", method = RequestMethod.POST)
-	public ModelAndView userLogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+	public ModelAndView userLogin(HttpServletRequest request, HttpServletResponse httpServletResponse) {
 
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
@@ -177,7 +190,7 @@ public class RegLogController {
 		 int appType =0;
 		 boolean isSuccess = false;
 		
-		HashMap<String, Object>  requestMap = ControllerUtils.getRequestMapFromMultipart(httpServletRequest);
+		HashMap<String, Object>  requestMap = ControllerUtils.getRequestMapFromMultipart(request);
 		try {
 			if(null!=requestMap && requestMap.size()>0){	
 				if (null!=requestMap.get(MyPlaceWebConstant.APP_TYPE)){
@@ -188,14 +201,28 @@ public class RegLogController {
 					String userName = requestMap.get(UserParameters.USER_NAME).toString();
 					if(StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)){
 						 userInfo= userService.findUserByUserNamePassword(userName, password);
-						 isSuccess = true;
-						 if(appType>3){
-							 modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE, userInfo);
+						 if(null!=userInfo){
+							 isSuccess = true;
+							 if(appType>3){
+								 modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE, userInfo);
+								 HttpSession session=request.getSession();  
+							      session.setAttribute("userId",userInfo.getId());  
+							      session.setAttribute("userName",userInfo.getUserName());
+							      session.setMaxInactiveInterval(120);//time will be in second
+								 
+							 }else{
+								 dataMap.put(MyPlaceWebConstant.USER_DETAIL, userInfo);
+								 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
+							 }
 						 }else{
-							 dataMap.put(MyPlaceWebConstant.USER_DETAIL, userInfo);
-							 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
+							 if(appType>3){
+								    modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_PASSWORD_WRONG.getErrorMessage());
+								}else{
+								    dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+									dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_PASSWORD_WRONG.getErrorMessage());
+									dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_PASSWORD_WRONG.getErrorCode());
+								}
 						 }
-						 
 					}else{
 						//wrong parameter
 						if(appType>3){
@@ -253,4 +280,55 @@ public class RegLogController {
 	
 	}
 
+	/*
+	 * This method is currently used for web logout
+	 */
+	@RequestMapping(value = "/pvt/logout", method = RequestMethod.POST)
+	public ModelAndView userLogOut(HttpServletRequest request, HttpServletResponse httpServletResponse) {
+
+		ModelAndView modelAndView = new ModelAndView();		
+		 int appType =0;
+		 boolean isSuccess = false;
+		 long userId = 0;
+		
+		HashMap<String, Object>  requestMap = ControllerUtils.getRequestMapFromMultipart(request);
+		try {
+			logger.debug("userLogOut requestMap ="+requestMap);
+			if(null!=requestMap && requestMap.size()>0){	
+				if (null!=requestMap.get(MyPlaceWebConstant.APP_TYPE)){
+					appType = Integer.parseInt(requestMap.get(MyPlaceWebConstant.APP_TYPE).toString());
+				}
+				if (null!=requestMap.get(MyPlaceWebConstant.USERID)){
+					logger.debug(MyPlaceWebConstant.USERID+" --map.userId ="+requestMap.get(MyPlaceWebConstant.USERID));
+					String strUserId= requestMap.get(MyPlaceWebConstant.USERID).toString();
+					logger.debug(" --map.strUserId ="+strUserId);
+					if(!strUserId.equalsIgnoreCase("null")){
+						userId = Long.parseLong(strUserId);
+					}else{
+						logger.debug(" else --map.strUserId ="+strUserId);
+					}
+				}
+				logger.debug("userId ="+userId);
+				HttpSession session = request.getSession(false);
+				logger.debug("userLogOut ="+session);
+				if (null!=session){
+					logger.debug("userLogOut userid ="+session.getAttribute("userId"));
+			        session.invalidate();  
+			        logger.debug("userLogOut invalidate ="+session);
+				}
+			}
+		}catch (Exception e) {
+				e.printStackTrace();
+			    modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());		
+		}
+	
+			if (isSuccess){
+				modelAndView.setViewName(MyPlaceWebConstant.LOGIN);
+				//modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE, userInfo);
+			}else{
+				modelAndView.setViewName(MyPlaceWebConstant.LOGIN);
+			}
+		return modelAndView;
+	
+	}
 }

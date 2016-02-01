@@ -1,8 +1,52 @@
 function goBack() {
-    window.history.back();
+    //window.history.back();
+    window.history.go(-1);
 }
 
 function validateChangePassForm() {
+	
+	var oldPassword = document.forms["cpForm"]["oldPassword"].value;
+		oldPassword=oldPassword.trim();
+	if (oldPassword == null || oldPassword == "") {
+		alert("Please enter your old password");
+		document.cpForm.oldPassword.focus();
+		return false;
+	}
+	var password = document.forms["cpForm"]["password"].value;
+	password=password.trim();
+	if (password == null || password == "") {
+		alert("Please enter your new password");
+		document.cpForm.password.focus();
+		return false;
+	}
+	if(password.length<3 || password.length>25)
+	{
+		alert("Please Enter Password between 3 to 25 char");
+		document.cpForm.password.focus();
+		return false;
+	}
+	
+	if (oldPassword == password) {
+		alert("Old Password and New Password could not be same.");
+		return false;
+	}
+	
+	var confPassword = document.forms["cpForm"]["confPassword"].value;
+	confPassword=confPassword.trim();
+	if (confPassword == null || confPassword == "") {
+		alert("Please re-enter your New Password");
+		document.cpForm.confPassword.focus();
+		return false;
+	}
+	if (confPassword != password) {
+		alert("New Password and Confirm Password are not matching.");
+		return false;
+	}
+	return true;
+}
+
+
+function validateResetPassForm() {
 	var password = document.forms["cpForm"]["password"].value;
 	password=password.trim();
 	if (password == null || password == "") {
@@ -25,12 +69,11 @@ function validateChangePassForm() {
 		return false;
 	}
 	if (confPassword != password) {
-		alert("Passwords do not match.");
+		alert("New Password and Confirm Password is not matching.");
 		return false;
 	}
 	return true;
 }
-
 
 function validateForgetForm() {
 
@@ -60,3 +103,291 @@ function ValidateEmail(mail)
   }  
 	return false;
 }  
+
+function validateUserEditForm()
+{
+	var a = document.editform.contactNum.value;
+	if(a=="")
+	{
+	alert("Please Enter Contact Number");
+	document.editform.contactNum.focus();
+	return false;
+	}
+	if(isNaN(a))
+	{
+	alert("Enter valid Numeric Number without +,-,space etc.");
+	document.editform.contactNum.focus();
+	return false;
+	}
+	if((a.length < 5) || (a.length > 15))
+	{
+	alert("Your Contact Number must be 5 to 15 digits");
+	document.editform.contactNum.select();
+	return false;
+	}
+
+	var zip = document.editform.zipcode.value;
+
+	if(isNaN(zip))
+	{
+		alert("Enter valid Numeric Zip Code without +,-,space etc.");
+		document.editform.zipcode.focus();
+		return false;
+	}
+	if((zip.length < 5) || (zip.length > 11))
+	{
+		alert("Your Zip Code must be between 5 to 10 digits");
+		document.editform.zipcode.select();
+		return false;
+	}
+
+}
+
+function validateURL(value) {
+    return /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(value);
+}
+
+function validateBussEditForm()
+{
+	var bussName = document.editBussProfile.bName.value;
+	var bussContName = document.editBussProfile.bContName.value;
+	var bussAddress = document.editBussProfile.bAddress.value;
+	var bussZip = document.editBussProfile.bZip.value;
+	var bussPhone = document.editBussProfile.bPhone.value;
+	var bussEmail= document.editBussProfile.bEmail.value;
+	var bussWeb = document.editBussProfile.bWeb.value;
+	var bussDesc = document.editBussProfile.bDesc.value;
+	bussName = bussName.trim();
+	bussContName=bussContName.trim();
+	bussAddress=bussAddress.trim();
+	bussZip=bussZip.trim();
+	bussPhone=bussPhone.trim();
+	bussEmail=bussEmail.trim();
+	bussWeb=bussWeb.trim();
+	bussDesc=bussDesc.trim();
+
+	var letters = /^[0-9./;#,+-]*$/;  
+	
+
+	if(bussPhone=="")
+	{
+		alert("Please Enter Business Contact Number");
+		document.editBussProfile.bPhone.focus();
+		return false;
+	}
+	
+	if(bussPhone.length<6)
+	{
+		alert("Business Contact Number could not be so short");
+		document.editBussProfile.bPhone.focus();
+		return false;
+	}
+
+	if(!bussPhone.match(letters))  
+	{  
+		alert('Please input numeric characters only, although you can use +-,;#');  
+		document.editBussProfile.bPhone.focus();
+		return false;  
+	}  
+	
+
+	
+
+	if(bussName=="")
+	{
+		alert("Please Enter Business Name");
+		document.editBussProfile.bName.focus();
+		return false;
+	}
+	
+	if(bussName.length<3)
+	{
+		alert("Business Name could not be so short");
+		document.editBussProfile.bName.focus();
+		return false;
+	}
+	
+	if(bussContName=="")
+	{
+		alert("Please Enter Business Contact Person Name");
+		document.editBussProfile.bContName.focus();
+		return false;
+	}
+	
+	if(bussContName.length<3)
+	{
+		alert("Business Contact Person Name could not be so short");
+		document.editBussProfile.bContName.focus();
+		return false;
+	}
+	
+	if(bussAddress=="")
+	{
+		alert("Please Enter Business Address");
+		document.editBussProfile.bAddress.focus();
+		return false;
+	}
+	
+	if(bussAddress.length<10)
+	{
+		alert("Business Address could not be so short");
+		document.editBussProfile.bAddress.focus();
+		return false;
+	}
+	
+	if(bussZip=="")
+	{
+		alert("Please Enter Business Zip Code");
+		document.editBussProfile.bZip.focus();
+		return false;
+	}
+	if(isNaN(bussZip))
+	{
+		alert("Enter valid Numeric Zip Code without +,-,space etc.");
+		document.editBussProfile.bZip.focus();
+		return false;
+	}
+	if((bussZip.length < 5) || (bussZip.length > 11))
+	{
+		alert("Your Zip Code must be between 5 to 10 digits");
+		document.editBussProfile.bZip.focus();
+		return false;
+	}
+	
+	if (!ValidateEmail(bussEmail))
+	{
+		alert("Please provide a valid email address");
+		document.editBussProfile.bEmail.select();
+		return false;
+	}
+	
+	if (!validateURL(bussWeb))
+	{
+		alert("Please provide a valid web url");
+		document.editBussProfile.bWeb.select();
+		return false;
+	}
+	
+	if(bussDesc=="")
+	{
+		alert("Please Enter Business Description");
+		document.editBussProfile.bDesc.focus();
+		return false;
+	}
+	
+	if(bussDesc.length<20)
+	{
+		alert("Business Description could not be so short");
+		document.editBussProfile.bDesc.focus();
+		return false;
+	}
+	
+}
+
+function ShowHideDiv() {
+        var category = document.getElementById("cat");
+        var dvCategory = document.getElementById("dvCategory");
+        dvCategory.style.display = category.checked ? "block" : "none";
+
+		var zipcode = document.getElementById("zipcode");
+        var dvZip = document.getElementById("dvZip");
+        dvZip.style.display = zipcode.checked ? "block" : "none";
+	
+		 var loc = document.getElementById("loc");
+        var dvLocation = document.getElementById("dvLocation");
+        dvLocation.style.display = loc.checked ? "block" : "none";
+		
+		 var txt = document.getElementById("txt");
+        var dvText = document.getElementById("dvText");
+        dvText.style.display = txt.checked ? "block" : "none";
+	
+    }
+
+
+function validateSearchForm() {
+		var	type=document.search.type.value;
+		if(type==2)
+		{
+			var	bussZip=document.search.bZip.value;
+			bussZip=bussZip.trim();
+			if(bussZip=="")
+			{
+				alert("Please Enter Business Zip Code");
+				document.search.bZip.focus();
+				return false;
+			}
+			if(isNaN(bussZip))
+			{
+				alert("Enter valid Numeric Zip Code without +,-,space etc.");
+				document.search.bZip.focus();
+				return false;
+			}
+			if((bussZip.length < 5) || (bussZip.length > 11))
+			{
+				alert("Your Zip Code must be between 5 to 10 digits");
+				document.search.bZip.focus();
+				return false;
+			}
+
+		}
+
+		if(type==3)
+		{
+			var	bussLat=document.search.bLat.value;
+			var	bussLong=document.search.bLong.value;
+			bussLat=bussLat.trim();
+			bussLong=bussLong.trim();
+			if(bussLat=="")
+			{
+				alert("Please Enter Business Latitude");
+				document.search.bLat.focus();
+				return false;
+			}
+			if(isNaN(bussLat))
+			{
+				alert("Enter Valid Business Latitude");
+				document.search.bLat.focus();
+				return false;
+			}
+			
+			if(bussLong=="")
+			{
+				alert("Please Enter Business Longitude");
+				document.search.bLong.focus();
+				return false;
+			}
+			if(isNaN(bussLong))
+			{
+				alert("Enter Valid Business Longitude");
+				document.search.bLong.focus();
+				return false;
+			}
+
+		}
+
+
+		if(type==4)
+		{
+			var	bussText=document.search.text.value;
+			bussText=bussText.trim();
+			if(bussText=="")
+			{
+				alert("Please Enter Some Text with atleast 3 characters in length");
+				document.search.text.focus();
+				return false;
+			}
+			
+			if((bussText.length < 3) || (bussText.length > 21))
+			{
+				alert("Your Search Text must be between 3 to 20 digits");
+				document.search.text.focus();
+				return false;
+			}
+
+		}
+		
+        
+    }
+
+
+

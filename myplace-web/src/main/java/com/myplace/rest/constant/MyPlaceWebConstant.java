@@ -17,6 +17,9 @@ public interface MyPlaceWebConstant {
 	String DEFAULT_VIEW_NAME = "json";
 	String RESPONSE = "jsonData";
 	String JSP_RESPONSE = "respObj";
+	String JSP_CATEGORY = "catObj";
+	String JSP_SEARCH_RESPONSE = "searchRespObj";
+	String JSP_SEARCH_CRITERION = "searchObj";
 	String REQUEST_TYPE = "requesttype";
 	Integer ERROR_CODE = 0;
 	Integer SUCCESS_CODE = 1;
@@ -67,23 +70,32 @@ public interface MyPlaceWebConstant {
 	String EDIT_USER_PROFILE = "editUserProfile";
 	String BUSINESS_PROFILE = "bussProfile";
 	String BUSINESS_LIST_PROFILE = "bussListProfile";
+	String EDIT_BUSINESS_PROFILE = "editBussProfile";
 	String SEARCH= "search";
 	String SEARCH_RESPONSE = "searchResult";
 	String LOGIN = "login";
 	String REGISTER = "register";
+	String FORGET_PASSWORD = "forgetPassword"; //UI to send request for  forget password
+	String VERIFY_ACCOUNT = "verifyAccount";
+	String CHANGE_PASSWORD = "changePassword";
+	String RESET_PASSWORD = "resetPassword";
+	String ABOUT_US_PAGE = "aboutUs";
 	
 	//API URL
 	String GET_USER_PVT_PROFILE_API = "userProfile";
 	String GET_USER_PUB_PROFILE_API = "businessProfile";
 	String EDIT_USER_PROFILE_API =   "usr/pvt/editprofile";//will return UI
-	String UPDATE_USER_PROFILE_API =   "usr/pvt/updateprofile";//will update profile
+	String UPDATE_USER_PROFILE_API =   "usr/pvt/updateprofile";//will update user profile
 	String GET_BUSINESS_PROFILE_API = "business/pub/buss/";
 	String GET_MY_BUSINESS_LIST_API = "business/pvt/my/";
 	String GET_MY_BUSINESS_PROFILE_API = "business//pvt/my/";
-	String UPDATE_BUSINESS_PROFILE_API = "login";
-	String DELETE_BUSINESS_PROFILE_API = "login";
+	String EDIT_BUSINESS_PROFILE_API = "business/pvt/editbuss"; //will return UI
+	String UPDATE_BUSINESS_PROFILE_API = "business/pvt/updatebuss";//will update business profile
+	String DELETE_BUSINESS_PROFILE_API = "business/pvt/delbuss";
 	String CHANGE_PROFILE_PASSWORD_API = "login";
 	String SEARCH_BUSINESS_API = "login";
+	String VERIFY_USER_ACCOUNT_API ="usrauth/pvt/verifyaccount";//will return Verify UI
+	String CHANGE_USER_PASSWORD_API ="usr/pvt/loadchangepassword";//will return change pasword UI
 	
 	
 }

@@ -12,6 +12,21 @@ public class BusinessSearchVO {
 	private int startLimit;
 	private int direction;
 	private int distance;
+	private String nextUrl;
+	private String preUrl;
+	
+	public String getNextUrl() {
+		return nextUrl;
+	}
+	public void setNextUrl(String nextUrl) {
+		this.nextUrl = nextUrl;
+	}
+	public String getPreUrl() {
+		return preUrl;
+	}
+	public void setPreUrl(String preUrl) {
+		this.preUrl = preUrl;
+	}
 	
 	
 	public int getDistance() {

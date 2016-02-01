@@ -8,10 +8,9 @@
 </head>
 
 <body>
- <div style=" width:98%; margin:auto; margin-top:50px; margin-bottom:10px;"><br />
-  <div style=" width:98%; margin:auto;"><img src="/myplace/images/logo.jpg" /></div>
+
 <div style=" width:98%; margin:auto; margin-top:70px; margin-bottom:10px;"><br />
-  <strong>Your password change failed.</strong> <br />
+  <strong>Your password change failed.Please try after sometime or contact with Myplace support team</strong> <br />
  
   </div>
     

@@ -14,6 +14,10 @@ public class BusinessUtil {
 				if(null!=businessInfo.getBussName()){
 					businessInfoObj.setBussName(businessInfo.getBussName());
 				}
+				
+				if(null!=businessInfo.getBussContName()){
+					businessInfoObj.setBussContName(businessInfo.getBussContName());
+				}
 				if(null!=businessInfo.getBussAddress()){
 					businessInfoObj.setBussAddress(businessInfo.getBussAddress());
 				}

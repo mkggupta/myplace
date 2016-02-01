@@ -206,14 +206,19 @@ public class BusinessServiceImpl implements BusinessService {
 		}
 	}
 	
-	public BusinessInfo getMyBusinessDetail (Long userId,Long businessId) throws BusinessServiceException{
+	public BusinessInfo getMyBusinessDetail (Long userId,Long businessId, int appType) throws BusinessServiceException{
 
 		try {
 				BusinessInfo  businessInfo = businessDAO.getMyBusinessDetail(userId,businessId);
 				if (null!=businessInfo){
-					// business update url and delete url
-					businessInfo.setUpdateUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/updatebuss");
-					businessInfo.setDeleteUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/delbuss");
+					if (appType>3){
+						businessInfo.setUpdateUrl(MyPlaceUtil.getEditBussProfileUIUrl());
+						businessInfo.setDeleteUrl(MyPlaceUtil.getDeleteBusinessApiUrl());
+					}else{
+						// business update url and delete url
+						businessInfo.setUpdateUrl(MyPlaceUtil.getUpdateBusinessApiUrl());
+						businessInfo.setDeleteUrl(MyPlaceUtil.getDeleteBusinessApiUrl());
+					}
 					if (businessInfo.getCatId()>0){
 						String catName= categoryDAO.getCategoryNameByCatId(businessInfo.getCatId());
 						businessInfo.setCatName(catName);
@@ -299,7 +304,7 @@ public class BusinessServiceImpl implements BusinessService {
 		}
 	}
 	
-	public BusinessInfo updateBusinessInfo (BusinessInfo businessInfo) throws BusinessServiceException{
+	public BusinessInfo updateBusinessInfo (BusinessInfo businessInfo,int appType) throws BusinessServiceException{
 		
 		BusinessInfo businessInfoObj = null ;
 		try {
@@ -311,6 +316,16 @@ public class BusinessServiceImpl implements BusinessService {
 		
 		try {
 				businessDAO.updateBusinessDetail(businessInfoObj);
+				logger.debug("update appType----"+appType);
+				if (appType>3){
+					// business update url and delete url for web
+					businessInfoObj.setUpdateUrl(MyPlaceUtil.getEditBussProfileUIUrl());
+					businessInfoObj.setDeleteUrl(MyPlaceUtil.getDeleteBusinessApiUrl());
+				}else{
+					// business update url and delete url
+					businessInfoObj.setUpdateUrl(MyPlaceUtil.getUpdateBusinessApiUrl());
+					businessInfoObj.setDeleteUrl(MyPlaceUtil.getDeleteBusinessApiUrl());
+				}
 				//business file update
 			    List<BusinessFileInfo> fileInfoList = businessInfoObj.getBusinessFileInfo();
 				logger.debug("updateBusinessInfofileInfo----"+fileInfoList);
@@ -344,9 +359,9 @@ public class BusinessServiceImpl implements BusinessService {
 					businessInfoObj.setImgUrls(bussImgUrlsList);
 					businessInfoObj.setBusinessFileInfo(null);
 				}
-				// business update url and delete url
-				businessInfoObj.setUpdateUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/updatebuss");
-				businessInfoObj.setDeleteUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/delbuss");
+				
+			//	businessInfoObj.setUpdateUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/updatebuss");
+				//businessInfoObj.setDeleteUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/delbuss");
 				
 		} catch (DataAccessFailedException|DataUpdateFailedException e) {
 			logger.error("Exception in updating user details in database for the businessInfoObj : " + businessInfoObj + " error  : " + e.getMessage());

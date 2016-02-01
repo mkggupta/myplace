@@ -36,16 +36,24 @@ public class AboutController {
 	public ModelAndView getAbout(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
+		int appType =0;
+		
 	
 		try {
+			if (null!=httpServletRequest.getParameter(MyPlaceWebConstant.APP_TYPE)){
+				   appType = Integer.parseInt(httpServletRequest.getParameter(MyPlaceWebConstant.APP_TYPE).toString());
+				}
 					String aboutUs = aboutService.getAboutUs();
 					 if(StringUtils.isNotBlank(aboutUs)){
+		
 						dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
 						dataMap.put(MyPlaceWebConstant.ABOUT_US,aboutUs);
+						modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE,aboutUs);
 					}else{
 						dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
 						dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.NO_ABOUT_SUCCESS.getSuccessMessage());
-						dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.NO_ABOUT_SUCCESS.getSuccessCode());	
+						dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.NO_ABOUT_SUCCESS.getSuccessCode());
+						modelAndView.addObject(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.NO_ABOUT_SUCCESS.getSuccessMessage());
 					}
 				
 		
@@ -54,13 +62,18 @@ public class AboutController {
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.ABOUT_SERVICE_FAILED_EXCEPTION.getErrorMessage());
 			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.ABOUT_SERVICE_FAILED_EXCEPTION.getErrorCode());
+			modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.ABOUT_SERVICE_FAILED_EXCEPTION.getErrorMessage());
 			
 		}
-		Gson gson = new Gson();
-		String jsonData = gson.toJson(dataMap);
-		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
-		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
-		logger.debug("AboutController.dataMap="+dataMap);
+		if(appType>3){
+				modelAndView.setViewName(MyPlaceWebConstant.ABOUT_US_PAGE);	
+		}else{
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(dataMap);
+			modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+			modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+			logger.debug("AboutController.dataMap="+dataMap);
+		}
 		return modelAndView;
 	}
 	

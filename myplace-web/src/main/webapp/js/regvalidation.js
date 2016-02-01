@@ -8,35 +8,36 @@ function validateRegForm()
 	 user=user.trim();
 	var pass=document.register.password.value;
 	 pass=pass.trim();
+	var gender=document.register.gender.value; 
 	 
-	 if(fName ==" ")
+	 if(fName =="")
 	{
-	  document.getElementById('error').innerHTML="Please Enter FirstName";
+	  document.getElementById('error').innerHTML="Please Enter First Name";
 		// alert("Please Enter FirstName");
 		 document.register.fName.focus();
 		 return false;
 	}
 	if(fName.length<3 || fName.length>25)
 	{
-	  document.getElementById('error').innerHTML="Please Enter FirstName between 3 to 25 char";
+	  document.getElementById('error').innerHTML="Please Enter First Name between 3 to 25 char";
 		//alert("Please Enter FirstName between 3 to 25 char");
 		document.register.fName.focus();
 		return false;
 	}
-	if(lName =="")
+	/*if(lName =="")
 	{
-	  document.getElementById('error').innerHTML="Please Enter LastName";
+	  document.getElementById('error').innerHTML="Please Enter Last Name";
 		//alert("Please Enter LastName");
 		document.register.lName.focus();
 		return false;
 	}
 	if(lName.length<3 || lName.length>25)
 	{
-	   document.getElementById('error').innerHTML="Please Enter LastName between 3 to 25 char";
+	   document.getElementById('error').innerHTML="Please Enter Last Name between 3 to 25 char";
 		//alert("Please Enter LastName between 3 to 25 char");
 		document.register.lName.focus();
 		return false;
-	}
+	}*/
 	if(user == "")
 	{
 	  document.getElementById('error').innerHTML="Please Enter Email";
@@ -70,6 +71,11 @@ function validateRegForm()
 		document.getElementById('error').innerHTML="Please Enter Password between 3 to 25 char";
 		//alert("Please Enter Password between 3 to 25 char");
 		document.register.password.focus();
+		return false;
+	}
+	if(gender =="")
+	{
+		 document.getElementById('error').innerHTML="Please Select Gender";
 		return false;
 	}
 }

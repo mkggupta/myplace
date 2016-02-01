@@ -29,13 +29,14 @@
         <xbean-spring-version>3.7</xbean-spring-version>
 		<jackson-version>1.5.4</jackson-version>
 		<jstl-version>1.2</jstl-version>
-		<velocity-version>1.6.4</velocity-version>
+		<velocity-version>1.7</velocity-version>
 		<mail-version>1.4.3</mail-version>
 		<bouncycastle-version>1.46</bouncycastle-version>
 		<javapns-version>2.2.1</javapns-version>
 	  	<jmimemagic-version>0.1.2</jmimemagic-version>
 		<myplace-path>../myplace/buildtools/src/main/resources/</myplace-path>
 		<myplace-datamodel-path>../myplace-db/target/classes/</myplace-datamodel-path>
+		<org.springsocial.version>1.1.0.RELEASE</org.springsocial.version>
 	
   </properties>
   <dependencies>
@@ -131,17 +132,67 @@
             <version>${org.springframework.version}</version>
         </dependency>
 		<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-config</artifactId>
+    <version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>${org.springframework.version}</version>
 			<scope>test</scope>
-	</dependency>
-	<dependency>
+		</dependency>
+		<!-- Spring Social -->
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-config</artifactId>
+			<version>${org.springsocial.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-core</artifactId>
+			<version>${org.springsocial.version}</version>
+		</dependency>
+		<dependency>     
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-security</artifactId>
+			<version>${org.springsocial.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-web</artifactId>
+			<version>${org.springsocial.version}</version>
+		</dependency>
+		  
+		<!-- Spring Social Facebook -->
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-facebook</artifactId>
+			<version>${org.springsocial.version}</version>
+		</dependency>
+		  
+		<!-- Spring Social Twitter -->
+		<dependency>
+			<groupId>org.springframework.social</groupId>
+			<artifactId>spring-social-twitter</artifactId>
+			<version>${org.springsocial.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j-version}</version>
-	</dependency>
-     <dependency>
+		</dependency>
+		 <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j-log4j12-version}</version>
@@ -223,6 +274,12 @@
 			<artifactId>mail</artifactId>
 			<version>${mail-version}</version>
 	</dependency>
+	<dependency>
+	<groupId>org.apache.velocity</groupId>
+	<artifactId>velocity-tools</artifactId>
+	<version>2.0-beta3</version>
+</dependency>
+
 <!--
 	<dependency>
 			<groupId>javapns</groupId>

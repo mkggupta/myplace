@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.user.util.UserUtils;
 import com.myplace.common.util.EmailUtil;
-import com.myplace.common.util.MediaUtil;
 import com.myplace.common.util.MyPlaceUtil;
 import com.myplace.common.util.StorageUtil;
 import com.myplace.dao.entities.UserPushInfo;
@@ -50,7 +49,7 @@ public class UserServiceImpl implements UserService {
 		this.userDAO = userDAO;
 	}
 	@Override	
-	public UserInfo regLoginUser(RegistrationInfo registrationInfo) throws UserServiceFailedException,
+	public UserInfo regLoginUser(RegistrationInfo registrationInfo,int appType) throws UserServiceFailedException,
 	UserServiceValidationFailedException {
 /*	public Long regLoginUser(RegistrationInfo registrationInfo,Map<String, Object> clientMap) throws UserServiceFailedException,
 			UserServiceValidationFailedException {*/
@@ -130,7 +129,7 @@ public class UserServiceImpl implements UserService {
 						} catch (Exception e1) {
 							logger.error("Could not save stats for userid "+userAuth.getId());	
 						}
-						
+						List<String> pImgUrls = new ArrayList<String>();
 						//save user profile pic data
 						if(null!= userInfo.getUserFileInfo() && userInfo.getUserFileInfo().size()>0){
 							try {
@@ -140,12 +139,35 @@ public class UserServiceImpl implements UserService {
 									userFileInfo.setUserId(userId);
 									mediaDAO.saveUserFileInfo(userFileInfo);
 									logger.debug("afteru saveUserFileInfo for  userId="+userId);
+									pImgUrls.add(StorageUtil.getProfileImageUrl(userFileInfo));
 								}
 							} catch (Exception e) {
 								//we are not throwing error as profile pic saving should not  interrupt user reg
 								logger.error("problem in saving user pic for  userId="+userId +", error is "+ e.getLocalizedMessage());	
 							}
+						}else{
+							logger.debug("else");
+						   try {
+							List<UserFileInfo> userFileInfoList =mediaDAO.getUserFileInfoByUserId(userAuth.getId());
+							if(null!=userFileInfoList && userFileInfoList.size()>0){
+								for(UserFileInfo userFileInfo:userFileInfoList){
+									pImgUrls.add(StorageUtil.getProfileImageUrl(userFileInfo));
+								}
+							}else{
+								//get default pic  0-unknown,1-male,2-female gender
+								List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByType(userInfo.getGender());
+								if(null!=defaultFileInfoList){
+									for(DefaultFileInfo defaultFileInfo:defaultFileInfoList){
+										pImgUrls.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));
+									}	
+								}
+							}
+							} catch (Exception e) {
+								//we are not throwing error as profile pic saving should not  interrupt user reg
+								logger.error("problem in getting user pic for  userId="+userId +", error is "+ e.getLocalizedMessage());	
+							}
 						}
+						userInfo.setImgUrls(pImgUrls);
 					}
 					
 					logger.debug("registrationInfo"+registrationInfo.getRegistrationMode()); 
@@ -156,7 +178,7 @@ public class UserServiceImpl implements UserService {
 					}else if (registrationInfo.getRegistrationMode()>3) {
 						String verificationCode = MyPlaceUtil.generateRandomAlphanumericKey(32);
 						logger.debug("verificationCode"+verificationCode); 
-						// SEND EMAIL
+						// SEND Verification EMAIL
 						try {
 							UserEmailVerification userEmailVerification  = new UserEmailVerification();
 							userEmailVerification.setUserId(userId);
@@ -174,6 +196,14 @@ public class UserServiceImpl implements UserService {
 							//		userAuth.getUserName(), verificaitonCode);
 						}
 					}
+					//for web app
+					 if(appType>3){
+						if (userInfo.getStatus()==0){
+							userInfo.setVerifyAccUrl(MyPlaceUtil.getVerifyAccountUIUrl());
+						 }
+						    userInfo.setChangePassUrl(MyPlaceUtil.getChangePassUIUrl());
+							userInfo.setProfileUpdateUrl(MyPlaceUtil.getEditProfileUIUrl());
+					 }
 				}
 				}
 			}
@@ -200,7 +230,7 @@ public class UserServiceImpl implements UserService {
 		return userInfo;
 	}
 	
-	public UserInfo updateUser(UserInfo userInfo) throws UserServiceFailedException{
+	public UserInfo updateUser(UserInfo userInfo, int appType) throws UserServiceFailedException{
 		try {
 			UserInfo userInfoObj = null;
 			try {
@@ -214,6 +244,22 @@ public class UserServiceImpl implements UserService {
 			}
 			try {
 				userDAO.updateUser(userInfoObj);
+				UserStats userStats = userDAO.getUserStats(userInfo.getId());
+				logger.debug(userStats+" userStats");
+				 if (null!=userStats){
+					 userInfoObj.setBussCnt(userStats.getBussCnt());
+				 }
+				 if(appType>3){
+					 
+					if (userInfoObj.getBussCnt()>0){
+						userInfoObj.setBussListUrl(MyPlaceUtil.getMyBusinessListUrl(userInfo.getId()));
+					}
+					if (userInfoObj.getStatus()==0){
+						userInfoObj.setVerifyAccUrl(MyPlaceUtil.getVerifyAccountUIUrl());
+					}
+					userInfoObj.setChangePassUrl(MyPlaceUtil.getChangePassUIUrl());
+					userInfoObj.setProfileUpdateUrl(MyPlaceUtil.getEditProfileUIUrl());
+				}
 				//user profile pic update
 				List<String> pImgUrlsList = new ArrayList<String>();
 				if(null!= userInfoObj.getUserFileInfo() && userInfoObj.getUserFileInfo().size()>0){
@@ -355,6 +401,48 @@ public class UserServiceImpl implements UserService {
 		
 	}
 	
+	
+
+	public void verifyAccountRequested(String userEmail)throws UserServiceFailedException{
+		
+		try {
+			UserAuth userAuth =  userDAO.getUserAuthDetails(userEmail);
+			if (null != userAuth) {
+				logger.debug(userAuth.getStatus()+"---userAuth.getStatus()");
+				if(userAuth.getStatus()==MyPlaceConstant.BLOCKED_STATUS){
+					throw new UserServiceFailedException(ErrorCodesEnum.USER_IS_BLOCKED);
+				}else{
+					logger.debug(userAuth.getId()+"---userAuth.getStatus()");
+					UserInfo userIno = userDAO.getUserInfoByUserId(userAuth.getId());
+					logger.debug(userIno.getContactName()+"---userIno.getContactName()");
+					String verificationCode = MyPlaceUtil.generateRandomAlphanumericKey(32);
+					UserEmailVerification userEmailVerification  = new UserEmailVerification();
+					userEmailVerification.setUserId(userAuth.getId());
+					userEmailVerification.setEmailId( userAuth.getUserName());
+					userEmailVerification.setVerificationCode(verificationCode);
+					userEmailVerification.setStatus(MyPlaceConstant.NOT_VERIFIED_STATUS);
+					long emailVerificationId= userDAO.saveUserEmailVerification(userEmailVerification);
+					logger.debug(userIno.getContactName()+"---saveUserForgetPasswordVerification()"+emailVerificationId);
+					//send Email
+					try {
+						EmailUtil.sendEmailVerificationEmail(userIno.getContactName(), userIno.getLastName(), emailVerificationId,
+								userAuth.getUserName(), verificationCode);
+					} catch (Exception e) {
+						logger.error("Exception in sending forgetPasswordRequestedd email. Trying again ", e);
+						throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+					}
+				}
+				
+			}else{
+				throw new UserServiceFailedException(ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION);
+			}
+		} catch (DataAccessFailedException |DataUpdateFailedException e) {
+			logger.error("Exception in verifyAccountRequested"+e.getLocalizedMessage(),e);
+			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+		}
+		
+	}
+	
 	   public boolean resetPassword(long userId, long forgotPasswordId, String verificationCode, String userName, String password) throws UserServiceFailedException{
 		   	boolean isReset = false ;
 		   	try {
@@ -414,9 +502,9 @@ public class UserServiceImpl implements UserService {
 						userInfo.setBussListUrl(MyPlaceUtil.getMyBusinessListUrl(userInfo.getId()));
 					}
 					if (userInfo.getStatus()==0){
-						userInfo.setVerifyAccUrl(MyPlaceUtil.getVerifyAccountUrl(userInfo.getId()));
+						userInfo.setVerifyAccUrl(MyPlaceUtil.getVerifyAccountUIUrl());
 					}
-					userInfo.setChangePassUrl(MyPlaceUtil.getChangePassUrl(userInfo.getId()));
+					userInfo.setChangePassUrl(MyPlaceUtil.getChangePassUIUrl());
 					userInfo.setProfileUpdateUrl(MyPlaceUtil.getEditProfileUIUrl());
 				}
 			} catch (DataAccessFailedException e) {

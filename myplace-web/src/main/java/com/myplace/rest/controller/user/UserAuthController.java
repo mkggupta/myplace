@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,53 +103,92 @@ public class UserAuthController {
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
 		HashMap<String, Object>  requestMap = ControllerUtils.getRequestMapFromMultipart(httpServletRequest);
 		String userEmail= null;
+		int appType =0;
+		boolean isSuccess = false;
 		try {
 			if(null!=requestMap && requestMap.size()>0){
+				if (null!=requestMap.get(MyPlaceWebConstant.APP_TYPE)){
+					appType = Integer.parseInt(requestMap.get(MyPlaceWebConstant.APP_TYPE).toString());
+				}
 				if (null != requestMap.get(UserParameters.USER_EMAIL)) {
 					userEmail = requestMap.get(UserParameters.USER_EMAIL).toString();
 					logger.debug("forgetPasswordRequest.userEmail="+userEmail);
 					userService.forgetPasswordRequested(userEmail);
+					 isSuccess = true;
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.FORGET_PASSWORD_EMAIL_SUCCESS.getSuccessMessage());
+					 }else{
 					 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
 					 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.FORGET_PASSWORD_EMAIL_SUCCESS.getSuccessMessage());
 					 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.FORGET_PASSWORD_EMAIL_SUCCESS.getSuccessCode());
-					
+					 }
 				}else{
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.USER_EMAIL_MISSING.getErrorMessage());
+					 }else{
+						dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+						dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorMessage());
+						dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorCode());
+					 }
+				}
+			}else{
+				 if(appType>3){
+					 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.USER_EMAIL_MISSING.getErrorMessage());
+				 }else{
 					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorMessage());
 					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorCode());
-				}
-			}else{
-				dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
-				dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorMessage());
-				dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorCode());
+				 }
 			}
 			
 		}catch (UserServiceFailedException e) {
 			 if (ErrorCodesEnum.USER_IS_BLOCKED.getErrorCode().equalsIgnoreCase(e.getErrorCode())) {
+				 if(appType>3){
+					 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.USER_IS_BLOCKED.getErrorMessage());
+				 }else{
 					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_IS_BLOCKED.getErrorMessage());
 					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_IS_BLOCKED.getErrorCode());
 					logger.info("Exception in authentication : user is blocked : username : " + userEmail);
-
+				 }
 				}else if (ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode().equalsIgnoreCase(e.getErrorCode())) {
-					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
-					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
-					
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
+					 }else{
+						 dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
+						 dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
+					 }
 				}else{
-					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.AUTHENTICATION_SERVICE_FAILED_EXCEPTION.getErrorMessage());
-					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.AUTHENTICATION_SERVICE_FAILED_EXCEPTION.getErrorCode());
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.AUTHENTICATION_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+					 }else{
+						 dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.AUTHENTICATION_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+						 dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.AUTHENTICATION_SERVICE_FAILED_EXCEPTION.getErrorCode());
+					 }
 				}
 				logger.error("Exception in request for change password request : userName : " + userEmail + " error " + e.getMessage(), e);
 			
 		}catch (Exception e) {
-			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
-			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
-			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorCode());
+			if(appType>3){
+				 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+			 }else{
+				dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+				dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+				dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorCode());
+			 }
 		}
-		Gson gson = new Gson();
-		String jsonData = gson.toJson(dataMap);
-		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
-		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
-		logger.debug("updateProfile.dataMap="+dataMap);
+		if(appType>3){
+			if (isSuccess){
+				modelAndView.setViewName(MyPlaceWebConstant.LOGIN);	
+			}else{
+				modelAndView.setViewName(MyPlaceWebConstant.FORGET_PASSWORD);
+			}
+		}else{
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(dataMap);
+			modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+			modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+			logger.debug("updateProfile.dataMap="+dataMap);
+		}
 		return modelAndView;
 	}
 	
@@ -235,6 +275,131 @@ public class UserAuthController {
 		logger.debug("updateProfile.dataMap="+dataMap);
 		return modelAndView;
 	}
+	
+	
+	@RequestMapping(value = "/pvt/verifyaccountrequest", method = RequestMethod.POST)
+	public ModelAndView verifyAccountRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+		ModelAndView modelAndView = new ModelAndView();
+		HashMap<String, Object> dataMap = new HashMap<String, Object>();
+		HashMap<String, Object>  requestMap = ControllerUtils.getRequestMapFromMultipart(httpServletRequest);
+		String userEmail= null;
+		int appType =0;
+		boolean isSuccess = false;
+		try {
+			if(null!=requestMap && requestMap.size()>0){
+				if (null!=requestMap.get(MyPlaceWebConstant.APP_TYPE)){
+					appType = Integer.parseInt(requestMap.get(MyPlaceWebConstant.APP_TYPE).toString());
+				}
+				if (null != requestMap.get(UserParameters.USER_EMAIL)) {
+					userEmail = requestMap.get(UserParameters.USER_EMAIL).toString();
+					logger.debug("verifyAccountRequest.userEmail="+userEmail);
+					userService.verifyAccountRequested(userEmail);
+					 isSuccess = true;
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.VERIFY_ACCOUNT_SUCCESS.getSuccessMessage());
+					 }else{
+					 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);
+					 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.VERIFY_ACCOUNT_SUCCESS.getSuccessMessage());
+					 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.VERIFY_ACCOUNT_SUCCESS.getSuccessCode());
+					 }
+				}else{
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.USER_EMAIL_MISSING.getErrorMessage());
+					 }else{
+						dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+						dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorMessage());
+						dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorCode());
+					 }
+				}
+			}else{
+				 if(appType>3){
+					 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.USER_EMAIL_MISSING.getErrorMessage());
+				 }else{
+					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorMessage());
+					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_EMAIL_MISSING.getErrorCode());
+				 }
+			}
+			
+		}catch (UserServiceFailedException e) {
+			 if (ErrorCodesEnum.USER_IS_BLOCKED.getErrorCode().equalsIgnoreCase(e.getErrorCode())) {
+				 if(appType>3){
+					 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.USER_IS_BLOCKED.getErrorMessage());
+				 }else{
+					dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_IS_BLOCKED.getErrorMessage());
+					dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_IS_BLOCKED.getErrorCode());
+					logger.info("Exception in authentication : user is blocked : username : " + userEmail);
+				 }
+				}else if (ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode().equalsIgnoreCase(e.getErrorCode())) {
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
+					 }else{
+						 dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
+						 dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
+					 }
+				}else{
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.AUTHENTICATION_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+					 }else{
+						 dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.AUTHENTICATION_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+						 dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.AUTHENTICATION_SERVICE_FAILED_EXCEPTION.getErrorCode());
+					 }
+				}
+				logger.error("Exception in request for change password request : userName : " + userEmail + " error " + e.getMessage(), e);
+			
+		}catch (Exception e) {
+			if(appType>3){
+				 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+			 }else{
+				dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
+				dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+				dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorCode());
+			 }
+		}
+		if(appType>3){
+			if (isSuccess){
+				modelAndView.setViewName(MyPlaceWebConstant.VERIFY_ACCOUNT);	
+			}else{
+				modelAndView.setViewName(MyPlaceWebConstant.VERIFY_ACCOUNT);
+			}
+		}else{
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(dataMap);
+			modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+			modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+			logger.debug("verifyAccountRequest.dataMap="+dataMap);
+		}
+		return modelAndView;
+	}
+	
+	
+	/*
+	 * This method is only used for web application
+	 * 
+	 */
+	@RequestMapping(value = "/pvt/verifyaccount", method = RequestMethod.POST)
+	public ModelAndView loadAccountVerifyUI(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+		ModelAndView modelAndView = new ModelAndView();
+		 boolean isSuccess = false;
+		HashMap<String, Object>  requestMap = ControllerUtils.getRequestMapFromMultipart(httpServletRequest);
+	   try {
+		   logger.debug("loadAccountVerifyUI() requestMap="+requestMap);
+		   if(null!=requestMap && requestMap.size()>0){
+			if (null != requestMap.get(UserParameters.USER_ID) && StringUtils.isNotBlank(requestMap.get(UserParameters.USER_ID).toString())){
+				
+				}
+		   }
+		}  catch (Exception e) {
+			modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+		}
+	   if (isSuccess){
+			modelAndView.setViewName(MyPlaceWebConstant.VERIFY_ACCOUNT);
+		}else{
+			modelAndView.setViewName(MyPlaceWebConstant.VERIFY_ACCOUNT);
+		}
+		return modelAndView;
+	}
+	
 	
 
 }

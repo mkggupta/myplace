@@ -367,6 +367,7 @@ public class RequestProcessorUtil {
 			if (null != requestMap.get(UserParameters.LAST_NAME)) {
 				userVO.setLastName(requestMap.get(UserParameters.LAST_NAME).toString());
 			}
+			
 			if (null != requestMap.get(UserParameters.GENDER)) {
 				userVO.setGender(Integer.parseInt(requestMap.get(UserParameters.GENDER).toString()));
 			}
@@ -453,6 +454,10 @@ public class RequestProcessorUtil {
 			}
 			if(null!=requestMap.get(MyPlaceBusinessConstant.USERID)){
 				businessInfo.setUserId(Long.parseLong(requestMap.get(MyPlaceBusinessConstant.USERID).toString()));
+			}
+			
+			if(null!=requestMap.get(MyPlaceBusinessConstant.BCONTNAME)){
+				businessInfo.setBussContName((String) requestMap.get(MyPlaceBusinessConstant.BCONTNAME));
 			}
 			if(null!=requestMap.get(MyPlaceBusinessConstant.BID)){
 				businessInfo.setBussId(Long.parseLong(requestMap.get(MyPlaceBusinessConstant.BID).toString()));

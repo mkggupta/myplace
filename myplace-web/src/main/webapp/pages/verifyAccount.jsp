@@ -14,12 +14,11 @@
 </head>
 
 <body>
-<table width="650" border="0">
-
+<table width="750" border="0">
 
 <div style=" width:98%; margin:auto; margin-top:50px; margin-bottom:10px;">
 <tr>
-      <td colspan="2">Please enter your registered email address, we will send you an email to reset your password<br /></div>
+      <td colspan="2">Please enter your registered email address, we will send you an email to verify your Account<br /></div>
 	</td>
   </tr>
   <c:if test="${not empty message}">
@@ -29,7 +28,7 @@
  </c:if>
   
   <form name="cpForm"
-		action="/myplace/rest/api/usrauth/forgetpasswordrequest" method="post"
+		action="/myplace/rest/api/usrauth/pvt/verifyaccountrequest" method="post"
 		enctype="multipart/form-data" onsubmit="return validateForgetForm();" style="margin:0px;">
   <input type="hidden" name="appType" value="4"/> 
   <div style=" width:98%; margin:auto; margin-top:15px; margin-bottom:10px;"> </div>
@@ -44,11 +43,11 @@
    <tr>
       <td colspan="2">
   <div style="width:98%; margin-top:2px; float:left;"><label>
-  <input type="text" name="email" maxlength="25" class="textfield" /></label></div></td>
+  <input type="text" name="email" maxlength="75" class="textfield" /></label></div></td>
   </tr>
  <tr>
   <td align="center" style="width:50%;"> <input type="submit" value="SUBMIT" id="button"/>
- &nbsp;&nbsp;<a href="<%=request.getContextPath()%>/pages/login.jsp"> Go To Home</a> </td>
+ &nbsp;&nbsp;<a href="#" onclick="goBack()"> Back </a>  </td>
   <td> </td>
   </tr>
  

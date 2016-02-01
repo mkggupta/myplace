@@ -63,6 +63,27 @@ public class MyPlaceUtil {
 	 
 	}
 	
+	public static String getEditBussProfileUIUrl() {
+	 	MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+		String proUpdateUrl =new StringBuilder(myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL)).append(MyPlaceWebConstant.EDIT_BUSINESS_PROFILE_API).toString();
+	  return proUpdateUrl;
+	 
+	}
+	
+	public static String getUpdateBusinessApiUrl() {
+	 	MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+		String changePassUrl =new StringBuilder(myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL)).append(MyPlaceWebConstant.UPDATE_BUSINESS_PROFILE_API).toString();
+	  return changePassUrl;
+	 
+	}
+	
+	public static String getDeleteBusinessApiUrl() {
+	 	MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+		String changePassUrl =new StringBuilder(myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL)).append(MyPlaceWebConstant.DELETE_BUSINESS_PROFILE_API).toString();
+	  return changePassUrl;
+	 
+	}
+	
 	public static String getEditProfileUIUrl() {
 	 	MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
 		String proUpdateUrl =new StringBuilder(myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL)).append(MyPlaceWebConstant.EDIT_USER_PROFILE_API).toString();
@@ -76,16 +97,16 @@ public class MyPlaceUtil {
 	  return changePassUrl;
 	 
 	}
-	public static String getChangePassUrl(long userId) {
+	public static String getChangePassUIUrl() {
 	 	MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
-		String changePassUrl =new StringBuilder(myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL)).append(MyPlaceWebConstant.UPDATE_USER_PROFILE_API).toString();
+		String changePassUrl =new StringBuilder(myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL)).append(MyPlaceWebConstant.CHANGE_USER_PASSWORD_API).toString();
 	  return changePassUrl;
 	 
 	}
 	
-	public static String getVerifyAccountUrl(long userId) {
+	public static String getVerifyAccountUIUrl() {
 	 	MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
-		String verifyAccUrl =new StringBuilder(myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL)).append(MyPlaceWebConstant.UPDATE_USER_PROFILE_API+userId).toString();
+		String verifyAccUrl =new StringBuilder(myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL)).append(MyPlaceWebConstant.VERIFY_USER_ACCOUNT_API).toString();
 	  return verifyAccUrl;
 	 
 	}
