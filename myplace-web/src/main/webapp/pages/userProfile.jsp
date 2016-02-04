@@ -8,51 +8,55 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
 <title>userProfile</title>
 </head>
 <body>
 <jsp:include page="header.jsp" flush="true" />
-<table class="userprofile" width="100%" border="0">
+<table class="userprofile" width="80%" border="0" align="center">
 
 
 <c:if test="${not empty message}">
  	<tr>
-   <td colspan="2"> <font size="4" color="red"><b>${message}</b> &nbsp;</br></font> </td>
+   <td colspan="2" align="center"> <font size="4" color="red"><b>${message}</b> &nbsp;</br></font> </td>
   	</tr>
  	</c:if>
 
    <c:if test="${not empty respObj}">
-   <!--  
    <tr> 
-	<td  colspan="2" style="text-align:right"><a href="<%=request.getContextPath()%>/pages/register.jsp">Change my Password </a>&nbsp;&nbsp;</br></br>
-	Welcome <c:out value="${respObj.contactName}"/>&nbsp;&nbsp;</br>
-    </td> </tr>  
-    -->
-  <tr> 
-    <td colspan="2" width="25%"><img src="${respObj.imgUrls[0]}" alt='photo' style="width:154px;height:108px;"/></td> 
+    <td colspan="2" align="center" style="font-weight:bold;">User Profile</td> 
 	 </tr>  
-	 <tr> <td width="5%">Name </td> 
+  <tr> 
+    <td colspan="2" align="center"><img src="${respObj.imgUrls[0]}" alt='photo' style="width:154px;height:108px;"/></td> 
+	 </tr>  
+	  <tr> 
+   <td colspan="2" align="center">
+   <a href="javascript:document.editProfile.submit()">Edit My Profile </a>&nbsp;&nbsp;</br>&nbsp;
+   </td></tr>
+
+	 <tr> <td style="width:50%;" align="right">Name :&nbsp;</td> 
 	 <c:choose>
     <c:when test="${not empty respObj.contactName}">
-    <td width="25%"><c:out value="${respObj.contactName}" /></td> 
+    <td style="width:50%;" ><c:out value="${respObj.contactName}" /></td> 
 	 </c:when>
     <c:otherwise>
-       <td width="25%"><c:out value="Not Defined" /></td>
+       <td style="width:50%;"><c:out value="Not Defined" /></td>
     </c:otherwise>
 	</c:choose>
     </tr>
-    <tr> <td width="5%">Account Status </td> 
+    <tr> <td style="width:50%;" align="right">Account Status :&nbsp; </td> 
 	 <c:choose>
     <c:when test="${respObj.status==1}">
-         <td width="25%"><c:out value="Verified" /></td> 
+         <td style="width:50%;"><c:out value="Verified" /></td> 
     </c:when>
 	 <c:when test="${respObj.status ==2}">
-         <td width="25%"><c:out value="Blocked" /></td> 
+         <td style="width:50%;"><c:out value="Blocked" /></td> 
     </c:when>
     <c:otherwise>
-     <td width="25%"><c:out value="Not Verified"/> 
+     <td style="width:50%;"><c:out value="Not Verified"/> 
 	 
 	  <c:if test="${not empty respObj.verifyAccUrl}">
 		&nbsp;&nbsp;<a href="javascript:document.verifyAcc.submit()">Verify My Account</a>
@@ -66,109 +70,108 @@
 			 <input type="hidden" name="appType" value="4"/> 
 			<input type="hidden" name="id" value="${respObj.getId()}"/> 
 		</form>
-    <tr> <td width="5%">Gender</td> 
+    <tr> <td style="width:50%;" align="right">Gender :&nbsp;</td> 
 	 <c:choose>
     <c:when test="${respObj.gender==1}">
-         <td width="25%"><c:out value="Male" /></td> 
+         <td style="width:50%;"><c:out value="Male" /></td> 
     </c:when>
 
 	 <c:when test="${respObj.gender== 2}">
-         <td width="25%"><c:out value="Female" /></td> 
+         <td style="width:50%;"><c:out value="Female" /></td> 
     </c:when>
     <c:otherwise>
-        <td width="25%"><c:out value="Not Defined" /></td>
+        <td style="width:50%;"><c:out value="Not Defined" /></td>
     </c:otherwise>
 	</c:choose>
     </tr></br>
-     <tr> <td width="5%">Email </td> 
+     <tr> <td style="width:50%;" align="right">Email :&nbsp;</td> 
 	<c:choose>
     <c:when test="${not empty respObj.userName}">
-    <td width="25%"><c:out value="${respObj.userName}" /></td> 
+    <td style="width:50%;"><c:out value="${respObj.userName}" /></td> 
 	 </c:when>
     <c:otherwise>
-       <td width="25%"><c:out value="Not Defined" /></td>
+       <td style="width:50%;"><c:out value="Not Defined" /></td>
     </c:otherwise>
 	</c:choose>
     </tr>  
-       <tr> <td width="5%">About Me </td> 
+       <tr> <td style="width:50%;" align="right">About Me :&nbsp;</td> 
 	<c:choose>
     <c:when test="${not empty respObj.userDescription}">
-    <td width="25%"><c:out value="${respObj.userDescription}" /></td> 
+    <td style="width:50%;"><c:out value="${respObj.userDescription}" /></td> 
 	 </c:when>
     <c:otherwise>
-       <td width="25%"><c:out value="Not Defined" /></td>
+       <td style="width:50%;"><c:out value="Not Defined" /></td>
     </c:otherwise>
 	</c:choose>
     </tr>
-    <tr> <td width="5%">Address </td> 
+    <tr> <td style="width:50%;" align="right">Address :&nbsp;</td> 
 	<c:choose>
     <c:when test="${not empty respObj.contactAddressLine1}">
-    <td width="25%"><c:out value="${respObj.contactAddressLine1}" /></td> 
+    <td style="width:50%;"><c:out value="${respObj.contactAddressLine1}" /></td> 
 	 </c:when>
     <c:otherwise>
-       <td width="25%"><c:out value="Not Defined" /></td>
+       <td style="width:50%;"><c:out value="Not Defined" /></td>
     </c:otherwise>
 	</c:choose>
     </tr>
-    <tr> <td width="5%">Zip Code </td> 
+    <tr> <td style="width:50%;" align="right">Zip Code :&nbsp;</td> 
   
 	<c:choose>
     <c:when test="${not empty respObj.zipcode}">
-    <td width="25%"><c:out value="${respObj.zipcode}" /></td> 
+    <td style="width:50%;"><c:out value="${respObj.zipcode}" /></td> 
 	 </c:when>
     <c:otherwise>
-       <td width="25%"><c:out value="Not Defined" /></td>
+       <td style="width:50%;"><c:out value="Not Defined" /></td>
     </c:otherwise>
 	</c:choose>
     </tr> 
-    <tr> <td width="5%">Language </td> 
+    <tr> <td style="width:50%;" align="right">Language :&nbsp;</td> 
 
 	<c:choose>
     <c:when test="${not empty respObj.language}">
-    <td width="25%"><c:out value="${respObj.language}" /></td> 
+    <td style="width:50%;"><c:out value="${respObj.language}" /></td> 
 	 </c:when>
     <c:otherwise>
-       <td width="25%"><c:out value="Not Defined" /></td>
+       <td style="width:50%;"><c:out value="Not Defined" /></td>
     </c:otherwise>
 	</c:choose>
     </tr>   
 	
-    <tr> <td width="5%">Contact Number </td> 
+    <tr> <td style="width:50%;" align="right">Contact Number :&nbsp;</td> 
 	 <c:choose>
     <c:when test="${not empty respObj.contactNumber}">
-    <td width="25%"><c:out value="${respObj.contactNumber}" /></td> 
+    <td style="width:50%;"><c:out value="${respObj.contactNumber}" /></td> 
 	 </c:when>
     <c:otherwise>
-       <td width="25%"><c:out value="Not Defined" /></td>
+       <td style="width:50%;"><c:out value="Not Defined" /></td>
     </c:otherwise>
 	</c:choose>
     </tr></br>  
 
-	<tr> <td width="5%">Total Business </td> 
+	<tr> <td style="width:50%;" align="right">Total Business :&nbsp;</td> 
 	 <c:choose>
     <c:when test="${not empty respObj.bussListUrl}">
-    <td width="25%">&nbsp;<a href="${respObj.bussListUrl}?appType=4"> <c:out value="${respObj.bussCnt}" /> </a></td> 
+    <td style="width:50%;">&nbsp;<a href="${respObj.bussListUrl}?appType=4"> <c:out value="${respObj.bussCnt}" /> </a></td> 
      </c:when>
     <c:otherwise>
-       <td width="25%"><c:out value="${respObj.bussCnt}" /></td>
+       <td style="width:50%;"><c:out value="${respObj.bussCnt}" /></td>
     </c:otherwise>
 	</c:choose>
     </tr>
-  
+  <tr> 
+   <td colspan="2" align="center">&nbsp;
+	</td></tr>
     <c:if test="${not empty respObj.profileUpdateUrl}">
    <form id="editProfile" name="editProfile" method="post" action="${respObj.profileUpdateUrl}">
    <input type="hidden" name="appType" value="4"/> 
    <input type="hidden" name="id" value="${respObj.getId()}"/> 
    </form>
-   <tr> 
-   <td colspan="2">
-   <a href="javascript:document.editProfile.submit()">Edit My Profile </a>&nbsp;&nbsp;</br></br>&nbsp;
-   </td></tr>
+
  	</c:if>
      </c:if>
 	
 
 </table>
-
+<jsp:include page="footer.jsp" flush="true" />
 </body>
 </html>

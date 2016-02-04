@@ -118,6 +118,7 @@ public class UserServiceImpl implements UserService {
 							userInfo.setContactName(registrationInfo.getUserName());
 						}
 						userDAO.saveUserInfo(userInfo);
+						userInfo.setUserName(registrationInfo.getUserName());
 						userInfo.setRegister(true);
 						userInfo.setStatus(userAuth.getStatus());
 						logger.debug("after saving userInfo  id ="+userAuth.getId());
@@ -230,6 +231,34 @@ public class UserServiceImpl implements UserService {
 		return userInfo;
 	}
 	
+	public UserInfo getUserPvtProfile(long userId,int appType) throws UserServiceFailedException, UserServiceValidationFailedException{
+		UserInfo userInfo = null;
+		try {
+			//String userName = userDAO.getUserNameById(userId);
+			UserAuth userAuth = userDAO.getUserAuthDetailsByUserId(userId);
+			logger.debug(userAuth+"  userAuth");
+			if(null!=userAuth){
+				userInfo= getUserInfoFromUserAuth(userAuth,userInfo);
+				 if(appType>3){
+					 
+						if (userInfo.getBussCnt()>0){
+							userInfo.setBussListUrl(MyPlaceUtil.getMyBusinessListUrl(userInfo.getId()));
+						}
+						if (userInfo.getStatus()==0){
+							userInfo.setVerifyAccUrl(MyPlaceUtil.getVerifyAccountUIUrl());
+						}
+						//userInfo.setChangePassUrl(MyPlaceUtil.getChangePassUIUrl());
+						userInfo.setProfileUpdateUrl(MyPlaceUtil.getEditProfileUIUrl());
+					}
+			}
+		} catch (DataAccessFailedException e) {
+			throw new UserServiceFailedException(ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION);
+		}
+		
+		return userInfo;
+		
+	}
+	
 	public UserInfo updateUser(UserInfo userInfo, int appType) throws UserServiceFailedException{
 		try {
 			UserInfo userInfoObj = null;
@@ -249,8 +278,12 @@ public class UserServiceImpl implements UserService {
 				 if (null!=userStats){
 					 userInfoObj.setBussCnt(userStats.getBussCnt());
 				 }
+				 UserAuth userAuth = userDAO.getUserAuthDetailsByUserId(userInfo.getId());
+				 if (null!=userAuth){
+					 userInfoObj.setStatus(userAuth.getStatus());
+				 }
 				 if(appType>3){
-					 
+					
 					if (userInfoObj.getBussCnt()>0){
 						userInfoObj.setBussListUrl(MyPlaceUtil.getMyBusinessListUrl(userInfo.getId()));
 					}
@@ -280,7 +313,7 @@ public class UserServiceImpl implements UserService {
 						}
 					}else{
 					//get default pic  0-unknown,1-male,2-female gender
-						List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByType(userInfo.getGender());
+						List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByType(userInfoObj.getGender());
 						if(null!=defaultFileInfoList){
 							for(DefaultFileInfo defaultFileInfo:defaultFileInfoList){
 								pImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));

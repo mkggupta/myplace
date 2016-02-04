@@ -7,10 +7,11 @@ body {
 	margin-top: 0px;
 	margin-right: 0px;
 	margin-bottom: 0px;
-	background-image: url(../images/background.jpg);
+	/*background-image: url(../images/background_3.png);*/
 	background-repeat: repeat;
 	font-family:Helvetica, sans-serif,Verdana, Arial;
-	color:#FFFFFF;
+	color:#030303;
+	background-color: #f1f1f1;
 }
 
 .name:link { color:#3D89BA; text-decoration:none;}

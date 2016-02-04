@@ -8,7 +8,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
+ 
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>footer</title>
 
 
@@ -23,12 +25,17 @@
    <td> &nbsp;&nbsp; </td>
   </tr>
    <tr> 
-   <td> <a href="<%=request.getContextPath()%>/rest/api/about/pub/getAbt?appType=4">About Us </a>&nbsp;&nbsp; </td>
+   <td style="text-align:center"> <a href="<%=request.getContextPath()%>/rest/api/about/pub/getAbt?appType=4" target="_blank">About Us</a>&nbsp;&nbsp;| &nbsp;&nbsp;
+   <a href="<%=request.getContextPath()%>/pages/myplaceTerms.jsp" target="_blank">Legal </a>&nbsp;&nbsp;|&nbsp;&nbsp;
+   <a href="<%=request.getContextPath()%>/pages/myplaceTerms.jsp" target="_blank">Terms of Service and Use </a>&nbsp;&nbsp;|&nbsp;&nbsp;
+   <a href="<%=request.getContextPath()%>/pages/myplaceTerms.jsp" target="_blank">Privacy Policy </a>&nbsp;&nbsp;
+   
+   </td>
   </tr>
   
    <tr> 
-	<td style="text-align:right">&nbsp;&nbsp;<br/>
-    </td> </tr>  
+	<td style="text-align:center">&nbsp;<font size="2">©Copyrights 2016. Myplace.com All Rights Reserved.</font><br/>
+    </td> </tr>   
   
 </table>
 </body>

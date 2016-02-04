@@ -42,7 +42,7 @@ function validateChangePassForm() {
 		alert("New Password and Confirm Password are not matching.");
 		return false;
 	}
-	
+	return true;
 }
 
 
@@ -72,7 +72,7 @@ function validateResetPassForm() {
 		alert("New Password and Confirm Password is not matching.");
 		return false;
 	}
-	
+	return true;
 }
 
 function validateForgetForm() {
@@ -92,7 +92,7 @@ function validateForgetForm() {
 		return false;
 	}
 	
-	
+	return true;
 }
 
 function ValidateEmail(mail)   
@@ -127,20 +127,18 @@ function validateUserEditForm()
 	}
 
 	var zip = document.editform.zipcode.value;
-	if(zip!= null && zip!="")
+
+	if(isNaN(zip))
 	{
-		if(isNaN(zip))
-		{
-			alert("Enter valid Numeric Zip Code without +,-,space etc.");
-			document.editform.zipcode.focus();
-			return false;
-		}
-		if((zip.length < 5) || (zip.length > 11))
-		{
-			alert("Your Zip Code must be between 5 to 10 digits");
-			document.editform.zipcode.select();
-			return false;
-		}
+		alert("Enter valid Numeric Zip Code without +,-,space etc.");
+		document.editform.zipcode.focus();
+		return false;
+	}
+	if((zip.length < 5) || (zip.length > 11))
+	{
+		alert("Your Zip Code must be between 5 to 10 digits");
+		document.editform.zipcode.select();
+		return false;
 	}
 
 }
@@ -255,24 +253,21 @@ function validateBussEditForm()
 		document.editBussProfile.bZip.focus();
 		return false;
 	}
-	if(bussEmail!= null && bussEmail!="")
+	
+	if (!ValidateEmail(bussEmail))
 	{
-		if (!ValidateEmail(bussEmail))
-		{
-			alert("Please provide a valid email address");
-			document.editBussProfile.bEmail.select();
-			return false;
-		}
+		alert("Please provide a valid email address");
+		document.editBussProfile.bEmail.select();
+		return false;
 	}
-	if(bussWeb!= null && bussWeb!="")
+	
+	if (!validateURL(bussWeb))
 	{
-		if (!validateURL(bussWeb))
-		{
-			alert("Please provide a valid web url like http://www.google.com");
-			document.editBussProfile.bWeb.select();
-			return false;
-		}
+		alert("Please provide a valid web url");
+		document.editBussProfile.bWeb.select();
+		return false;
 	}
+	
 	if(bussDesc=="")
 	{
 		alert("Please Enter Business Description");
@@ -289,110 +284,6 @@ function validateBussEditForm()
 	
 }
 
-function ShowHideDiv() {
-        var category = document.getElementById("cat");
-        var dvCategory = document.getElementById("dvCategory");
-        dvCategory.style.display = category.checked ? "block" : "none";
-
-		var zipcode = document.getElementById("zipcode");
-        var dvZip = document.getElementById("dvZip");
-        dvZip.style.display = zipcode.checked ? "block" : "none";
-	
-		 var loc = document.getElementById("loc");
-        var dvLocation = document.getElementById("dvLocation");
-        dvLocation.style.display = loc.checked ? "block" : "none";
-		
-		 var txt = document.getElementById("txt");
-        var dvText = document.getElementById("dvText");
-        dvText.style.display = txt.checked ? "block" : "none";
-	
-    }
-
-
-function validateSearchForm() {
-		var	type=document.search.type.value;
-		if(type==2)
-		{
-			var	bussZip=document.search.bZip.value;
-			bussZip=bussZip.trim();
-			if(bussZip=="")
-			{
-				alert("Please Enter Business Zip Code");
-				document.search.bZip.focus();
-				return false;
-			}
-			if(isNaN(bussZip))
-			{
-				alert("Enter valid Numeric Zip Code without +,-,space etc.");
-				document.search.bZip.focus();
-				return false;
-			}
-			if((bussZip.length < 5) || (bussZip.length > 11))
-			{
-				alert("Your Zip Code must be between 5 to 10 digits");
-				document.search.bZip.focus();
-				return false;
-			}
-
-		}
-
-		if(type==3)
-		{
-			var	bussLat=document.search.bLat.value;
-			var	bussLong=document.search.bLong.value;
-			bussLat=bussLat.trim();
-			bussLong=bussLong.trim();
-			if(bussLat=="")
-			{
-				alert("Please Enter Business Latitude");
-				document.search.bLat.focus();
-				return false;
-			}
-			if(isNaN(bussLat))
-			{
-				alert("Enter Valid Business Latitude");
-				document.search.bLat.focus();
-				return false;
-			}
-			
-			if(bussLong=="")
-			{
-				alert("Please Enter Business Longitude");
-				document.search.bLong.focus();
-				return false;
-			}
-			if(isNaN(bussLong))
-			{
-				alert("Enter Valid Business Longitude");
-				document.search.bLong.focus();
-				return false;
-			}
-
-		}
-
-
-		if(type==4)
-		{
-			var	bussText=document.search.text.value;
-			bussText=bussText.trim();
-			if(bussText=="")
-			{
-				alert("Please Enter Some Text with atleast 3 characters in length");
-				document.search.text.focus();
-				return false;
-			}
-			
-			if((bussText.length < 3) || (bussText.length > 21))
-			{
-				alert("Your Search Text must be between 3 to 20 digits");
-				document.search.text.focus();
-				return false;
-			}
-
-		}
-		
-        
-    }
 
 
 

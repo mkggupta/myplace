@@ -68,6 +68,7 @@ public enum ErrorCodesEnum {
 	
 	USER_EMAIL_MISSING("ERR1112", "User Email is missing", "com.myplace.user.email.missing"),
 	
+	LOGIN_SERVICE_FAILED_EXCEPTION("ERR1113", "There is some problem in login service", "com.myplace.login.service.failed"),
 	// media service
 	MEDIA_UPDATE_SERVICE_FAILED_EXCEPTION("ERR11301", "Exception in updating media business rules", "com.myplace.service.media.bo.failed"),
 
@@ -99,6 +100,8 @@ public enum ErrorCodesEnum {
 
 	INVALID_REQUEST_TYPE_EXCEPTION("ERR11506", "Invalid request type", "com.myplace.requesttype.invalid"),
 	
+	EMAIL_SERVICE_FAILED_EXCEPTION("ERR11507", "There is some problem in sending email.The reason may be, email service is not responding or you have entered incorrect email address.", "com.myplace.email.service.failed"),
+
 
 	
 	//advt service 

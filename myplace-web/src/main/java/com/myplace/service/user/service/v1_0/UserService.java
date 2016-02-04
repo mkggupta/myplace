@@ -24,4 +24,5 @@ public interface UserService {
 	public byte getUserStatus(long userId) throws UserServiceFailedException;
 	public UserInfo findUserByUserNamePassword (String userName, String password)throws UserServiceFailedException;
 	public void verifyAccountRequested(String userEmail)throws UserServiceFailedException;
+	public UserInfo getUserPvtProfile(long userId,int appType) throws UserServiceFailedException, UserServiceValidationFailedException;
 }

@@ -1,0 +1,2 @@
+ALTER TABLE `myplace_db`.`business_info` MODIFY COLUMN `business_zip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+ALTER TABLE `myplace_db`.`business_info` MODIFY COLUMN `business_phone` VARCHAR(75) CHARACTER SET latin1 COLLATE latin1_swedish_ci;

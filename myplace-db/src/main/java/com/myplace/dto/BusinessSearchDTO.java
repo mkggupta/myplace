@@ -32,7 +32,14 @@ public class BusinessSearchDTO {
 	private String buttonName;
 	private int feedType;
 	private String clickUrl;
+	private String detailUrl;
 
+	public String getDetailUrl() {
+		return detailUrl;
+	}
+	public void setDetailUrl(String detailUrl) {
+		this.detailUrl = detailUrl;
+	}
 	public List<String> getImgUrls() {
 		return imgUrls;
 	}

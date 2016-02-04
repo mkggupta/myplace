@@ -88,7 +88,7 @@ public interface MyPlaceWebConstant {
 	String UPDATE_USER_PROFILE_API =   "usr/pvt/updateprofile";//will update user profile
 	String GET_BUSINESS_PROFILE_API = "business/pub/buss/";
 	String GET_MY_BUSINESS_LIST_API = "business/pvt/my/";
-	String GET_MY_BUSINESS_PROFILE_API = "business//pvt/my/";
+	String GET_MY_BUSINESS_PROFILE_API = "business/pvt/my/";
 	String EDIT_BUSINESS_PROFILE_API = "business/pvt/editbuss"; //will return UI
 	String UPDATE_BUSINESS_PROFILE_API = "business/pvt/updatebuss";//will update business profile
 	String DELETE_BUSINESS_PROFILE_API = "business/pvt/delbuss";

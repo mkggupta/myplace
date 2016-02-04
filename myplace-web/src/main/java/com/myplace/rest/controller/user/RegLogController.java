@@ -319,7 +319,7 @@ public class RegLogController {
 			}
 		}catch (Exception e) {
 				e.printStackTrace();
-			    modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());		
+			    modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.LOGIN_SERVICE_FAILED_EXCEPTION.getErrorMessage());		
 		}
 	
 			if (isSuccess){

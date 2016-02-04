@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Myplace-change-password</title>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
@@ -14,7 +15,7 @@
 
 <body>
 <jsp:include page="header.jsp" />
-<table width="750" border="0">
+<table width="75%" border="0">
 <tr>
       <td colspan="2" align="center"> &nbsp; </td>
   </tr>
@@ -41,27 +42,41 @@
    
   <input type="hidden" name="appType" value="4"/> 
   <tr>
- <td width="50%" align="right"> OLD PASSWORD:&nbsp; </td>
- <td ><input type="password" name="oldPassword" maxlength="50"   /></td>
+ <td width="50%" align="right"> Old Password:&nbsp; </td>
+ <td ><input type="password" name="oldPassword" maxlength="50"  autocomplete="off" /></td>
 </tr>
  <tr>
- <td width="50%" align="right"> NEW PASSWORD:&nbsp; </td>
- <td><input type="password" name="password" maxlength="50"/></td>
+ <td width="50%" align="right"> New Password:&nbsp; </td>
+ <td><input type="password" name="password" maxlength="50" autocomplete="off"/></td>
  </tr>
 
  <tr>
- <td width="50%" align="right"> PLEASE RE-ENTER YOUR PASSWORD:&nbsp; </td>
- <td ><input type="password" name="confPassword" maxlength="50"/></td>
+ <td width="50%" align="right"> Please Re-enter Your Password:&nbsp; </td>
+ <td ><input type="password" name="confPassword" maxlength="50" autocomplete="off"/></td>
  </tr>
 <tr>
       <td colspan="2" align="center"> &nbsp; </td>
   </tr>
   <tr>
-      <td colspan="2" align="center"> <input type="submit" value="SUBMIT" /> </td>
+	<td width="50%" align="right">&nbsp; </td>
+      <td> <input type="submit" value="SUBMIT" /> &nbsp;<input type="button" value="CANCLE"  id="button" onclick="goBack()" > </td></td>
   </tr>
   
 
 </form>
 </table>
+</table>
+<table height="70%" border="0" align="right">
+<tr>
+<td colspan="2">&nbsp;<br/><br/><br/><br/></td>
+</tr>
+<tr>
+<td colspan="2">&nbsp;<br/><br/><br/><br/></td>
+</tr>
+<tr>
+<td colspan="2">&nbsp;<br/><br/><br/><br/></td>
+</tr>
+</table>
+<jsp:include page="footer.jsp" flush="true" />
 </body>
 </html>

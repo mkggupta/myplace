@@ -12,6 +12,7 @@ import com.myplace.common.constant.MyPlaceBusinessConstant;
 import com.myplace.common.constant.MyPlaceConstant;
 import com.myplace.common.util.MyPlaceProperties;
 import com.myplace.common.util.MyPlacePropertyKeys;
+import com.myplace.common.util.MyPlaceUtil;
 import com.myplace.common.util.StorageUtil;
 import com.myplace.dao.exception.DataAccessFailedException;
 import com.myplace.dao.modules.business.BusinessDAO;
@@ -118,6 +119,9 @@ public class SearchServiceImpl implements SearchService {
 					if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
 						businessSearchDTO.setImgUrls(bussImgUrlsList);
 					}
+					
+					//business/business/pub/buss/{bussId} get business public detail url
+					businessSearchDTO.setDetailUrl(MyPlaceUtil.getBusinessDetailUrl(businessSearchDTO.getBussId()));
 				}
 
 		} catch (DataAccessFailedException e) {

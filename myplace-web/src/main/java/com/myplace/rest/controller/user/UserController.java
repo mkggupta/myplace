@@ -48,16 +48,29 @@ public class UserController {
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
 		 String jsonData = null;
 		 Gson gson = new Gson();
+		 int appType =0;
+		 boolean isSuccess = false;
+		 
 		try {
+			if (null!=httpServletRequest.getParameter(MyPlaceWebConstant.APP_TYPE)){
+				appType = Integer.parseInt(httpServletRequest.getParameter(MyPlaceWebConstant.APP_TYPE).toString());
+			}
 			if(StringUtils.isNotBlank(userId)){	
-				UserInfo userInfo = userService.getUserProfile(Long.parseLong(userId));
+				UserInfo userInfo = userService.getUserPvtProfile(Long.parseLong(userId),appType);
 				 if(null!= userInfo){
-					 dataMap.put(MyPlaceWebConstant.USER_DETAIL, userInfo);
+					 isSuccess = true;
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE, userInfo);
+					 }else{
+						 dataMap.put(MyPlaceWebConstant.USER_DETAIL, userInfo);
+					 }
+					
 				 }else{
 					 logger.debug("getProfile() nothing");
 					   dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 					   dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
 					   dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
+					   modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
 				 }
 			}
 		} catch (UserServiceFailedException e) {
@@ -65,15 +78,18 @@ public class UserController {
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
 			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());
+			 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
 			
 		} catch (UserServiceValidationFailedException e) {
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 			dataMap.put(MyPlaceWebConstant.MESSAGE,ErrorCodesEnum.getErrorCodesEnum(e.getErrorCode()).getErrorMessage());
 			dataMap.put(MyPlaceWebConstant.CODE, e.getErrorCode());
+			 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,ErrorCodesEnum.getErrorCodesEnum(e.getErrorCode()).getErrorMessage());
 		}catch (Exception e) {
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
 			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorCode());
+			 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_SERVICE_FAILED_EXCEPTION.getErrorMessage());
 		}
 		
 		if(null!= userId){
@@ -85,12 +101,19 @@ public class UserController {
 			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorMessage());
 			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.USER_NOT_FOUND_EXCEPTION.getErrorCode());	
 		}
-		
 			jsonData = gson.toJson(dataMap);
 		}
-		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
-		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
-		logger.debug("getProfile.dataMap="+dataMap);
+		if(appType>3){
+			if (isSuccess){
+				modelAndView.setViewName(MyPlaceWebConstant.USER_PROFILE);	
+			}else{
+				modelAndView.setViewName(MyPlaceWebConstant.USER_PROFILE);
+			}
+		}else{
+			modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+			modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+			logger.debug("getProfile.dataMap="+dataMap);
+		}
 		return modelAndView;
 		
 	}

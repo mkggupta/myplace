@@ -9,6 +9,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Search</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
@@ -16,9 +18,9 @@
  
 </head>
 <body onLoad="ShowHideDiv()">
-
+<jsp:include page="header.jsp" flush="true" />
 <div style=" width:98%; margin:auto; margin-top:40px; margin-bottom:10px;"> </div>
-<table class="bussProfile" width="100%" border="0">
+<table class="searchCriteria" width="100%" border="0">
  
  
   <form id="search" name="search" method="post" action="/myplace/rest/api/search/pub/getBuss" onsubmit="return validateSearchForm();">
@@ -43,10 +45,10 @@
         </select>
 	  </div>
 	<div id="dvZip" style="display: none">
-		&nbsp;&nbsp;Enter Zip :&nbsp;&nbsp;<input type="text" maxlength="6"  name="bZip" id="bZip"  value="${searchObj.zipCode}" width="100%">
+		&nbsp;&nbsp;Enter Zip :&nbsp;&nbsp;<input type="text" maxlength="6"  name="bZip" id="bZip"  value="${searchObj.zipCode}" width="100%" autocomplete="off">
 	</div>
 	<div id="dvText" style="display: none">
-		&nbsp;&nbsp;Enter Text : &nbsp;&nbsp;<input type="text" maxlength="25"  name="text" id="text" value="${searchObj.text}" width="100%">
+		&nbsp;&nbsp;Enter Text : &nbsp;&nbsp;<input type="text" maxlength="25"  name="text" id="text" value="${searchObj.text}" width="100%" autocomplete="off">
 	 </div>	
 	 </td>
 	</tr>
@@ -54,8 +56,8 @@
 	<tr>
 	 <td colspan="2">
 	 <div id="dvLocation" style="display: none">
-		&nbsp;&nbsp;Enter Latitude : &nbsp;&nbsp;<input type="text" maxlength="25"  name="bLat" id="bLat" value="${searchObj.latitude}" width="100%">
-		&nbsp;&nbsp;Enter Longitude : &nbsp;&nbsp;<input type="text" maxlength="25"  name="bLong" id="bLong" value="${searchObj.longitude}" width="100%">
+		&nbsp;&nbsp;Enter Latitude : &nbsp;&nbsp;<input type="text" maxlength="25"  name="bLat" id="bLat" value="${searchObj.latitude}" width="100%" autocomplete="off">
+		&nbsp;&nbsp;Enter Longitude : &nbsp;&nbsp;<input type="text" maxlength="25"  name="bLong" id="bLong" value="${searchObj.longitude}" width="100%" autocomplete="off">
 	</div>
 	 </td>
 	</tr>
@@ -64,13 +66,15 @@
 	<td width="20%" align="right">&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Search"  id="button" ></td>
 	 <td align="left">&nbsp;&nbsp;&nbsp;&nbsp;</td>
 	</tr>
-
-	 
-</form>
-
 <tr>
 	 <td colspan="2">&nbsp;&nbsp;&nbsp;<hr />
 	 </td>
+	 
+</form>
+</table>
+
+<table class="searchResult" width="100%" border="0">
+
 </tr>
 <tr>
 	 <td colspan="2">&nbsp;&nbsp;&nbsp;
@@ -78,23 +82,27 @@
 </tr>
 <c:if test="${not empty message}">
  	<tr>
-  <td colspan="2"> <font size="4" color="red"><b>${message}</b> &nbsp;</br></font> </td>
+  <td colspan="2" align="center"> <font size="3" color="red"><b>${message}</b> &nbsp;</br></font> </td>
   	</tr>
  </c:if>
+
 <c:forEach items="${searchRespObj}" var="bussSearchDTO">    	
   <tr> 
-    <td  width="20%">
+    <td  style="width:15%;">
      <c:choose>
     <c:when test="${not empty bussSearchDTO.imgUrls}">
-		 <img src="${bussSearchDTO.imgUrls[0]}" alt='photo' style="width:154px;height:108px;"/>
+		 <img src="${bussSearchDTO.imgUrls[0]}" alt='photo' style="width:174px;height:118px;"/>
 	 </c:when>
     <c:otherwise>
-       <img src=" " alt='photo not found' style="width:154px;height:108px;"/>
+       <img src=" " alt='photo not found' style="width:174px;height:118px;"/>
     </c:otherwise>
 	</c:choose>
    
     </td> 
-     <td width="80%">Business Name : 
+     <td style="width:85%;"> <table class="bussShortDesc" width="100%" border="0">  
+	 <tr> 
+    <td  style="width:15%;" align="right">Business Name :&nbsp; </td>
+	<td  style="width:85%;"> 
 	 <c:choose>
     <c:when test="${not empty bussSearchDTO.bussName}">
 		<c:out value="${bussSearchDTO.bussName}" />
@@ -103,7 +111,11 @@
       <c:out value="Not Defined" />
     </c:otherwise>
 	</c:choose>
-	</br>Business Address :
+	</td>
+	</tr>
+	<tr> 
+    <td  style="width:15%;" align="right">Business Address :&nbsp;</td>
+	<td  style="width:85%;">
 	 <c:choose>
     <c:when test="${not empty bussSearchDTO.bussAddress}">
 		<c:out value="${bussSearchDTO.bussAddress}" />
@@ -112,7 +124,11 @@
       <c:out value="Not Defined" />
     </c:otherwise>
 	</c:choose>
-	</br>Business Phone :
+	</td>
+	</tr>
+	 <tr> 
+    <td  style="width:15%;" align="right">Business Phone :&nbsp;</td>
+	<td  style="width:85%;">
 	 <c:choose>
     <c:when test="${not empty bussSearchDTO.bussPhone}">
 		<c:out value="${bussSearchDTO.bussPhone}" />
@@ -121,7 +137,11 @@
       <c:out value="Not Defined" />
     </c:otherwise>
 	</c:choose>
-	</br>Business Zip :
+	</td>
+	</tr>
+	 <tr> 
+    <td  style="width:15%;" align="right">Business Zip :&nbsp;</td>
+	<td  style="width:85%;">
 	 <c:choose>
     <c:when test="${not empty bussSearchDTO.bussZip}">
 		<c:out value="${bussSearchDTO.bussZip}" />
@@ -129,7 +149,16 @@
     <c:otherwise>
       <c:out value="Not Defined" />
     </c:otherwise>
-	</c:choose><hr />
+	</c:choose>
+	 </td>
+	</tr>
+	 <tr> 
+    <td  colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;<a href="${bussSearchDTO.detailUrl}?appType=4"> <c:out value="Get More Detail.." /> </a>
+   <hr /> 
+   </td>
+	</tr>
+</table>
+
     </td></tr>
      </c:forEach>
 	<tr>
@@ -149,7 +178,7 @@
 	  <input type="hidden" name="bLat" value="${searchObj.latitude}"/> 
  	
 	<tr>
-	 <td colspan="2" style="text-align:right"><a href="javascript:document.searchMore.submit()"> Get More Results</a> &nbsp;&nbsp;
+	 <td colspan="2" style="text-align:center"><a href="javascript:document.searchMore.submit()"> Get More Results</a> &nbsp;&nbsp;
 	 </td>
 	 </tr>
 	 </form>
@@ -160,7 +189,21 @@
 	 </td>
 	</tr>
 </table>
+<c:if test="${empty searchRespObj}">
+<table height="100%" border="0" align="right">
+<tr>
+<td >&nbsp;<br/><br/>&nbsp;<br/><br/></td>
+</tr>
+<tr>
+<td >&nbsp;<br/><br/>&nbsp;<br/><br/></td>
+</tr>
+<tr>
+<td >&nbsp;<br/><br/>&nbsp;<br/><br/></td>
+</tr>
+</table>
+ </c:if>
 
+<jsp:include page="footer.jsp" flush="true" />
 
 </body>
 </html>

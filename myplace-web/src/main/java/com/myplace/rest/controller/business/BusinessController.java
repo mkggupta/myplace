@@ -235,12 +235,25 @@ public class BusinessController {
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
 		 String jsonData = null;
 		 Gson gson = new Gson();
+		 int appType =0 ;
+		 boolean isSuccess = false;
 		try {
+			String type = httpServletRequest.getParameter(MyPlaceWebConstant.APP_TYPE);
+			logger.debug("getBusinessDetail.type="+type);
+			if(StringUtils.isNotBlank(type)){
+				appType=Integer.parseInt(type);
+			}
+			
 			if( StringUtils.isNotBlank(bussId)  ){	
 				
 				BusinessInfo businessInfo = businessService.getBusinessDetail(Long.parseLong(bussId));
 				 if(null!= businessInfo ){
-					 dataMap.put(MyPlaceWebConstant.BUSINESS_DETAIL, businessInfo);
+					 isSuccess = true;
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.JSP_RESPONSE, businessInfo);
+					 }else{
+						 	dataMap.put(MyPlaceWebConstant.BUSINESS_DETAIL, businessInfo);
+					 }
 				 }else{
 					 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.NO_BUSINESS_SUCCESS.getSuccessMessage());
 				 }
@@ -267,9 +280,19 @@ public class BusinessController {
 		}	
 		jsonData = gson.toJson(dataMap);
 		}
-		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
-		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
-		logger.debug("getBusinessDetail.dataMap="+dataMap);
+		
+		if(appType>3){
+			if (isSuccess){
+				modelAndView.setViewName(MyPlaceWebConstant.BUSINESS_PROFILE);
+			}else{
+				modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  SuccessCodesEnum.NO_BUSINESS_SUCCESS.getSuccessMessage());
+				modelAndView.setViewName(MyPlaceWebConstant.SEARCH);
+			}
+		}else{
+			modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+			modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+			logger.debug("getBusinessDetail.dataMap="+dataMap);
+		}
 		return modelAndView;
 
 	}

@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Myplace </title>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
@@ -14,7 +15,8 @@
 </head>
 
 <body>
-<table width="750" border="0">
+<jsp:include page="header.jsp" flush="true" />
+<table width="100%" border="0">
 
 <div style=" width:98%; margin:auto; margin-top:50px; margin-bottom:10px;">
 <tr>
@@ -31,27 +33,40 @@
 		action="/myplace/rest/api/usrauth/pvt/verifyaccountrequest" method="post"
 		enctype="multipart/form-data" onsubmit="return validateForgetForm();" style="margin:0px;">
   <input type="hidden" name="appType" value="4"/> 
-  <div style=" width:98%; margin:auto; margin-top:15px; margin-bottom:10px;"> </div>
-  <div style=" width:98%; float:left; margin-right:10px;"></div><div style="width:98%; float:left; margin-top:2px;"><label></label> </div>
+  <div style="width:98%; margin:auto; margin-top:15px; margin-bottom:10px;"> </div>
+  <div style="width:98%; float:left; margin-right:10px;"></div><div style="width:98%; float:left; margin-top:2px;"><label></label> </div>
  
 
-  <div style=" width:98%; float:left; margin-top:15px; margin-right:10px;">
+  <div style="width:98%; float:left; margin-top:15px; margin-right:10px;">
   <tr>
       <td colspan="2">Enter Registered Email</div>
 	  </td>
   </tr>
    <tr>
-      <td colspan="2">
+      <td style="width:50%;">
   <div style="width:98%; margin-top:2px; float:left;"><label>
-  <input type="text" name="email" maxlength="75" class="textfield" /></label></div></td>
+  <input type="text" name="email" maxlength="75" class="textfield" autocomplete="off"/></label></div></td>
+  <td style="width:50%;"> </td>
   </tr>
  <tr>
-  <td align="center" style="width:50%;"> <input type="submit" value="SUBMIT" id="button"/>
- &nbsp;&nbsp;<a href="#" onclick="goBack()"> Back </a>  </td>
+  <td style="width:50%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="SUBMIT" id="button"/>
+ &nbsp;&nbsp;<input type="button" value="Go Back"  id="button" onclick="goBack()" ></td>
   <td> </td>
   </tr>
  
 </form>
 </table>
+<table height="100%" border="0" align="right">
+<tr>
+<td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;<br/><br/>&nbsp;<br/></td>
+</tr>
+<tr>
+<td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;<br/><br/>&nbsp;<br/></td>
+</tr>
+<tr>
+<td colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;<br/><br/>&nbsp;<br/></td>
+</tr>
+</table>
+<jsp:include page="footer.jsp" flush="true" />
 </body>
 </html>

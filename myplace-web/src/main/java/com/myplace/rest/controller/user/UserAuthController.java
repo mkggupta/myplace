@@ -159,10 +159,10 @@ public class UserAuthController {
 					 }
 				}else{
 					 if(appType>3){
-						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.AUTHENTICATION_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE,  ErrorCodesEnum.EMAIL_SERVICE_FAILED_EXCEPTION.getErrorMessage());
 					 }else{
-						 dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.AUTHENTICATION_SERVICE_FAILED_EXCEPTION.getErrorMessage());
-						 dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.AUTHENTICATION_SERVICE_FAILED_EXCEPTION.getErrorCode());
+						 dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.EMAIL_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+						 dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.EMAIL_SERVICE_FAILED_EXCEPTION.getErrorCode());
 					 }
 				}
 				logger.error("Exception in request for change password request : userName : " + userEmail + " error " + e.getMessage(), e);

@@ -191,7 +191,8 @@ public class BusinessServiceImpl implements BusinessService {
 					businessInfo.setImgUrls(bussImgUrlsList);
 				}
 				//business/pvt/my/{userId}/{bussId} get business detail url
-				businessInfo.setDetailUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/my/"+userId+"/"+businessInfo.getBussId());
+				businessInfo.setDetailUrl(MyPlaceUtil.getMyBusinessDetailUrl(userId,businessInfo.getBussId()));
+				//businessInfo.setDetailUrl(MyPlaceUtil.getServerBaseUrl()+"business/pvt/my/"+userId+"/"+businessInfo.getBussId());
 				if (businessInfo.getCatId()>0){
 					String catName= categoryDAO.getCategoryNameByCatId(businessInfo.getCatId());
 					businessInfo.setCatName(catName);
