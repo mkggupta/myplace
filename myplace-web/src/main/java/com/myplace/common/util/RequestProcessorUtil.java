@@ -301,10 +301,15 @@ public class RequestProcessorUtil {
 			if(null!=clientInfo && null!= clientInfo.getFindOnLocation()){
 				registrationVO.setLatitude((float)clientInfo.getFindOnLocation().getLat());
 				
+			}else if (null != requestMap.get(UserParameters.LATITUDE)) {
+				registrationVO.setLatitude(Float.parseFloat(requestMap.get(UserParameters.LATITUDE).toString()));
 			}
+			
 			if(null!=clientInfo && null!= clientInfo.getFindOnLocation()){
 				registrationVO.setLongitude((float)clientInfo.getFindOnLocation().getLol());
 				
+			}else if (null != requestMap.get(UserParameters.LONGITUDE)) {
+				registrationVO.setLongitude(Float.parseFloat(requestMap.get(UserParameters.LONGITUDE).toString()));
 			}
 			if(null!=clientInfo && null!= clientInfo.getFindOnLocation()){
 				StringBuilder location = new StringBuilder();
@@ -649,13 +654,21 @@ public class RequestProcessorUtil {
 	}
 	
 	
-	public static FeedBackInfo enrichFeedBackInfoInfo(HashMap<String, Object> requestMap,FeedBackInfo feedBackInfo ){
+	public static FeedBackInfo enrichFeedBackInfo(HashMap<String, Object> requestMap,FeedBackInfo feedBackInfo ){
 		if (null != requestMap) {
 			
 			if(null!=requestMap.get(FeedBackWebConstant.USERID)){
 				feedBackInfo.setUserId(Long.parseLong(requestMap.get(FeedBackWebConstant.USERID).toString()));
 			}
 		
+			if(null!=requestMap.get(FeedBackWebConstant.NAME)){
+				feedBackInfo.setName(requestMap.get(FeedBackWebConstant.NAME).toString());
+			}
+			
+			if(null!=requestMap.get(FeedBackWebConstant.PHONENO)){
+				feedBackInfo.setPhone(requestMap.get(FeedBackWebConstant.PHONENO).toString());
+			}
+			
 			if(null!=requestMap.get(FeedBackWebConstant.EMAIL)){
 				feedBackInfo.setEmail((String) requestMap.get(FeedBackWebConstant.EMAIL));
 			}

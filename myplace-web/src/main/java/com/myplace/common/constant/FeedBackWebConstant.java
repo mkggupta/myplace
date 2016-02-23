@@ -4,6 +4,8 @@ public interface FeedBackWebConstant {
 	String USERID = "userId";
 	String FEED_BACK_ID = "feedBackId";
 	String FEED_BACK_TEXT = "feedBackText";
+	String NAME = "name";
+	String PHONENO = "contactNum";
 	String EMAIL = "email";
 	String STATUS = "status";
 	String REPLY_TEXT = "replyText";

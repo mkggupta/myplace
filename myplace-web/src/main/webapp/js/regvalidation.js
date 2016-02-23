@@ -1,13 +1,13 @@
 function validateRegForm()
 	{
 	var fName=document.register.fName.value;
-	 fName=fName.trim();
+	 fName=fName;
 	var lName=document.register.lName.value;
-	 lName=lName.trim();
+	 lName=lName;
 	var user=document.register.username.value;
-	 user=user.trim();
+	 user=user;
 	var pass=document.register.password.value;
-	 pass=pass.trim();
+	 pass=pass;
 	var gender=document.register.gender.value; 
 	 
 	 if(fName =="")
@@ -95,10 +95,10 @@ function ValidateEmail(mail)
 function validateLoginForm()
 	{
 	var user=document.login.username.value;
-	 user=user.trim();
+	 user=user;
 	
 	var pass=document.login.password.value;
-	 pass=pass.trim();
+	 pass=pass;
 	if(user =="")
 	{
 		alert("Please Enter Username");

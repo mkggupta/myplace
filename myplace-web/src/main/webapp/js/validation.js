@@ -6,14 +6,14 @@ function goBack() {
 function validateChangePassForm() {
 	
 	var oldPassword = document.forms["cpForm"]["oldPassword"].value;
-		oldPassword=oldPassword.trim();
+		oldPassword=oldPassword;
 	if (oldPassword == null || oldPassword == "") {
 		alert("Please enter your old password");
 		document.cpForm.oldPassword.focus();
 		return false;
 	}
 	var password = document.forms["cpForm"]["password"].value;
-	password=password.trim();
+	password=password;
 	if (password == null || password == "") {
 		alert("Please enter your new password");
 		document.cpForm.password.focus();
@@ -32,7 +32,7 @@ function validateChangePassForm() {
 	}
 	
 	var confPassword = document.forms["cpForm"]["confPassword"].value;
-	confPassword=confPassword.trim();
+	confPassword=confPassword;
 	if (confPassword == null || confPassword == "") {
 		alert("Please re-enter your New Password");
 		document.cpForm.confPassword.focus();
@@ -48,7 +48,7 @@ function validateChangePassForm() {
 
 function validateResetPassForm() {
 	var password = document.forms["cpForm"]["password"].value;
-	password=password.trim();
+	password=password;
 	if (password == null || password == "") {
 		alert("Please enter your new password");
 		document.cpForm.password.focus();
@@ -62,7 +62,7 @@ function validateResetPassForm() {
 	}
 	
 	var confPassword = document.forms["cpForm"]["confPassword"].value;
-	confPassword=confPassword.trim();
+	confPassword=confPassword;
 	if (confPassword == null || confPassword == "") {
 		alert("Please re-enter your new password");
 		document.cpForm.confPassword.focus();
@@ -78,7 +78,7 @@ function validateResetPassForm() {
 function validateForgetForm() {
 
 	var email = document.forms["cpForm"]["email"].value;
-	email=email.trim();
+	email=email;
 	if (email== null || email== "") {
 		alert("Please enter email address");
 		document.cpForm.email.focus();
@@ -159,14 +159,14 @@ function validateBussEditForm()
 	var bussEmail= document.editBussProfile.bEmail.value;
 	var bussWeb = document.editBussProfile.bWeb.value;
 	var bussDesc = document.editBussProfile.bDesc.value;
-	bussName = bussName.trim();
-	bussContName=bussContName.trim();
-	bussAddress=bussAddress.trim();
-	bussZip=bussZip.trim();
-	bussPhone=bussPhone.trim();
-	bussEmail=bussEmail.trim();
-	bussWeb=bussWeb.trim();
-	bussDesc=bussDesc.trim();
+	bussName = bussName;
+	bussContName=bussContName;
+	bussAddress=bussAddress;
+	bussZip=bussZip;
+	bussPhone=bussPhone;
+	bussEmail=bussEmail;
+	bussWeb=bussWeb;
+	bussDesc=bussDesc;
 
 	var letters = /^[0-9./;#,+-]*$/;  
 	
@@ -174,13 +174,6 @@ function validateBussEditForm()
 	if(bussPhone=="")
 	{
 		alert("Please Enter Business Contact Number");
-		document.editBussProfile.bPhone.focus();
-		return false;
-	}
-	
-	if(bussPhone.length<6)
-	{
-		alert("Business Contact Number could not be so short");
 		document.editBussProfile.bPhone.focus();
 		return false;
 	}
@@ -192,8 +185,13 @@ function validateBussEditForm()
 		return false;  
 	}  
 	
-
 	
+	if(bussPhone.length<6)
+	{
+		alert("Business Contact Number could not be so short");
+		document.editBussProfile.bPhone.focus();
+		return false;
+	}
 
 	if(bussName=="")
 	{
@@ -310,89 +308,164 @@ function ShowHideDiv() {
 
 
 function validateSearchForm() {
-		var	type=document.search.type.value;
-		if(type==2)
+	
+	if(document.getElementById("zipcode").checked)
+	{
+		var	bussZip=document.search.bZip.value;
+		bussZip=bussZip;
+		if(bussZip=="")
 		{
-			var	bussZip=document.search.bZip.value;
-			bussZip=bussZip.trim();
-			if(bussZip=="")
-			{
-				alert("Please Enter Business Zip Code");
-				document.search.bZip.focus();
-				return false;
-			}
-			if(isNaN(bussZip))
-			{
-				alert("Enter valid Numeric Zip Code without +,-,space etc.");
-				document.search.bZip.focus();
-				return false;
-			}
-			if((bussZip.length < 5) || (bussZip.length > 11))
-			{
-				alert("Your Zip Code must be between 5 to 10 digits");
-				document.search.bZip.focus();
-				return false;
-			}
-
+			alert("Please Enter Business Zip Code");
+			document.search.bZip.focus();
+			return false;
+		}
+		if(isNaN(bussZip))
+		{
+			alert("Enter valid Numeric Zip Code without +,-,space etc.");
+			document.search.bZip.focus();
+			return false;
+		}
+		if((bussZip.length < 5) || (bussZip.length > 11))
+		{
+			alert("Your Zip Code must be between 5 to 10 digits");
+			document.search.bZip.focus();
+			return false;
 		}
 
-		if(type==3)
-		{
-			var	bussLat=document.search.bLat.value;
-			var	bussLong=document.search.bLong.value;
-			bussLat=bussLat.trim();
-			bussLong=bussLong.trim();
-			if(bussLat=="")
-			{
-				alert("Please Enter Business Latitude");
-				document.search.bLat.focus();
-				return false;
-			}
-			if(isNaN(bussLat))
-			{
-				alert("Enter Valid Business Latitude");
-				document.search.bLat.focus();
-				return false;
-			}
-			
-			if(bussLong=="")
-			{
-				alert("Please Enter Business Longitude");
-				document.search.bLong.focus();
-				return false;
-			}
-			if(isNaN(bussLong))
-			{
-				alert("Enter Valid Business Longitude");
-				document.search.bLong.focus();
-				return false;
-			}
+	}
 
+	if(document.getElementById("loc").checked)
+	{
+		var	bussLat=document.search.bLat.value;
+		var	bussLong=document.search.bLong.value;
+		bussLat=bussLat;
+		bussLong=bussLong;
+		if(bussLat=="")
+		{
+			alert("Please Enter Business Latitude");
+			document.search.bLat.focus();
+			return false;
 		}
-
-
-		if(type==4)
+		if(isNaN(bussLat))
 		{
-			var	bussText=document.search.text.value;
-			bussText=bussText.trim();
-			if(bussText=="")
-			{
-				alert("Please Enter Some Text with atleast 3 characters in length");
-				document.search.text.focus();
-				return false;
-			}
-			
-			if((bussText.length < 3) || (bussText.length > 21))
-			{
-				alert("Your Search Text must be between 3 to 20 digits");
-				document.search.text.focus();
-				return false;
-			}
-
+			alert("Enter Valid Business Latitude");
+			document.search.bLat.focus();
+			return false;
 		}
 		
-        
-    }
+		if(bussLong=="")
+		{
+			alert("Please Enter Business Longitude");
+			document.search.bLong.focus();
+			return false;
+		}
+		if(isNaN(bussLong))
+		{
+			alert("Enter Valid Business Longitude");
+			document.search.bLong.focus();
+			return false;
+		}
+
+	}
+
+
+	if(document.getElementById("txt").checked)
+	{
+		var	bussText=document.search.text.value;
+		bussText=bussText;
+		if(bussText=="")
+		{
+			alert("Please Enter Some Text with atleast 3 characters in length");
+			document.search.text.focus();
+			return false;
+		}
+		
+		if((bussText.length < 3) || (bussText.length > 21))
+		{
+			alert("Your Search Text must be between 3 to 20 digits");
+			document.search.text.focus();
+			return false;
+		}
+
+	}
+	
+    
+}
 
 
 
+function validateContactForm()
+{
+	var name = document.contactUs.name.value;
+	var contactNum = document.contactUs.contactNum.value;
+	var email= document.contactUs.email.value;
+	var feedBackText = document.contactUs.feedBackText.value;
+	name = name;
+	contactNum=contactNum;
+	email=email;
+	feedBackText=feedBackText;
+	var letters = /^[0-9./;#,+-]*$/;  
+	if(name=="")
+	{
+		alert("Please Enter Your Name");
+		document.contactUs.name.focus();
+		return false;
+	}
+	
+	if(name.length<3)
+	{
+		alert("Name could not be so short");
+		document.contactUs.name.focus();
+		return false;
+	}
+
+	if(contactNum=="")
+	{
+		alert("Please Enter Contact Number");
+		document.contactUs.contactNum.focus();
+		return false;
+	}
+	if(!contactNum.match(letters))  
+	{  
+		alert('Please input numeric characters only, although you can use +-,;#');  
+		document.contactUs.contactNum.focus();
+		return false;  
+	}  
+
+	if(contactNum.length<6)
+	{
+		alert("Contact Number could not be so short");
+		document.contactUs.contactNum.focus();
+		return false;
+	}
+	if(email=="")
+	{
+		alert("Please Enter email address");
+		document.contactUs.email.focus();
+		return false;
+	}
+	if(email!= null && email!="")
+	{
+		if (!ValidateEmail(email))
+		{
+			alert("Please provide a valid email address");
+			document.contactUs.email.select();
+			return false;
+		}
+	}
+	
+	if(feedBackText=="")
+	{
+		alert("Please Enter Description");
+		document.contactUs.feedBackText.focus();
+		return false;
+	}
+	
+	if(feedBackText.length<20)
+	{
+		alert("Description could not be so short");
+		document.contactUs.feedBackText.focus();
+		return false;
+	}
+	
+}

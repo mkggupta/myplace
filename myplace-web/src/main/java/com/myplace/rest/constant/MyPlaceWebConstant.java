@@ -80,6 +80,7 @@ public interface MyPlaceWebConstant {
 	String CHANGE_PASSWORD = "changePassword";
 	String RESET_PASSWORD = "resetPassword";
 	String ABOUT_US_PAGE = "aboutUs";
+	String CONTACT_US_PAGE = "contactUs";
 	
 	//API URL
 	String GET_USER_PVT_PROFILE_API = "userProfile";

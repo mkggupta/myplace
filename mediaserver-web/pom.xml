@@ -187,6 +187,7 @@
 	<artifactId>jmimemagic</artifactId>
 	<version>0.1.2</version>
 </dependency>
+<!--
 <dependency>
 			<groupId>javapns</groupId>
 			<artifactId>javapns</artifactId>
@@ -198,7 +199,7 @@
 	<version>1.45</version>
 </dependency>
 
-<!--
+
 
 		<dependency>
 			<groupId>bcprov</groupId>

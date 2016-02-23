@@ -26,7 +26,7 @@
   	</tr>
  	</c:if>
 	<tr>
-   <td colspan="2"> &nbsp;</td>
+   <td colspan="2" align="right"> &nbsp;&nbsp;</td>
   	</tr>
 	<tr>
    <td colspan="2"></td>
@@ -139,17 +139,18 @@
        <td style="width:50%;"><c:out value="Not Defined" /></td>
     </c:otherwise>
 	</c:choose>
+	 </tr> 
 	<c:if test="${not empty respObj.updateUrl}">
-    </tr> 
+   
      <form id="editBussProfile" name="editBussProfile" method="post" action="${respObj.updateUrl}">
    	<input type="hidden" name="appType" value="4"/> 
      <input type="hidden" name="userId" value="${respObj.getUserId()}"/> 
      <input type="hidden" name="bId" value="${respObj.getBussId()}"/> 
    </form>
-  
-   <!-- <tr> <td colspan="2">&nbsp;<a href="${respObj.deleteUrl}">Delete My Business</a>&nbsp;&nbsp;</td></tr> -->
      </c:if>
 	</c:if>
+	 <tr> <td colspan="2" >&nbsp;&nbsp;&nbsp;</td></tr> 
+	<tr> <td colspan="2" align="center">&nbsp;<input type="button" value="Go Back"  id="button" onclick="goBack()" >&nbsp;&nbsp;</td></tr> 
 </table>
 <jsp:include page="footer.jsp" flush="true" />
 </body>

@@ -181,7 +181,12 @@ public class BusinessServiceImpl implements BusinessService {
 					}
 				}else{
 					List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
-					if(null!=defaultFileInfoList){
+					if(null!=defaultFileInfoList && defaultFileInfoList.size()>0){
+						for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+							bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+						}
+					}else{
+						defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,MyPlaceConstant.DEFAULT_CAT_ID_FOR_IMAGE);
 						for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
 							bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
 						}
@@ -232,10 +237,15 @@ public class BusinessServiceImpl implements BusinessService {
 						}
 					}else{
 						List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
-						if(null!=defaultFileInfoList){
-						  for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
-							bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
-						  }
+						if(null!=defaultFileInfoList && defaultFileInfoList.size()>0){
+							for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+								bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+							}
+						}else{
+							defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,MyPlaceConstant.DEFAULT_CAT_ID_FOR_IMAGE);
+							for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+								bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+							}
 						}
 					}
 					if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
@@ -267,7 +277,12 @@ public class BusinessServiceImpl implements BusinessService {
 				}
 			}else{
 				List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
-				if(null!=defaultFileInfoList){
+				if(null!=defaultFileInfoList && defaultFileInfoList.size()>0){
+					for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+						bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+					}
+				}else{
+					defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,MyPlaceConstant.DEFAULT_CAT_ID_FOR_IMAGE);
 					for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
 						bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
 					}
@@ -348,7 +363,12 @@ public class BusinessServiceImpl implements BusinessService {
 					}else{
 						List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessInfo.getCatId().toString()));
 						logger.debug("updateBusinessInfo defaultFileInfoList----"+defaultFileInfoList);
-						if(null!=defaultFileInfoList){
+						if(null!=defaultFileInfoList && defaultFileInfoList.size()>0){
+							for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+								bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+							}
+						}else{
+							defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,MyPlaceConstant.DEFAULT_CAT_ID_FOR_IMAGE);
 							for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
 								bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
 							}

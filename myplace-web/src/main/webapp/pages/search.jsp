@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/validation.js"></script>
- 
+ <script type="text/javascript" src="<%=request.getContextPath()%>/js/locvalidation.js"></script>
 </head>
 <body onLoad="ShowHideDiv()">
 <jsp:include page="header.jsp" flush="true" />
@@ -57,7 +57,7 @@
 	 <td colspan="2">
 	 <div id="dvLocation" style="display: none">
 		&nbsp;&nbsp;Enter Latitude : &nbsp;&nbsp;<input type="text" maxlength="25"  name="bLat" id="bLat" value="${searchObj.latitude}" width="100%" autocomplete="off">
-		&nbsp;&nbsp;Enter Longitude : &nbsp;&nbsp;<input type="text" maxlength="25"  name="bLong" id="bLong" value="${searchObj.longitude}" width="100%" autocomplete="off">
+		&nbsp;&nbsp;Enter Longitude : &nbsp;&nbsp;<input type="text" maxlength="25"  name="bLong" id="bLong" value="${searchObj.longitude}" width="100%" autocomplete="off"> &nbsp;&nbsp; <input type="button" value="Get My Latitude Longitude" onclick="retrieve_search_location()" >
 	</div>
 	 </td>
 	</tr>

@@ -57,6 +57,7 @@ public enum SuccessCodesEnum {
 	PROFILE_UPDATE_SUCCESS("SUCC_11337", "Profile has been update successfully.", "profile.update.success"),
 	BUSINSEE_UPDATE_SUCCESS("SUCC_11338", "Business has been update successfully.", "business.update.success"),
 	VERIFY_ACCOUNT_SUCCESS("SUCC_11339", "Email is sent to your inbox with instruction. Please Follow instructions to verify your account.", "log.verify.email.sent.success"),
+	FEEDBACK_SUCCESS("SUCC_11340", "Thank you for submitting your valuable feedback.", "feedback.save.success"),
 	;
 	String successCode;
 	String successMessage;

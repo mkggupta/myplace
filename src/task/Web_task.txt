@@ -45,12 +45,31 @@ Added About API           -done
 Need to open in new Window -
 
 31-1-2016
-T&C need to find
+T&C need to find           -done
 Contact US page need to design
-Search need to complete
+Search need to complete      -done
 Report need to add in serach
 About Us Need to open in new Window - done
 
 1-2-2016
-Look and feel of web need to change
-Serch need to configure
+Look and feel of web need to change  -done
+Search need to configure            -done
+
+20-2-2016
+Db restore at cloud need to find  -done
+
+21-2-2016
+category image need to finalize
+location service in reg           -done
+location service in search        -done
+Contact US page need to design    -done
+Back Button on business detail    -done
+remove adult category             -done
+
+22-2-2016
+Need to find out IE issues         -done
+Need to add default Pic for Cat    -done
+Need to see domain      
+Change contact us page             -done
+search radio button not working    -done
+

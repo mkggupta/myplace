@@ -42,7 +42,8 @@ public interface UserParameters {
 	String UID="userId";
 	String ADVTCODE="advtCode";
 	String USER_EMAIL="email";
-	
+	String LATITUDE = "latitude";
+	String LONGITUDE = "longitude";
 	//default parameter
 	String DEFAULT_LANGUAGE="English";
 

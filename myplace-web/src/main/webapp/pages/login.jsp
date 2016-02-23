@@ -8,12 +8,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Myplace </title>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/regvalidation.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/locvalidation.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
 
 </head>
 
-<body>
+<body  onload="login_retrieve_location()">
 
 <div style=" width:98%; margin:auto; margin-top:40px; margin-bottom:10px;"> </div>
 <table width="100%" border="0" align="right">
@@ -31,6 +32,7 @@
 
  <input type="hidden" name="registrationMode" value="4"/> 
   <input type="hidden" name="appType" value="4"/> 
+ 
  <c:if test="${not empty message}">
  <tr>
       <td colspan="2" align="right"> <font size="3" color="red"><b>${message}</b> &nbsp;</font> </td>

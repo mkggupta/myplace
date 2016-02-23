@@ -81,6 +81,7 @@ public interface MyPlaceConstant {
 	int FEMALE_TYPE=2;
 	int CAT_TYPE=3;
 	int SUBCAT_TYPE=4;
+	int DEFAULT_CAT_ID_FOR_IMAGE=0;
 	
 	//status for email verification
 	int NOT_VERIFIED_STATUS=0;

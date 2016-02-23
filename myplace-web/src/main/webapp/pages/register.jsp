@@ -9,10 +9,11 @@
 <title>register jsp</title>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/regvalidation.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/validation.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/locvalidation.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
 </head>
-<body>
+<body onload="reg_retrieve_location()">
 <div style="width:98%; margin:auto; margin-top:50px; margin-bottom:10px;"> </div>
 <form id="register" name="register" method="post" action="/myplace/rest/api/user/pub/register" onsubmit="return validateRegForm()" enctype="multipart/form-data">
 <table width="100%" border="0"  align="right">
@@ -74,6 +75,8 @@
 </tr>
  <input type="hidden" name="registrationMode" value="4"/> 
  <input type="hidden" name="appType" value="4"/> 
+  <input type="hidden" name="latitude" /> 
+  <input type="hidden" name="longitude" /> 
  <tr>
  <td style="width:55%;">  </td>
 <td  colspan="2"><font size="1"> &nbsp; &nbsp; &nbsp; &nbsp;By clicking on 'Create an account' above, you confirm that you accept the  

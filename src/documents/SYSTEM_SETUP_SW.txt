@@ -6,6 +6,6 @@
 6) Mysql query browser -done
 7) Tomcat 8.0          -done
 8) Github	       -done
-9) FileZilla
+9) FileZilla           -done
 10)
 

@@ -8,8 +8,8 @@
 
   
     <insert id="insert_feedback_info"  parameterClass="com.myplace.dto.FeedBackInfo" >
-  	 insert into feedback_info(user_id,email,feedback_text) 
-     values (#userId#, #email#,#feedBackText#)
+  	 insert into feedback_info(user_id,email,feedback_text,name,phone) 
+     values (#userId#, #email#,#feedBackText#,#name#,#phone#)
   </insert>
   
    <insert id="insert_feedback_reply_info"  parameterClass="com.myplace.dto.FeedBackReplyInfo" >
@@ -19,7 +19,7 @@
   
 	
   <select id="get_feedback_list" parameterClass="java.util.Map" resultClass="com.myplace.dto.FeedBackInfo">
-		SELECT user_id as userId,feedback_id as feedBackId,email,feedback_text as feedBackText,status FROM feedback_info order by feedback_id desc limit #startLimit#,#endLimit#
+		SELECT user_id as userId,feedback_id as feedBackId,email,feedback_text as feedBackText,status,name,phone FROM feedback_info order by feedback_id desc limit #startLimit#,#endLimit#
   </select>
 	
 	<update id="change_feedback_info_status"  parameterClass="com.myplace.dto.FeedBackInfo">

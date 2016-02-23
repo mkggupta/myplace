@@ -112,8 +112,15 @@ public class SearchServiceImpl implements SearchService {
 						}
 					}else{
 						List<DefaultFileInfo> defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,Integer.parseInt(businessSearchDTO.getCatId().toString()));
-						for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
-							bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+						if(null!=defaultFileInfoList && defaultFileInfoList.size()>0){
+							for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+								bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+							}
+						}else{
+							defaultFileInfoList = mediaDAO.getDefaultFileInfoByTypeId(MyPlaceConstant.CAT_TYPE,MyPlaceConstant.DEFAULT_CAT_ID_FOR_IMAGE);
+							for(DefaultFileInfo  defaultFileInfo : defaultFileInfoList){
+								bussImgUrlsList.add(StorageUtil.getDefaultImageUrl(defaultFileInfo));		
+							}
 						}
 					}
 					if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){

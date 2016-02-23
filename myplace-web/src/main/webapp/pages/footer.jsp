@@ -25,7 +25,9 @@
    <td> &nbsp;&nbsp; </td>
   </tr>
    <tr> 
-   <td style="text-align:center"> <a href="<%=request.getContextPath()%>/rest/api/about/pub/getAbt?appType=4" target="_blank">About Us</a>&nbsp;&nbsp;| &nbsp;&nbsp;
+   <td style="text-align:center">
+   <a href="<%=request.getContextPath()%>/pages/contactUs.jsp" target="_blank">Contact Us</a>&nbsp;&nbsp;| &nbsp;&nbsp;
+   <a href="<%=request.getContextPath()%>/rest/api/about/pub/getAbt?appType=4" target="_blank">About Us</a>&nbsp;&nbsp;| &nbsp;&nbsp;
    <a href="<%=request.getContextPath()%>/pages/myplaceTerms.jsp" target="_blank">Legal </a>&nbsp;&nbsp;|&nbsp;&nbsp;
    <a href="<%=request.getContextPath()%>/pages/myplaceTerms.jsp" target="_blank">Terms of Service and Use </a>&nbsp;&nbsp;|&nbsp;&nbsp;
    <a href="<%=request.getContextPath()%>/pages/myplaceTerms.jsp" target="_blank">Privacy Policy </a>&nbsp;&nbsp;

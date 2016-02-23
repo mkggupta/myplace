@@ -71,30 +71,50 @@ public class FeedbackController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value = "/pvt/savefbacks", method = RequestMethod.POST)
+	@RequestMapping(value = "/pub/savefbacks", method = RequestMethod.POST)
 	public ModelAndView saveFeedBack(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		ModelAndView modelAndView = new ModelAndView();
 		HashMap<String, Object> dataMap = new HashMap<String, Object>();
 		HashMap<String, Object>  requestMap = BusinessControllerUtils.getRequestMapFromMultipart(httpServletRequest);
+		int appType =0;
+
 		try {
 			 if(null!=requestMap && requestMap.size()>0){	
+				 if (null!=requestMap.get(MyPlaceWebConstant.APP_TYPE)){
+						appType = Integer.parseInt(requestMap.get(MyPlaceWebConstant.APP_TYPE).toString());
+					}
 					FeedBackInfo feedBackInfo = new FeedBackInfo();
-					feedBackInfo = RequestProcessorUtil.enrichFeedBackInfoInfo(requestMap, feedBackInfo);
+					feedBackInfo = RequestProcessorUtil.enrichFeedBackInfo(requestMap, feedBackInfo);
 			 	    feedBackService.saveFeedBackInfo(feedBackInfo);
-					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);	
+			 	
+					 if(appType>3){
+						 modelAndView.addObject(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.FEEDBACK_SUCCESS.getSuccessMessage());
+					 }else{
+						 dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);	
+						 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.FEEDBACK_SUCCESS.getSuccessMessage());
+						 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.FEEDBACK_SUCCESS.getSuccessCode());
+					 }
 			 }
 		} catch (FeedBackServiceException e) {
 			logger.error("FeedbackController().saveFeedBack"+e.getLocalizedMessage(),e);
+			if(appType>3){
+			    modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.FEEDBACK_SERVICE_FAILED_EXCEPTION.getErrorMessage());
+			}else{
 			dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_ERROR);
 			dataMap.put(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.FEEDBACK_SERVICE_FAILED_EXCEPTION.getErrorMessage());
 			dataMap.put(MyPlaceWebConstant.CODE, ErrorCodesEnum.FEEDBACK_SERVICE_FAILED_EXCEPTION.getErrorCode());
 			
+			}
 		}
-		Gson gson = new Gson();
-		String jsonData = gson.toJson(dataMap);
-		modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
-		modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
-		logger.debug("FeedbackController.saveFeedBack.dataMap="+dataMap);
+		if(appType>3){
+			modelAndView.setViewName(MyPlaceWebConstant.CONTACT_US_PAGE);
+		}else{
+			Gson gson = new Gson();
+			String jsonData = gson.toJson(dataMap);
+			modelAndView.setViewName(MyPlaceWebConstant.DEFAULT_VIEW_NAME);
+			modelAndView.addObject(MyPlaceWebConstant.RESPONSE, jsonData);
+			logger.debug("FeedbackController.saveFeedBack.dataMap="+dataMap);
+		}
 		return modelAndView;
 	}
 	
@@ -133,7 +153,7 @@ public class FeedbackController {
 		try {
 			 if(null!=requestMap && requestMap.size()>0){	
 				 	FeedBackInfo feedBackInfo = new FeedBackInfo();
-					feedBackInfo = RequestProcessorUtil.enrichFeedBackInfoInfo(requestMap, feedBackInfo);
+					feedBackInfo = RequestProcessorUtil.enrichFeedBackInfo(requestMap, feedBackInfo);
 					feedBackInfo.setStatus(FeedBackWebConstant.FEEDBACK_DELETE_STATUS);
 			 	    feedBackService.changeFeedBackStatus(feedBackInfo);
 			 	    dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.DELETE_FEEDBACK_SUCCESS.getSuccessMessage());
@@ -193,7 +213,7 @@ public class FeedbackController {
 		try {
 			 if(null!=requestMap && requestMap.size()>0){	
 				 	FeedBackInfo feedBackInfo = new FeedBackInfo();
-					feedBackInfo = RequestProcessorUtil.enrichFeedBackInfoInfo(requestMap, feedBackInfo);
+					feedBackInfo = RequestProcessorUtil.enrichFeedBackInfo(requestMap, feedBackInfo);
 			 	    feedBackService.changeFeedBackStatus(feedBackInfo);
 			 	    dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.CHANGE_FEEDBACK_SUCCESS.getSuccessMessage());
 					dataMap.put(MyPlaceWebConstant.STATUS, MyPlaceWebConstant.STATUS_SUCCESS);	
