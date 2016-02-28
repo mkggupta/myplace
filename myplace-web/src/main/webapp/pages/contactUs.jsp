@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Myplace- Contact Us</title>
+<title>findon- Contact Us</title>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" type="text/css">
@@ -17,7 +17,7 @@
 </head>
 
 <body>
-<form id="contactUs" name="contactUs" method="post" action="/myplace/rest/api/feedback/pub/savefbacks" onsubmit="return validateContactForm()" enctype="multipart/form-data">
+<form id="contactUs" name="contactUs" method="post" action="<%=request.getContextPath()%>/rest/api/feedback/pub/savefbacks" onsubmit="return validateContactForm()" enctype="multipart/form-data">
 <table width="100%" border="0">
 
 
@@ -32,7 +32,7 @@
   
  
  <tr>
-      <td width="50%"><h5>For any queries please mail us at <a href="mailto:manish.g.wnsgs@gmail.com">manish.g.wnsgs@gmail.com</a></h5></td>
+      <td width="50%"><h5>For any queries please mail us at <a href="mailto:contactus@findon.biz">contactus@findon.biz</a></h5></td>
 	 <td width="50%" colspan="2"> <h5>We value your suggestions. So, whether you are looking for information or just trying to provide feedback, we look forward to hearing from you! Please describe your query/suggestion and send it to us. We will try and revert on any queries at the earliest. </h5></td>
   </tr>
 
@@ -45,7 +45,7 @@
  <c:if test="${not empty message}">
  	<tr>
 	<td style="width:50%;"> &nbsp; </td>
-  <td style="width:50%;" colspan="2"> <font size="3" color="red"><b>${message}</b> </font> </td>
+  <td style="width:50%;" colspan="2"> <font size="2" color="green"><b>${message}</b> </font> </td>
   	</tr>
   </c:if>
 <tr>

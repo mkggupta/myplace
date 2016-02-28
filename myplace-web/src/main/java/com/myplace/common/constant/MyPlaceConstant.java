@@ -102,9 +102,9 @@ public interface MyPlaceConstant {
 	 byte BUSS_INACTIVE_STATUS=2;
 	 byte BUSS_DELETED_STATUS=3;
 	 
-	//status for reason type 
+	//type for reason list 
 	 byte BUSS_TYPE=1;
-	 byte user_TYPE=2;
+	 byte USER_TYPE=2;
 	 
 	 
 	

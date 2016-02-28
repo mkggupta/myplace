@@ -56,9 +56,9 @@ public class EmailUtil {
 					+ lastName
 					+ ",\n \n\n You've entered "
 					+ emailAddress
-					+ " as the contact email address for your Myplace userID. To complete the process, we just need to verify that this email address belongs to you. Simply click the link below to verify your registration.\n "
+					+ " as the contact email address for your findon.biz userID. To complete the process, we just need to verify that this email address belongs to you. Simply click the link below to verify your registration.\n "
 					+ verificationUrl
-					+ " \n\n\n\n  Wondering why you got this email? \n \n It's sent when someone registers with Myplace. \n \n If you didn't do this, don't worry. Your email address cannot be used as a contact address for anywhere without your verification.\n\n Thanks,\n\n Myplace Customer Support";
+					+ " \n\n\n\n  Wondering why you got this email? \n \n It's sent when someone registers with findon.biz. \n \n If you didn't do this, don't worry. Your email address cannot be used as a contact address for anywhere without your verification.\n\n Thanks,\n\n FindOn Customer Support";
 
 		}
 
@@ -67,8 +67,9 @@ public class EmailUtil {
 	private static String getResetPasswordEmailText(String firstName, String lastName, long forgetPasswordId, long userId, String emailAddress,
 			String verificationCode) {
 
-		String resetPasswordUrl = MyPlaceUtil.getApplicationUrl() + "/pages/resetPassword.jsp?forgetPasswordId=" + forgetPasswordId + "&userId=" + userId
-				+ "&usrName=" + emailAddress + "&verificationCode=" + verificationCode;
+		/*String resetPasswordUrl = MyPlaceUtil.getServerBaseUrl() + "pages/resetPassword.jsp?forgetPasswordId=" + forgetPasswordId + "&userId=" + userId
+				+ "&usrName=" + emailAddress + "&verificationCode=" + verificationCode;*/
+		String resetPasswordUrl =  MyPlaceUtil.getServerBaseUrl() + "usrauth/loadresetpassword/" + forgetPasswordId+ "/" + userId+ "/" + emailAddress + "/" + verificationCode;
 		Properties props = new Properties();
 		props.put("resource.loader", "class");
 		props.put("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
@@ -92,9 +93,9 @@ public class EmailUtil {
 		} catch (Exception e) {
 			logger.error("getResetPasswordEmailText : Exception in fetching mail template " + e.getMessage(), e);
 			return "\n Forgot your password, " + firstName + " " + lastName
-					+ ",\n We received a request to reset the password for your Myplace account  " + emailAddress
+					+ ",\n We received a request to reset the password for your findon.biz account  " + emailAddress
 					+ "\n To reset your password, click on the link below (or copy and paste the URL into your browser): \n " + resetPasswordUrl
-					+ " \n\n Thanks, \n \n Myplace Customer Support";
+					+ " \n\n Thanks, \n \n FindOn Customer Support";
 
 		}
 

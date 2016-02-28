@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
  
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>findon-password change success</title>
+<title>findon-Report Success</title>
 
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
@@ -14,10 +14,18 @@
 <body>
 
 <div style="width:98%; margin:auto; margin-top:70px; margin-bottom:10px;"><br />
-  <font size="2" color="green"><b>Your password has been changed successfully.</b></font>
- </br>
-</br>
-<font size="2" color="green"><b><a href="<%=request.getContextPath()%>/pages/login.jsp">Login to findon.biz</a>&nbsp;</br></b></font>
+<table class="reportSuccess" width="80%" border="0" align="center">
+<tr>
+     
+	<td  align="center" colspan="2"><font size="3" color="green"><b>&nbsp;Report Issue or Feedback </b></font>
+	</br></br></br></td>
+  </tr>
+<tr>
+<td colspan="2" align="center">
+  <font size="2" color="green"><b>${message}</b> </font>
+  </td>
+ </tr>
+ </table>
   </div>
     
 

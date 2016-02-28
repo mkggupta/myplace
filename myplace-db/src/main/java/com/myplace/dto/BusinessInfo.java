@@ -33,7 +33,14 @@ public class BusinessInfo {
 	private String detailUrl;
 	private String updateUrl;
 	private String deleteUrl;
-
+	private String reportUrl;
+	
+	public String getReportUrl() {
+		return reportUrl;
+	}
+	public void setReportUrl(String reportUrl) {
+		this.reportUrl = reportUrl;
+	}
 	public String getDetailUrl() {
 		return detailUrl;
 	}

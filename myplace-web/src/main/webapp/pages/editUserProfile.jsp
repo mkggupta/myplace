@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/validation.js"></script>
-<title>editUserProfile</title>
+<title>findon-Edit User Profile</title>
 
 </head>
 <body>
@@ -24,7 +24,7 @@
 
 	<c:if test="${not empty message}">
  	<tr>
-   	<td colspan="2" align="center"> <font size="3" color="red"><b>${message}</b> &nbsp;</br></font> </td>
+   	<td colspan="2" align="center"> <font size="2" color="red"><b>${message}</b> &nbsp;</br></font> </td>
   	</tr>
  	</c:if>
 

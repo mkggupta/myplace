@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Myplace-change-password</title>
+<title>findon-change password</title>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
@@ -28,12 +28,12 @@
   </tr>
   <c:if test="${not empty message}">
  <tr>
-      <td colspan="2" align="center"> <font size="3" color="red"><b>${message}</b> &nbsp; </td>
+      <td colspan="2" align="center"> <font size="2" color="red"><b>${message}</b> &nbsp; </td>
   </tr>
  </c:if>
 
   <form name="cpForm"
-		action="/myplace/rest/api/usr/pvt/changepassword" method="post"
+		action="<%=request.getContextPath()%>/rest/api/usr/pvt/changepassword" method="post"
 		enctype="multipart/form-data" onsubmit="return validateChangePassForm();" style="margin:0px;">
  		
   <c:if test="${not empty userId}">
@@ -42,17 +42,17 @@
    
   <input type="hidden" name="appType" value="4"/> 
   <tr>
- <td width="50%" align="right"> Old Password:&nbsp; </td>
- <td ><input type="password" name="oldPassword" maxlength="50"  autocomplete="off" /></td>
+ <td width="50%" align="right"> Old Password*:&nbsp; </td>
+ <td ><input type="password" name="oldPassword" maxlength="50" placeholder="Old Password*" autocomplete="off" /></td>
 </tr>
  <tr>
- <td width="50%" align="right"> New Password:&nbsp; </td>
- <td><input type="password" name="password" maxlength="50" autocomplete="off"/></td>
+ <td width="50%" align="right"> New Password*:&nbsp; </td>
+ <td><input type="password" name="password" maxlength="50" placeholder="New Password*" autocomplete="off"/></td>
  </tr>
 
  <tr>
- <td width="50%" align="right"> Please Re-enter Your Password:&nbsp; </td>
- <td ><input type="password" name="confPassword" maxlength="50" autocomplete="off"/></td>
+ <td width="50%" align="right"> Please Re-enter Your Password*:&nbsp; </td>
+ <td ><input type="password" name="confPassword" maxlength="50" placeholder="Re-enter Password*" autocomplete="off"/></td>
  </tr>
 <tr>
       <td colspan="2" align="center"> &nbsp; </td>

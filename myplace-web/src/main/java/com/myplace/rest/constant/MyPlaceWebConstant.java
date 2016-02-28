@@ -57,13 +57,11 @@ public interface MyPlaceWebConstant {
 	String USER_DETAIL = "usrDtl";
 	String SLIMIT="sLimit";
 	String NOTIFICATION_LIST = "notifList";
-	String EMAIL_VERIFICATION_FAILURE_VIEW_NAME = "emailVerificationFailure";
-	String EMAIL_VERIFICATION_SUCCESS_VIEW_NAME = "emailVerificationSuccess";
-	String PASSWORD_CHANGE_FAILURE_VIEW_NAME = "passwordChangeFailure";
-	String PASSWORD_CHANGE_SUCCESS_VIEW_NAME = "passwordChangeSuccess";
+	
 	String REASONLIST = "reasonList";
 	String BUSINESS_REPORT_LIST = "bReportList";
 	String APP_TYPE= "appType";
+	String REPORT_TYPE= "rType";
 	
 	//name of jsp pages for output
 	String USER_PROFILE = "userProfile";
@@ -81,6 +79,13 @@ public interface MyPlaceWebConstant {
 	String RESET_PASSWORD = "resetPassword";
 	String ABOUT_US_PAGE = "aboutUs";
 	String CONTACT_US_PAGE = "contactUs";
+	String REPORT_BUSINESS= "bussReport";
+	String REPORT_BUSINESS_SUCCESS= "reportSuccess";
+	String REPORT_BUSINESS_FAIL= "reportFail";
+	String EMAIL_VERIFICATION_FAILURE_VIEW_NAME = "emailVerificationFailure";
+	String EMAIL_VERIFICATION_SUCCESS_VIEW_NAME = "emailVerificationSuccess";
+	String PASSWORD_CHANGE_FAILURE_VIEW_NAME = "passwordChangeFailure";
+	String PASSWORD_CHANGE_SUCCESS_VIEW_NAME = "passwordChangeSuccess";
 	
 	//API URL
 	String GET_USER_PVT_PROFILE_API = "userProfile";
@@ -97,6 +102,7 @@ public interface MyPlaceWebConstant {
 	String SEARCH_BUSINESS_API = "login";
 	String VERIFY_USER_ACCOUNT_API ="usrauth/pvt/verifyaccount";//will return Verify UI
 	String CHANGE_USER_PASSWORD_API ="usr/pvt/loadchangepassword";//will return change pasword UI
+	String REPORT_UI_API = "report/pub/getreport/"; //will return Report UI
 	
 	
 }

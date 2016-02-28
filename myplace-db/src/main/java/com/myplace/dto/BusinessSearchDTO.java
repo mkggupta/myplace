@@ -33,6 +33,7 @@ public class BusinessSearchDTO {
 	private int feedType;
 	private String clickUrl;
 	private String detailUrl;
+	
 
 	public String getDetailUrl() {
 		return detailUrl;

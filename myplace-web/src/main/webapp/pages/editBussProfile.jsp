@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/validation.js"></script>
-<title>editBussProfile</title>
+<title>findon-Edit Bussiness Profile</title>
 </head>
 
 <body>

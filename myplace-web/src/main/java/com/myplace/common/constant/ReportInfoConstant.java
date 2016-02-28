@@ -9,6 +9,7 @@ public interface ReportInfoConstant {
 	String REPORTER_NAME = "rName";
 	String COMMENT = "cmnt";
 	String REPORTER_PHONE = "rPhone";
+	String REPORT_TYPE = "rType";
 	
 
 }

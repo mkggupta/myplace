@@ -788,6 +788,10 @@ public class RequestProcessorUtil {
 			if (null != requestMap.get(ReportInfoConstant.REPORTER_NAME)) {
 				businessReportInfo.setReporterName(requestMap.get(ReportInfoConstant.REPORTER_NAME).toString());
 			}
+			
+			if (null != requestMap.get(ReportInfoConstant.REPORT_TYPE)) {
+				businessReportInfo.setType(Byte.parseByte(requestMap.get(ReportInfoConstant.REPORT_TYPE).toString()));
+			}
 		}
 		
 	}

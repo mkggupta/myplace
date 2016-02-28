@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Myplace </title>
+<title>findon-Verify Account </title>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" type="text/css">
@@ -25,12 +25,12 @@
   </tr>
   <c:if test="${not empty message}">
  <tr>
-      <td colspan="2"> <font size="3" color="red"><b>${message}</b> &nbsp;</font> </td>
+      <td colspan="2"> <font size="2" color="green"><b>${message}</b> &nbsp;</font> </td>
   </tr>
  </c:if>
   
   <form name="cpForm"
-		action="/myplace/rest/api/usrauth/pvt/verifyaccountrequest" method="post"
+		action="<%=request.getContextPath()%>/rest/api/usrauth/pvt/verifyaccountrequest" method="post"
 		enctype="multipart/form-data" onsubmit="return validateForgetForm();" style="margin:0px;">
   <input type="hidden" name="appType" value="4"/> 
   <div style="width:98%; margin:auto; margin-top:15px; margin-bottom:10px;"> </div>

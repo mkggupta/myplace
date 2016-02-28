@@ -106,40 +106,40 @@ public enum ErrorCodesEnum {
 	
 	//advt service 
 	
-	ADVT_SERVICE_FAILED_EXCEPTION("ERR11901", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.adv.service.failed"),
+	ADVT_SERVICE_FAILED_EXCEPTION("ERR11901", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.adv.service.failed"),
 	
 	//category service
-	CATEGORY_SERVICE_FAILED_EXCEPTION("ERR11921", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.cat.service.failed"),
-	SUB_CATEGORY_SERVICE_FAILED_EXCEPTION("ERR11922", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.cat.service.failed"),
+	CATEGORY_SERVICE_FAILED_EXCEPTION("ERR11921", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.cat.service.failed"),
+	SUB_CATEGORY_SERVICE_FAILED_EXCEPTION("ERR11922", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.cat.service.failed"),
 	
 	//about service
-	ABOUT_SERVICE_FAILED_EXCEPTION("ERR11923", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.about.service.failed"),
+	ABOUT_SERVICE_FAILED_EXCEPTION("ERR11923", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.about.service.failed"),
 	
 	//feedback service
 	
-	FEEDBACK_SERVICE_FAILED_EXCEPTION("ERR11924", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.feedback.service.failed"),
+	FEEDBACK_SERVICE_FAILED_EXCEPTION("ERR11924", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.feedback.service.failed"),
 	
 	
 	//business service
-	BUSINESS_SERVICE_FAILED_EXCEPTION("ERR11931", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.business.service.failed"),
+	BUSINESS_SERVICE_FAILED_EXCEPTION("ERR11931", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.business.service.failed"),
 	BUSINESS_NOT_FOUND_EXCEPTION("ERR11932", "Business not found in the system", "com.myplace.business.not.found"),
 	
 	//business search service
-	BUSINESS_SEARCH_SERVICE_FAILED_EXCEPTION("ERR11941", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.business.search.service.failed"),
+	BUSINESS_SEARCH_SERVICE_FAILED_EXCEPTION("ERR11941", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.business.search.service.failed"),
 
 	//media service
 		MEDIA_SERVICE_FAILED_EXCEPTION("ERR12001", "Problem in saving default media.", "com.myplace.media.service.failed"),
 		
 	//notification service
-	    NOTIFICATION_SERVICE_FAILED_EXCEPTION("ERR13001", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.notification.service.failed"),
-	    NOTIFICATION_DELETE_SERVICE_FAILED_EXCEPTION("ERR13002", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.notification.service.failed"),
+	    NOTIFICATION_SERVICE_FAILED_EXCEPTION("ERR13001", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.notification.service.failed"),
+	    NOTIFICATION_DELETE_SERVICE_FAILED_EXCEPTION("ERR13002", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.notification.service.failed"),
 		
 	  //Report service
-	   REPORT_SERVICE_FAILED_EXCEPTION("ERR14001", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.report.service.failed"),
+	   REPORT_SERVICE_FAILED_EXCEPTION("ERR14001", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.report.service.failed"),
 	    
 	    // Request Log
 
-	REQUEST_LOG_SERVICE_FAILED_EXCEPTION("ERR11605", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.requestlog.service.failed"),
+	REQUEST_LOG_SERVICE_FAILED_EXCEPTION("ERR11605", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "com.myplace.requestlog.service.failed"),
 
 	
 
@@ -168,7 +168,7 @@ public enum ErrorCodesEnum {
 
 	PARTNER_USER_KEY_MISSING("ERR21005", "Partner user key is missing", "common.error.validation.partnerUserKey.missing"),
 
-	USER_SERVICE_VALIDATION_FAILED_EXCEPTION("ERR21006", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "common.error.validation.user.service"),
+	USER_SERVICE_VALIDATION_FAILED_EXCEPTION("ERR21006", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "common.error.validation.user.service"),
 
 	FIRST_NAME_MISSING("ERR21007", "First name is missing", "common.error.validation.firstname.missing"),
 	
@@ -189,7 +189,7 @@ public enum ErrorCodesEnum {
 	USER_PASSWORD_WRONG("ERR21103", "Username or password is incorrect.", "common.error.login.fail"),
 	
 	PARAMETER_MISSING("ERR21104", "Some parameters are missing.", "common.report.fail"),
-	SERVICE_FAILED_EXCEPTION("ERR21105", "Myplace may be over capacity or experiencing a momentary hiccup. Please try again.", "common.service.failed"),
+	SERVICE_FAILED_EXCEPTION("ERR21105", "FindOn may be over capacity or experiencing a momentary hiccup. Please try again.", "common.service.failed"),
 	;
 
 	String errorCode;

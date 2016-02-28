@@ -7,7 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
  
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Myplace-Error</title>
+<title>findon-Email Verification Error</title>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 </head>
@@ -15,7 +15,7 @@
 
 <div style=" width:98%; margin:auto; margin-top:70px; margin-bottom:10px;"><br />
 
-	<strong>Oops Email Verification Failed due to invalid Email verification credentials or Link expired.</strong><br />
+	<font size="2" color="green"><b>Oops Email Verification Failed due to invalid Email verification credentials or Link expired.</b></font><br />
 
 
 </body>

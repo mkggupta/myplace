@@ -115,7 +115,7 @@ function validateUserEditForm()
 	}
 	if(isNaN(a))
 	{
-	alert("Enter valid Numeric Number without +,-,space etc.");
+	alert("Enter Valid Numeric Number without +,-,space etc.");
 	document.editform.contactNum.focus();
 	return false;
 	}
@@ -131,7 +131,7 @@ function validateUserEditForm()
 	{
 		if(isNaN(zip))
 		{
-			alert("Enter valid Numeric Zip Code without +,-,space etc.");
+			alert("Enter Valid Numeric Zip Code without +,-,space etc.");
 			document.editform.zipcode.focus();
 			return false;
 		}
@@ -266,7 +266,7 @@ function validateBussEditForm()
 	{
 		if (!validateURL(bussWeb))
 		{
-			alert("Please provide a valid web url like http://www.google.com");
+			alert("Please provide a valid web url like http://www.findon.biz");
 			document.editBussProfile.bWeb.select();
 			return false;
 		}
@@ -321,7 +321,7 @@ function validateSearchForm() {
 		}
 		if(isNaN(bussZip))
 		{
-			alert("Enter valid Numeric Zip Code without +,-,space etc.");
+			alert("Enter Valid Numeric Zip Code without +,-,space etc.");
 			document.search.bZip.focus();
 			return false;
 		}
@@ -372,7 +372,7 @@ function validateSearchForm() {
 	if(document.getElementById("txt").checked)
 	{
 		var	bussText=document.search.text.value;
-		bussText=bussText;
+	
 		if(bussText=="")
 		{
 			alert("Please Enter Some Text with atleast 3 characters in length");
@@ -400,10 +400,7 @@ function validateContactForm()
 	var contactNum = document.contactUs.contactNum.value;
 	var email= document.contactUs.email.value;
 	var feedBackText = document.contactUs.feedBackText.value;
-	name = name;
-	contactNum=contactNum;
-	email=email;
-	feedBackText=feedBackText;
+	
 	var letters = /^[0-9./;#,+-]*$/;  
 	if(name=="")
 	{
@@ -468,4 +465,84 @@ function validateContactForm()
 		return false;
 	}
 	
+}
+
+
+function reportpopup(urlToOpen)
+{
+	var window_width = screen.availWidth/2;
+	var window_height = screen.availHeight/2;
+	var window_left = (screen.availWidth/2)-(window_width/2);
+	var window_top = (screen.availHeight/2)-(window_height/2);
+	var winParms = "Status=yes" + ",resizable=yes" + ",height="+window_height+",width="+window_width + ",left="+window_left+",top="+window_top;
+	var newwindow = window.open(urlToOpen,'_blank',winParms);
+	newwindow.focus()
+}
+
+
+function validateReportForm()
+{
+	var name = document.report.rName.value;
+	var contactNum = document.report.rPhone.value;
+	var email= document.report.rMail.value;
+	var cmntText = document.report.cmnt.value;
+	
+	var letters = /^[0-9./;#,+-]*$/;  
+	if(name=="")
+	{
+		alert("Please Enter Your Name");
+		document.report.rName.focus();
+		return false;
+	}
+	
+	if(name.length<3)
+	{
+		alert("Name could not be so short");
+		document.report.rName.focus();
+		return false;
+	}
+
+	if(contactNum=="")
+	{
+		alert("Please Enter Contact Number");
+		document.report.rPhone.focus();
+		return false;
+	}
+	if(!contactNum.match(letters))  
+	{  
+		alert('Please input numeric characters only, although you can use +-,;#');  
+		document.report.rPhone.focus();
+		return false;  
+	}  
+
+	if(contactNum.length<6)
+	{
+		alert("Contact Number could not be so short");
+		document.report.rPhone.focus();
+		return false;
+	}
+	
+	if(email!= null && email!="")
+	{
+		if (!ValidateEmail(email))
+		{
+			alert("Please provide a valid email address");
+			document.report.rMail.select();
+			return false;
+		}
+	}
+	
+	if(cmntText=="")
+	{
+		alert("Please Enter Comment");
+		document.report.cmnt.focus();
+		return false;
+	}
+	
+	if(cmntText.length<20)
+	{
+		alert("Comment could not be so short");
+		document.report.cmnt.focus();
+		return false;
+	}	
 }

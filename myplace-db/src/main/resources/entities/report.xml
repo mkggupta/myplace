@@ -19,8 +19,8 @@
 	
 	<insert id="save_business_report_info" parameterClass="com.myplace.dto.BusinessReportInfo">
   		insert into business_report_info (business_id, reporter_id, reporter_mail, comment, reporter_phone, report_time, 
-  		report_reason_id, reporter_name)
-  		values(#businessId#,#reporterId#, #reporterMail#,#comment#,#reporterPhone#,now(),#reportReasonId#,#reporterName#)
+  		report_reason_id, reporter_name,type)
+  		values(#businessId#,#reporterId#, #reporterMail#,#comment#,#reporterPhone#,now(),#reportReasonId#,#reporterName#,#type#)
    </insert>
   
  

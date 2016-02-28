@@ -99,7 +99,7 @@ public class RegLogController {
 							  HttpSession session=httpServletRequest.getSession();  
 						      session.setAttribute("userId",userInfo.getId());  
 						      session.setAttribute("userName",userInfo.getUserName());
-						      session.setMaxInactiveInterval(120);//time will be in second
+						      session.setMaxInactiveInterval(300);//time will be in second
 						 }else{
 							 dataMap.put(MyPlaceWebConstant.MESSAGE, SuccessCodesEnum.APP_REG_SUCCESS.getSuccessMessage());
 							 dataMap.put(MyPlaceWebConstant.CODE, SuccessCodesEnum.APP_REG_SUCCESS.getSuccessCode());
@@ -208,7 +208,7 @@ public class RegLogController {
 								 HttpSession session=request.getSession();  
 							      session.setAttribute("userId",userInfo.getId());  
 							      session.setAttribute("userName",userInfo.getUserName());
-							      session.setMaxInactiveInterval(120);//time will be in second
+							      session.setMaxInactiveInterval(300);//time will be in second
 								 
 							 }else{
 								 dataMap.put(MyPlaceWebConstant.USER_DETAIL, userInfo);

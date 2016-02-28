@@ -7,13 +7,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
  
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Email Verification Success</title>
+<title>findon-Email Verification Success</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 
 </head>
 <body>
 
 <div style=" width:98%; margin:auto; margin-top:70px; margin-bottom:10px;"><br />
-Email Verified Successfully. You can now use full fledged application.
+<font size="2" color="green"><b>Email Verified Successfully. You can now use full fledged application.</b></font>
+</br>
+</br>
+<font size="2" color="green"><b><a href="<%=request.getContextPath()%>/pages/login.jsp">Login to findon.biz</a>&nbsp;</br></b></font>
 </body>
 </html>

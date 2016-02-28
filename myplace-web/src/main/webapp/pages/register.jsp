@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>register jsp</title>
+<title>findon-user registration</title>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/regvalidation.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/validation.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/locvalidation.js"></script>
@@ -15,7 +15,7 @@
 </head>
 <body onload="reg_retrieve_location()">
 <div style="width:98%; margin:auto; margin-top:50px; margin-bottom:10px;"> </div>
-<form id="register" name="register" method="post" action="/myplace/rest/api/user/pub/register" onsubmit="return validateRegForm()" enctype="multipart/form-data">
+<form id="register" name="register" method="post" action="<%=request.getContextPath()%>/rest/api/user/pub/register" onsubmit="return validateRegForm()" enctype="multipart/form-data">
 <table width="100%" border="0"  align="right">
 
 <tr>
@@ -80,7 +80,7 @@
  <tr>
  <td style="width:55%;">  </td>
 <td  colspan="2"><font size="1"> &nbsp; &nbsp; &nbsp; &nbsp;By clicking on 'Create an account' above, you confirm that you accept the  
-  <a href="<%=request.getContextPath()%>/pages/myplaceTerms.jsp" target="_blank">terms and conditions</a> & <a href="<%=request.getContextPath()%>/pages/myplaceTerms.jsp" target="_blank">privacy policy</a>. &nbsp;</font><br/> </td>
+  <a href="<%=request.getContextPath()%>/pages/terms.jsp" target="_blank">terms and conditions</a> & <a href="<%=request.getContextPath()%>/pages/terms.jsp" target="_blank">privacy policy</a>. &nbsp;</font><br/> </td>
  </tr>
   <tr>
 <td colspan="3"> </td>

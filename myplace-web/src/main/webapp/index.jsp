@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>myplace Application</title>
+        <title>findon Application</title>
     </head>
     <body>
         <h2>Server Is Up!</h2>

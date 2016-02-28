@@ -25,9 +25,6 @@ import com.myplace.service.user.exception.UserServiceFailedException;
 import com.myplace.service.user.service.v1_0.UserService;
 
 
-
-
-
 @Controller
 @RequestMapping("/api/usrauth")
 public class UserAuthController {
@@ -398,6 +395,35 @@ public class UserAuthController {
 			modelAndView.setViewName(MyPlaceWebConstant.VERIFY_ACCOUNT);
 		}
 		return modelAndView;
+	}
+	/*
+	 * This method will load reset password UI from email
+	 * 
+	 */
+	
+	@RequestMapping(value = "/loadresetpassword/{id}/{userId}/{emailId}/{code}", method = RequestMethod.GET)
+	public ModelAndView loadResetPasswordUI(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+			@PathVariable("id") long forgetPasswordId,@PathVariable("userId") long userId, 
+			@PathVariable("emailId") String emailId, @PathVariable("code") String verificationCode) {
+
+		ModelAndView modelAndView = new ModelAndView();
+		try {
+			if ( (forgetPasswordId>0 && userId>0)&& (null!=emailId && null!=verificationCode)){	
+				modelAndView.addObject("forgetPasswordId",forgetPasswordId);
+				modelAndView.addObject("usrName", emailId);
+				modelAndView.addObject("userId", userId);
+				modelAndView.addObject("verificationCode", verificationCode);
+			}else{
+				modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.SERVICE_FAILED_EXCEPTION.getErrorMessage());
+			}
+			
+		} catch (Exception e) {
+			modelAndView.addObject(MyPlaceWebConstant.MESSAGE, ErrorCodesEnum.SERVICE_FAILED_EXCEPTION.getErrorMessage());
+		}
+		modelAndView.setViewName(MyPlaceWebConstant.RESET_PASSWORD);
+	
+		return modelAndView;
+		
 	}
 	
 	

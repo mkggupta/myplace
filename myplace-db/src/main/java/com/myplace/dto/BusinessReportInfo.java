@@ -9,13 +9,20 @@ public class BusinessReportInfo {
 	 private String reporterMail;
 	 private String comment; 
 	 private String reporterPhone;
-	private Date reportTime;
+	 private Date reportTime;
 	 private Long reportReasonId;
 	 private Long reportReasonText;
 	 private String reporterName;
 	 private Byte status ;
+	 private Byte type ;
 	 
-	 public String getReporterPhone() {
+	 public Byte getType() {
+		return type;
+	}
+	public void setType(Byte type) {
+		this.type = type;
+	}
+	public String getReporterPhone() {
 			return reporterPhone;
 		}
 		public void setReporterPhone(String reporterPhone) {

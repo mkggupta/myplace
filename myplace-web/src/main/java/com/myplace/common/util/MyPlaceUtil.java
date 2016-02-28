@@ -44,7 +44,7 @@ public class MyPlaceUtil {
  
 	public static String getMyBusinessListUrl(long userId) {
 	 	MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
-		String bussListUrl =new StringBuilder(myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL)).append(MyPlaceWebConstant.GET_MY_BUSINESS_LIST_API+userId).toString();
+		String bussListUrl =new StringBuilder(myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL)).append(MyPlaceWebConstant.GET_MY_BUSINESS_LIST_API).append(userId).toString();
 	 return bussListUrl;
 	 
 	}
@@ -111,4 +111,10 @@ public class MyPlaceUtil {
 	 
 	}
 	
+	public static String getReportUIUrl(Long businessId,int appType) {
+	 	MyPlaceProperties myplaceProperties = MyPlaceProperties.getInstance();
+		String proReportUrl =new StringBuilder(myplaceProperties.getProperty(MyPlacePropertyKeys.BASE_URL)).append(MyPlaceWebConstant.REPORT_UI_API).append(appType).append("/").append(businessId).append("/").toString();
+	   return proReportUrl;
+	 
+	}
 }

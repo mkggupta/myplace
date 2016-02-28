@@ -12,7 +12,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
-<title>userProfile</title>
+<title>findon-User Profile</title>
 </head>
 <body>
 <jsp:include page="header.jsp" flush="true" />
@@ -21,7 +21,7 @@
 
 <c:if test="${not empty message}">
  	<tr>
-   <td colspan="2" align="center"> <font size="4" color="red"><b>${message}</b> &nbsp;</br></font> </td>
+   <td colspan="2" align="center"> <font size="2" color="green"><b>${message}</b> &nbsp;</br></font> </td>
   	</tr>
  	</c:if>
 

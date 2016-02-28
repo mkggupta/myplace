@@ -11,7 +11,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Search</title>
+<title>findon-Search</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/validation.js"></script>
@@ -23,7 +23,7 @@
 <table class="searchCriteria" width="100%" border="0">
  
  
-  <form id="search" name="search" method="post" action="/myplace/rest/api/search/pub/getBuss" onsubmit="return validateSearchForm();">
+  <form id="search" name="search" method="post" action="<%=request.getContextPath()%>/rest/api/search/pub/getBuss" onsubmit="return validateSearchForm();">
   <tr>
 	 <td colspan="2">
 	     <input type="radio" name="type" id="cat" value="1"  onclick="ShowHideDiv()" <c:if test="${searchObj.type ==1}">CHECKED</c:if> >Search By Category
@@ -45,10 +45,10 @@
         </select>
 	  </div>
 	<div id="dvZip" style="display: none">
-		&nbsp;&nbsp;Enter Zip :&nbsp;&nbsp;<input type="text" maxlength="6"  name="bZip" id="bZip"  value="${searchObj.zipCode}" width="100%" autocomplete="off">
+		&nbsp;&nbsp;Enter Zip :&nbsp;&nbsp;<input type="text" maxlength="10"  name="bZip" id="bZip"  value="${searchObj.zipCode}" width="100%" autocomplete="off">
 	</div>
 	<div id="dvText" style="display: none">
-		&nbsp;&nbsp;Enter Text : &nbsp;&nbsp;<input type="text" maxlength="25"  name="text" id="text" value="${searchObj.text}" width="100%" autocomplete="off">
+		&nbsp;&nbsp;Enter Text : &nbsp;&nbsp;<input type="text" maxlength="45"  name="text" id="text" value="${searchObj.text}" width="100%" autocomplete="off">
 	 </div>	
 	 </td>
 	</tr>
@@ -154,12 +154,15 @@
 	</tr>
 	 <tr> 
     <td  colspan="2">&nbsp;&nbsp;&nbsp;&nbsp;<a href="${bussSearchDTO.detailUrl}?appType=4"> <c:out value="Get More Detail.." /> </a>
-   <hr /> 
    </td>
 	</tr>
 </table>
 
     </td></tr>
+    <tr>
+	 <td colspan="2"> <hr />
+	 </td>
+	 </tr>
      </c:forEach>
 	<tr>
 	 <td colspan="2">&nbsp;&nbsp;&nbsp;

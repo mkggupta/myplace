@@ -259,7 +259,7 @@ public class BusinessServiceImpl implements BusinessService {
 		}
 	}
 	
-	public BusinessInfo getBusinessDetail (Long businessId) throws BusinessServiceException{
+	public BusinessInfo getBusinessDetail (Long businessId,int appType) throws BusinessServiceException{
 
 	try {
 			BusinessInfo  businessInfo = businessDAO.getBusinessDetail(businessId);
@@ -290,6 +290,10 @@ public class BusinessServiceImpl implements BusinessService {
 			}
 			if(null!= bussImgUrlsList && bussImgUrlsList.size()>0){
 					businessInfo.setImgUrls(bussImgUrlsList);
+			}
+			if (appType>3){
+				businessInfo.setReportUrl(MyPlaceUtil.getReportUIUrl(businessId,appType));
+				
 			}
 			return businessInfo;
 		} catch (DataAccessFailedException ex) {

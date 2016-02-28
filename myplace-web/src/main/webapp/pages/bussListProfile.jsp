@@ -14,7 +14,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/validation.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
-<title>bussListProfile</title>
+<title>findon-Bussiness List</title>
 </head>
 <body>
 <jsp:include page="header.jsp" flush="true" />
@@ -22,7 +22,7 @@
 
 	<c:if test="${not empty message}">
  	<tr>
-   <td colspan="2"> <font size="3" color="red"><b>${message}</b></font> </td>
+   <td colspan="2"> <font size="2" color="red"><b>${message}</b></font> </td>
   	</tr>
  	</c:if>
 	<tr>

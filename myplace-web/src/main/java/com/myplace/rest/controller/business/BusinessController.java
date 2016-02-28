@@ -246,7 +246,7 @@ public class BusinessController {
 			
 			if( StringUtils.isNotBlank(bussId)  ){	
 				
-				BusinessInfo businessInfo = businessService.getBusinessDetail(Long.parseLong(bussId));
+				BusinessInfo businessInfo = businessService.getBusinessDetail(Long.parseLong(bussId),appType);
 				 if(null!= businessInfo ){
 					 isSuccess = true;
 					 if(appType>3){

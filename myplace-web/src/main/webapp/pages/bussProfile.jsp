@@ -15,14 +15,14 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/validation.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
 <link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/pagefont.css" />
-<title>bussProfile</title>
+<title>findon-Bussiness Profile</title>
 </head>
 <body>
 <jsp:include page="header.jsp" flush="true" />
 <table class="bussProfile" width="80%" border="0" align="center">
 	<c:if test="${not empty message}">
  	<tr>
-  <td colspan="2" align="center"> <font size="3" color="red"><b>${message}</b> &nbsp;</font> </td>
+  <td colspan="2" align="center"> <font size="2" color="green"><b>${message}</b> &nbsp;</font> </td>
   	</tr>
  	</c:if>
 	<tr>
@@ -150,7 +150,18 @@
      </c:if>
 	</c:if>
 	 <tr> <td colspan="2" >&nbsp;&nbsp;&nbsp;</td></tr> 
-	<tr> <td colspan="2" align="center">&nbsp;<input type="button" value="Go Back"  id="button" onclick="goBack()" >&nbsp;&nbsp;</td></tr> 
+	<tr> <td colspan="2" align="center">&nbsp;&nbsp;
+	<c:if test="${not empty respObj.reportUrl}">
+	 <c:choose>
+    <c:when test="${not empty sessionScope.userId}">
+		<input type="button" value="Report This"  id="button" onclick="reportpopup('${respObj.reportUrl}${sessionScope.userId}')" >
+	</c:when>
+    <c:otherwise>
+		<input type="button" value="Report This"  id="button" onclick="reportpopup('${respObj.reportUrl}0')" >
+	</c:otherwise>
+	</c:choose>
+	 </c:if>
+	&nbsp;<input type="button" value="Go Back"  id="button" onclick="goBack()" >&nbsp;&nbsp;</td></tr> 
 </table>
 <jsp:include page="footer.jsp" flush="true" />
 </body>

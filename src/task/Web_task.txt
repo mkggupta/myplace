@@ -59,7 +59,7 @@ Search need to configure            -done
 Db restore at cloud need to find  -done
 
 21-2-2016
-category image need to finalize
+category image need to finalize   -done
 location service in reg           -done
 location service in search        -done
 Contact US page need to design    -done
@@ -69,7 +69,64 @@ remove adult category             -done
 22-2-2016
 Need to find out IE issues         -done
 Need to add default Pic for Cat    -done
-Need to see domain      
+Need to see domain                 
 Change contact us page             -done
 search radio button not working    -done
+
+23-2-2016
+Need to add report option on search  -done
+
+
+24-2-2016
+Need to see domain	            -done
+need to buy domain                  -done
+Need to set-up domain               -done
+
+25-2-2016
+
+Need to see how to point app via domain -done
+Need to change app according to domain
+
+
+footer.jsp			    -done
+header.jsp                          -done
+login.jsp                           -done
+forgetpassword.jsp	            -done
+register.jsp                        -done
+userProfile/edit.jsp                -done
+verifyAccount.jsp	            -done
+search.jsp                          -done
+my business list                    -done
+my business	                    -done
+edit my business                    -done
+contactus.jsp
+-email need to change               -done
+terms.jsp 
+-Need to replace all email and myplace  -done
+
+26-2-2016
+
+Reg Email need to change with text and from			-done
+Forget Password Email need to change with text and from         -done
+reset password is not working                                   -done
+changepassword is not working well                              -done
+update profile submit header is removed			        -done
+aboutus.jsp   --- need to redesign				-done
+
+
+
+27/28-2-2016
+need to check with multiple user
+need to see  why email not working			        -done
+need to test app on production					-done
+need to test app on multiple browser				-done
+mozilla								-done
+IE								-done
+chrom								-done
+opera								-done
+safari
+need to downsize war of app
+need to implement bootstrap
+
+
 

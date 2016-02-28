@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Myplace </title>
+<title>findon-Login</title>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/regvalidation.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/locvalidation.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/myplace.css" type="text/css">
@@ -18,7 +18,7 @@
 
 <div style=" width:98%; margin:auto; margin-top:40px; margin-bottom:10px;"> </div>
 <table width="100%" border="0" align="right">
-<form id="login" name="login" method="post" action="/myplace/rest/api/user/pub/login" onsubmit="return validateLoginForm()">
+<form id="login" name="login" method="post" action="<%=request.getContextPath()%>/rest/api/user/pub/login" onsubmit="return validateLoginForm()">
 <tbody>
 	<tr>
 <div id="error" ></div>
@@ -35,7 +35,7 @@
  
  <c:if test="${not empty message}">
  <tr>
-      <td colspan="2" align="right"> <font size="3" color="red"><b>${message}</b> &nbsp;</font> </td>
+      <td colspan="2" align="right"> <font size="2" color="green"><b>${message}</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font> </td>
   </tr>
  </c:if>
 <tr>
